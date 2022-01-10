@@ -1,2 +1,5 @@
 HS_ALL_TEST_SET
 largeTestfile
+.venv
+node_modules
+__pycache__
