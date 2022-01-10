@@ -23,8 +23,11 @@ form label:first-letter{
 
 /* Don't touch above ----------------------------------- */
 
-/* Split the login screen in half */
+body {
+    background-color: #F8F5F0;
+}
 
+/* Split the login screen in half */
 .usermetaform {
     height: 100%;
     width: 40%;
@@ -38,7 +41,7 @@ form label:first-letter{
 /* Control the left side */
 .left {
     left: 0;
-    background-color: #737373;
+    background-color: #3E3F3A;
     padding: 60px;
     color: white;
     font-weight: 300;
@@ -47,6 +50,7 @@ form label:first-letter{
 /* Control the right side */
 .right {
     right: 0;
+    background-color: #F8F5F0;
     width: 60%;
     padding: 60px;
 }
@@ -59,4 +63,3 @@ form label:first-letter{
     margin-top: 10px;
     margin-bottom: 10px;
 }
-
