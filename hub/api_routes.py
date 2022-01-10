@@ -1,7 +1,9 @@
-# PWP course 2021 University of Oulu
-# created by Merja Kreivi-Kauppinen
+# Meria's Annotator for Social Media Texts
+# University of Oulu
+# Created by Merja Kreivi-Kauppinen (2021-2022)
 
-# Hate speech Annotator API - api_routes.py
+# Social-Media-Text-Annotator/HateSpeechAnnotator API api_routes.py
+# This file defines and ads recources to api
 # ------------------------------------------------------------------------
 
 from flask import Blueprint
@@ -33,40 +35,3 @@ api.add_resource(TextItemPageCount, "/texts/pages/count/<itemsOnPage>/")
 
 api.add_resource(TextAnnotationCollection, "/textannotations/")
 api.add_resource(TextAnnotationItem, "/textannotations/<id>/")
-
-
-# ----------------------------------------------------------
-# define routes
-
-"""
-@event.listens_for(Engine, "connect")
-def set_sqlite_pragma(dbapi_connection, connection_record):
-    cursor = dbapi_connection.cursor()
-    cursor.execute("PRAGMA foreign_keys=ON")
-    cursor.close()
-"""
-# new start
-"""
-@app.route("/api/")
-def entry_point():
-    
-    body = MasonBuilder()
-    body.add_namespace("annometa", "/api/")
-    body.add_control("annometa:users-all", "/api/users/")
-    return Response(json.dumps(body), mimetype=MASON)
-
-@app.route(LINK_RELATIONS_URL)
-def send_link_relations():
-    return "link relations"
-
-@app.route("/profiles/<profile>/")
-def send_profile(profile):
-    return "you requests {} profile".format(profile)
-
-
-@app.route("/admin/")
-def admin_site():
-    return app.send_static_file("html/admin.html")
-"""
-# 
-# --------------------------------------------------------------

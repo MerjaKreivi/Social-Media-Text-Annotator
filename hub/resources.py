@@ -1,10 +1,11 @@
-# PWP course 2021 University of Oulu
-# created by Merja Kreivi-Kauppinen and Juha Paaso
+# Meria's Annotator for Social Media Texts
+# University of Oulu
+# Created by Merja Kreivi-Kauppinen (2021-2022)
 
-# Image Annotator API resources.py
-# This file includes resources of Image Annotator API.
+# Social-Media-Text-Annotator/HateSpeechAnnotator API resources.py
+# This file includes resources of HateSpeechAnnotator API
 
-# -----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------
 
 import os
 import sys
@@ -34,12 +35,12 @@ from hub.models import *
 import hub.utils
 from hub.utils import *
 
-# -------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------
 # defined in constants file
 # UPLOAD_FOLDER = "\\static\\images\\"
 # ALLOWED_EXTENSIONS = set(['jpg', 'jpeg', 'gif', 'bmp', 'tiff'])
 
-# -------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------
 # helper functions
 
 # convert datetime to string
@@ -48,7 +49,7 @@ def myconverter(o):
         return o.__str__()
 
 
-# -----------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------
 # User and UserCollection Resources
 
 class UserCollection(Resource):

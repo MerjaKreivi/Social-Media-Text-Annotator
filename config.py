@@ -1,7 +1,12 @@
-# PWP course 2021 University of Oulu
-# created by Merja Kreivi-Kauppinen and Juha Paaso
-# Image Annotator - configurations
-# config.py
+# Meria's Annotator for Social Media Texts
+# University of Oulu
+# Created by Merja Kreivi-Kauppinen (2021-2022)
+
+# Social-Media-Text-Annotator/HateSpeechAnnotator API config.py
+
+# This file defines configurations and settings for api
+
+# ------------------------------------------------------------------------------------------
 
 import os
 
@@ -34,8 +39,7 @@ class TestingConfig(Config):
     #SQLALCHEMY_TRACK_MODIFICATIONS=False
 
 class ProductionConfig(Config):    
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'MyPhotosAnno.db')
-
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'MyManualAnnotations.db')
 
 # config dictionary includes list of available configurations
 config = {

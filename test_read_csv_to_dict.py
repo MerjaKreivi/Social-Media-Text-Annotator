@@ -1,11 +1,23 @@
+# Meria's Annotator for Social Media Texts
+# University of Oulu
+# Created by Merja Kreivi-Kauppinen (2021-2022)
+
+# Social-Media-Text-Annotator/HateSpeechAnnotator API
+
+# This file was created for testing purposes
+
+# ------------------------------------------------------------------------------------------
+
+
 import os
 import pandas as pd
 
 image_list = []
 
     # DO NOT USE absolut path
-    #source_images_folder = "C:\\PWPproject\\ImageAnnotator\\data\\ImageTest\\"
-    # USE relative path
+    #source_images_folder = "C:\\Social-Media-Text-Annotator\\HateSpeechAnnotator\\data\\HS_ALL_TEST_SET\\"
+    # USE relative path instead
+
 cwd = os.getcwd()
 folder = '\\data\\'
 csv_file = 'HS_ALL_TEST_SET.xlsx'

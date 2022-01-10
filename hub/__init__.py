@@ -1,59 +1,55 @@
-# PWP course 2021 University of Oulu
-# created by Merja Kreivi-Kauppinen and Juha Paaso
+# Meria's Annotator for Social Media Texts
+# University of Oulu
+# Created by Merja Kreivi-Kauppinen (2021-2022)
 
-# Image Annotator API __init__.py
-
-# This file initializes flask app
+# Social-Media-Text-Annotator/HateSpeechAnnotator API __init__.py
+# This file initializes RESTful web flask app
 
 # ------------------------------------------------------------------------------------------
-# The code package of TEXT Annotator API needs following library packages
+"""
+# The code package of Social-Media-Text-Annotator/HateSpeechAnnotator API needs following library packages
 
 # pip install Flask
 # pip install pysqlite3
 # pip install Flask-sqlalchemy
 # pip install flask-restful
-
 # pip install pytest
 # pip install pytest-cov
-
 # pip install Flask-Script
 # pip install Flask-Migrate
-
 # pip install Pillow
 # pip install jsonschema
-
 # pip install requests
+# pip install pandas
 
-# -------------------------------------------------------------------------------------------
-"""
-In order run ImageAnnotator flask API and this file 
+In order run HateSpeechAnnotator flask API and this file 
 activate virtual environment, set flask, init database and populate database.
 
 Activate created python virtual environment (on cmd):
-    cd C:\PWPproject\ImageAnnotator\.venv\Scripts
+    cd C:\Social-Media-Text-Annotator\HateSpeechAnnotator\.venv\Scripts
     activate.bat
 
 Go to ImageAnnotator folder: (provide 'cd ..' on cmd)
-    (.venv) C:\PWPproject\ImageAnnotator>
+    (.venv) C:\Social-Media-Text-Annotator\HateSpeechAnnotator>
 
 Set cofiguration setting class as 'development' or 'production' or 'default' or 'testing'
-    (.venv) C:\PWPproject\ImageAnnotator>set FLASK_ENV=development
+    (.venv) C:\Social-Media-Text-Annotator\HateSpeechAnnotator>set FLASK_ENV=development
 
 In order to start the server set the package name 'hub' and run Flask in the hub folder:
-    (.venv) C:\PWPproject\ImageAnnotator\extracodes>set FLASK_APP=hub
+    (.venv) C:\Social-Media-Text-Annotator\HateSpeechAnnotator>set FLASK_APP=hub
 
 Init flask database basedir hub:
-    (.venv) C:\PWPproject\ImageAnnotator>flask init-db
+    (.venv) C:\Social-Media-Text-Annotator\HateSpeechAnnotator>flask init-db
 
 Populate flask database:
-    (.venv) C:\PWPproject\ImageAnnotator>flask populate-db
+    (.venv) C:\Social-Media-Text-Annotator\HateSpeechAnnotator>flask populate-db
 
 Run flask local host at http://localhost:5000/admin/
 
-    (.venv) C:\PWPproject\ImageAnnotator>flask run
+    (.venv) C:\Social-Media-Text-Annotator\HateSpeechAnnotator>flask run
 
 This code creates database models, 
-and populates User, PhotoContent, PhotoAnnotation, ImageContent and ImageAnnotation models
+and populates User, TextContent, and TextAnnotation models
 """
 # -------------------------------------------------------------------------------------------
 
@@ -80,17 +76,9 @@ print("\nPrint of init file : init basedir :  ", basedir)
 def create_app(test_config=None):
 
     app = Flask(__name__, instance_relative_config=True)
-
-    #app.config.from_object(config[config_name])
-    #app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///development.db"
-    #app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + "../" + "developmentAnno.db"
-    #app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    #config[config_name].init_app(app)
-    #db = SQLAlchemy(app)
     
     app.config.from_mapping(
         SECRET_KEY="dev",
-        #SQLALCHEMY_DATABASE_URI="sqlite:///" + os.path.join(app.instance_path, "developmentTEST.db"),
         SQLALCHEMY_DATABASE_URI="sqlite:///" + os.path.join("..//", "developmentHateSpeech.db"),
         SQLALCHEMY_TRACK_MODIFICATIONS=False
     )    
@@ -146,4 +134,4 @@ def create_app(test_config=None):
     return app
 
     # attach routes and custom error pages here
-    #print("instance path : ", app.instance_path)
+    # print("instance path : ", app.instance_path)

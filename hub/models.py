@@ -1,57 +1,13 @@
-# PWP course 2021 University of Oulu
-# created by Merja Kreivi-Kauppinen
+# Meria's Annotator for Social Media Texts
+# University of Oulu
+# Created by Merja Kreivi-Kauppinen (2021-2022)
 
-# Image Annotator API database models - models.py
-# This file includes database models of Image Annotator API.
+# Social-Media-Text-Annotator/HateSpeechAnnotator API database models - models.py
+# This file includes database models of HateSpeechAnnotator API.
 
 # check / change launch.json -file parameters and location if debugging with VSC or Postman
 
-# --------------------------------------------------------------------------------------------
-
-# The first time the app runs it creates the table. 
-# BE CAREFULL - With this code you can override the default table name
-
-# cd C:\PWPproject\ImageAnnotator\.venv\Scripts
-# activate.bat
-# C:\PWPproject\ImageAnnotator>
-# set FLASK_ENV=development (or testing)
-# set FLASK_APP=hub
-# flask init-db
-# flask populate-db
-# flask run
-
-# --------------------------------------------------------------------------------------------
-"""
-In order run ImageAnnotator flask API and this file 
-activate virtual environment, set flask, init database and populate database.
-
-Activate created python virtual environment (on cmd):
-    cd C:\PWPproject\ImageAnnotator\.venv\Scripts
-    activate.bat
-
-Go to ImageAnnotator folder: (provide 'cd ..' on cmd)
-    (.venv) C:\PWPproject\ImageAnnotator>
-
-Set cofiguration setting class as 'development' or 'production' or 'default' or 'testing'
-    (.venv) C:\PWPproject\ImageAnnotator>set FLASK_ENV=development
-
-In order to start the server set the package name 'hub' and run Flask in the hub folder:
-    (.venv) C:\PWPproject\ImageAnnotator>set FLASK_APP=hub
-
-Init flask database basedir hub:
-    (.venv) C:\PWPproject\ImageAnnotator>flask init-db
-
-Populate flask database:
-    (.venv) C:\PWPproject\ImageAnnotator>flask populate-db
-
-Run flask local host at http://localhost:5000/admin/
-
-    (.venv) C:\PWPproject\ImageAnnotator>flask run
-
-This code creates database models, 
-and populates User, PhotoContent, PhotoAnnotation, ImageContent and ImageAnnotation models
-"""
-# --------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------
 
 import os
 import sys
@@ -69,7 +25,7 @@ from shutil import copy
 from hub import db
 from hub.constants import *
 
-# database model for image content and photo content -----------------------------------------
+# database model for text content ------------------------------------------------------------
 
 class TextContent(db.Model):
     __tablename__ = 'textcontent'
@@ -82,7 +38,7 @@ class TextContent(db.Model):
     text_annotations = db.relationship("TextAnnotation", back_populates="texts")
     text_users = db.relationship("User", back_populates="text_user", uselist=True)
 
-# database model for imageannotation ---------------------------------------------------------
+# database model for text annotation ---------------------------------------------------------
 
 class TextAnnotation(db.Model):
     __tablename__ = 'textannotation'
@@ -100,9 +56,9 @@ class TextAnnotation(db.Model):
     texts = db.relationship("TextContent", back_populates="text_annotations", uselist=True)
     text_annotators = db.relationship("User", back_populates="text_annotator", uselist=True)
 
-
 # database model for user -------------------------------------------------------------------
 # user name is unique - password is not necessary - CHECK CLIENT !!!!!
+# nick name is unique
 
 class User(db.Model):
     __tablename__ = 'user'
@@ -116,10 +72,9 @@ class User(db.Model):
 
     text_annotator = db.relationship("TextAnnotation", back_populates="text_annotators")    
 
-
 # --------------------------------------------------------------------------------------------
 # HELPER FUNCTIONS - CLICK COMMANDS
-# create database and popuate it for test and dvelopment purposes
+# create database and popuate it for test and development purposes
 
 @click.command("init-db")
 @with_appcontext
@@ -133,7 +88,7 @@ def init_db_command():
 
 def generate_test_data():
 
-    #(upload_images_folder, upload_photos_folder) = create_static_folders()
+    #(upload_text_folder) = create_static_folders()
 
     # Create row for new user to database by using User -model
     user1 = User(user_name = "Meria Developer", user_password="mötkäle", user_nick="Merja")

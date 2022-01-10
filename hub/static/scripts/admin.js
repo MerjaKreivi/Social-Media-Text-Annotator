@@ -1,3 +1,9 @@
+// Meria's Annotator for Social Media Texts
+// University of Oulu
+// Created by Merja Kreivi-Kauppinen (2021-2022)
+
+// Social-Media-Text-Annotator/HateSpeechAnnotator API admin.js
+
 //"use strict";
 
 const DEBUG = true;
@@ -158,24 +164,13 @@ function updateResource(href, callback) {
     $.ajax({
         url:href,
         type:"PUT",
-        success: callback,
-        // success: function(){ renderMsg("Update Succesful"); },
+        success: callback,        
         error:renderError
     });
 }
 
 // -------------------------------------------------------------------------------------
 // LOGIN USER and ADD USER page
-
-/*  // define item print outs for User data 
-function UserItemRow(item) {
-    let link = "<a href='" +
-                item["@controls"].self.href +
-                "' onClick='followLink(event, this, renderSelection)'>Login</a>";
-
-    return "<tr><td>" + item.user_name + "</td><td>" + link + "</td></tr>";
-} */
-
 // define render for start page / user login page
 // database populated and users are already in database
 // user item - api/users/<user>
@@ -391,7 +386,6 @@ function renderSelection(body) {
     $("#loginUserBtnId").hide();
     $(".resulttable thead").empty();
     $(".resulttable tbody").empty(); 
-    //$("#uploadFileBtnId").hide();
     $("#userFormId").hide();
 
     // use .off to prevent textListBtnId event firing more than once
@@ -421,7 +415,7 @@ function createItemTable(item, links) {
     item.HSOriginalComment + "'>" + 
     textlink + "</a>";
 
-    /* For retrieving annotation reference
+    /* Future implementation, For retrieving annotation reference
     if (item["@controls"].hasOwnProperty("textannotation")) {
         getResource(item["@controls"]["textannotation"]["href"], function(annotation) {
             annotationPolarity = `Polarity ${annotation.SentencePolarity}`;
@@ -432,6 +426,7 @@ function createItemTable(item, links) {
             "</td><td>" + links + "</td></tr>";   
 }
 
+// define item print outs for Text Content metadata 
 function TextContentRow(item) {
     let links = "<a href='" +
         item["@controls"].self.href +     
@@ -441,17 +436,6 @@ function TextContentRow(item) {
         "' class='btn btn-primary' tabindex='-1' role='button' onclick='followLink(event, this, renderTextsCarousel)'>Modify</a>";
         return createItemTable(item, links);
 }
-
-// define item print outs for Text Content metadata 
-/*function TextContentRow(item) {    
-    let links  = "<a href='" +
-    item["@controls"].self.href +    
-    "' onClick='followLink(event, this, renderTextsCarousel)'> Modify Annotation </a>" +
-    "<a href='" +
-    item["@controls"].self.href + 
-    "' onClick='followLink(event, this, deleteTextContent)'> Delete Text </a>";
-    return createItemTable(item, links);
-}*/
 
 // define delete for text on list/table
 function deleteTextContent(textItem) {
@@ -469,7 +453,6 @@ function getSubmittedTextContent(data, status, jqxhr) {
 // for adding a new text - define render for TextContent
 function renderTextForm(ctrl) {
     $("#textUploadFormId").show();
-    //$("#uploadFileBtnId").show();
     $("#textUploadFormId").attr("action", ctrl.href);
     $("#textUploadFormId").attr("method", ctrl.method);
 
@@ -528,8 +511,7 @@ function renderTextsCarousel(item) {
         "<a href='" +
         "' onClick='getTextCollection(event)'> Back to text list </a>"
     );
-    // $('.annotationMetaForm').hide(); $('#AnnoFormButtons').hide();
-
+ 
     $('.textAnnotationForm').css({'display':'block'});
     getResource("http://localhost:5000/api/texts/", function(texts) {        
         renderCarousel(texts, item);
@@ -552,7 +534,6 @@ function populateAnnotationForm(item) {
         populateEmptyTextAnnotationForm(item);
     }
 }
-// MUUTOS ALKAA  -------------------------------------------------------
 
 function backToMain(event) {
     event.preventDefault();
@@ -564,7 +545,6 @@ function backToMain(event) {
         renderSelection(userData);
     });
 }
-// MUUTOS Päättyy-------------------------------------------------
 
 function renderCarousel(body, selectedItem) {
     let ci = $(".carousel-inner");
@@ -619,7 +599,7 @@ function renderTexts(body) {
     $("div.navigation").empty();
     $(".resulttable thead").empty();
     $(".resulttable tbody").empty();    
-       // karuselli 
+       // carousel class ref
     $(".carousel-indicators").empty();
     $(".carousel-inner").empty();
     
@@ -631,10 +611,6 @@ function renderTexts(body) {
         "' onClick='backToMain(event)'>Back to Main</a>"         
     );        
 
-    /*$(".resulttable thead").html(
-        "<tr>><th>Publish date</th><th>Text</th></tr>"
-    );*/
-
     let tbody = $(".resulttable tbody");
     tbody.empty();
     body.items.forEach(function (item) {
@@ -643,8 +619,6 @@ function renderTexts(body) {
     
     renderTextForm(body["@controls"]["annometa:add-text"]);
 }
-
-/////////////////////////////////////// ---------------------------------------------------------------------------------
 
 // helper functions for text annotation -----------------------------------
 
@@ -659,7 +633,6 @@ function createSpanForFormRow(valueString) {
 }
 
 function appendToForm(form, rowHeader, rowValue) {
-    //let annotationForm =  $(".annotationform");
     let rowElement = "<div class='row'>" + rowHeader + rowValue + "</div>";
     form.append(rowElement);
 }
@@ -705,6 +678,7 @@ function hideAnnoFormButtons() {
     $("#addAnnotationBtnId").hide();
     $("#editAnnotationBtnId").hide();
     $("#deleteAnnotationBtnId").hide();
+    $(".textListForm").hide();
 }
 
 function showSaveButtons() {
@@ -728,7 +702,6 @@ function showAnnoFormButtons() {
 // EDIT - PUT for text annotation --------------------------------------------------------------
 
 function putTextAnnotationContent(event) {
-    //event.preventDefault();
     event.stopPropagation();
     let data = {};
     let form = $(".annotationMetaForm");
@@ -749,10 +722,6 @@ function putTextAnnotationContent(event) {
 
 function getSelectedValues() {
     selectedList = [];
-    /*$('#HSCategorySelect option').each(function() {
-        if (this.selected)
-            selectedList.push(this.innerText);       
-    });*/
     $('.HSCategoryButton').each(function() {
         if (this.checked)
             selectedList.push( this.labels[0].innerText);       
@@ -779,7 +748,6 @@ function editTextAnnotationContent(event) {
 // ADD - POST for text annotation --------------------------------------------------------------
 
 function submitTextAnnotationContent(event) {
-    //event.preventDefault();
     event.stopPropagation();
     let data = {};
     let form = $(".annotationMetaForm");
@@ -818,12 +786,8 @@ function populateEmptyTextAnnotationForm(textItem) {
     uncheckRadioButton("binaryRadioOptions");
     uncheckRadioButton("polarityRadioOptions");
     uncheckRadioButton("intensityRadioOptions");
-    
-    // select list
-    
-    //clearButtonGroup();
+        
     clearHSCategoryPlaceHolder();
-    //populateHSCategoryButtons(HSCategoryList);
     populateHSCategoryButtonGroups(HSCategoryLists);
 
     // enable fields
@@ -886,22 +850,13 @@ function populateHSCategorySelection(list) {
     }
 }
 
-/*<div class="row">
-                    <div class="col-md-2 col-form-label"><label class="HS_category_header">HS categories</label></div>
-                    <div class="col-sm">
-                        <div class="btn-group" id="HSCategoryButtons" role="group" aria-label="Hatespeech category selectors">                        
-                        </div>
-                    </div>                    
-                </div> */
-
 function populateHSCategoryButtonGroups(grouplist) {
     let buttonGroup = document.getElementById("HSCategoryPlaceHolder");
     let i = 1;
     grouplist.forEach(group => {
-        // <div class="row">
         let rowDiv = document.createElement("div");
         rowDiv.classList.add("row");
-        // <div class="col-md-2 col-form-label"><label class="HS_category_header">HS categories</label></div>
+        // Make an div element like this : <div class="col-md-2 col-form-label"><label class="HS_category_header">HS categories</label></div>
         let colDiv = document.createElement("div");
         colDiv.classList.add("col-md-2");
         colDiv.classList.add("col-form-label");
@@ -910,10 +865,10 @@ function populateHSCategoryButtonGroups(grouplist) {
         label.innerText = `HS categories ${i}`;
         colDiv.appendChild(label);
         rowDiv.appendChild(colDiv);
-        // <div class="col-sm">
+        
         let colSMDiv = document.createElement("div");
         colSMDiv.classList.add("col-sm");
-        //<div class="btn-group" id="HSCategoryButtons" role="group" aria-label="Hatespeech category selectors"></div>
+        // Make an div element like this : <div class="btn-group" id="HSCategoryButtons" role="group" aria-label="Hatespeech category selectors"></div>
         let btnGroup = document.createElement("div");
         btnGroup.classList.add("btn-group");
         btnGroup.id = `HSCategoryButtons_${i}`;
@@ -929,7 +884,6 @@ function populateHSCategoryButtonGroups(grouplist) {
 }
 
 function populateHSCategoryButtons(parent, list) {
-    //let buttonGroup = $("#HSCategoryButtons");
     let i = 1;
     list.forEach(item => {
         let input = `<input type="checkbox" class="btn-check HSCategoryButton" id="ctrBtnCheck${i}" autocomplete="off">`;
@@ -944,10 +898,9 @@ function populateSelectedHSCategoryButtonGroups (grouplist) {
     let buttonGroup = document.getElementById("HSCategoryPlaceHolder");
     let i = 1;
     grouplist.forEach(group => {    
-        // <div class="row">
         let rowDiv = document.createElement("div");
         rowDiv.classList.add("row");
-        // <div class="col-md-2 col-form-label"><label class="HS_category_header">HS categories</label></div>
+        // Make an div element like this : <div class="col-md-2 col-form-label"><label class="HS_category_header">HS categories</label></div>
         let colDiv = document.createElement("div");
         colDiv.classList.add("col-md-2");
         colDiv.classList.add("col-form-label");
@@ -956,10 +909,10 @@ function populateSelectedHSCategoryButtonGroups (grouplist) {
         label.innerText = `HS categories ${i}`;
         colDiv.appendChild(label);
         rowDiv.appendChild(colDiv);
-        // <div class="col-sm">
+        
         let colSMDiv = document.createElement("div");
         colSMDiv.classList.add("col-sm");
-        //<div class="btn-group" id="HSCategoryButtons" role="group" aria-label="Hatespeech category selectors"></div>
+        //Make an div element like this : <div class="btn-group" id="HSCategoryButtons" role="group" aria-label="Hatespeech category selectors"></div>
         let btnGroup = document.createElement("div");
         btnGroup.classList.add("btn-group");
         btnGroup.id = `HSCategoryButtons_${i}`;
@@ -1047,7 +1000,6 @@ function addToSelection(valueString) {
     valuelist.forEach(element => 
     {
         let inLowerCase = element.toLowerCase().trim();
-        //let option = `<option selected value="${i}">${inLowerCase}</option>`;
         let input = `<input type="checkbox" class="btn-check HSCategoryButton" id="ctrBtnCheck${i}" autocomplete="off" checked><label class="btn btn-outline-primary" for="ctrBtnCheck${i}">${inLowerCase}</label>`;
         optionlist.push(input);
         cleanList.push(inLowerCase);
@@ -1058,7 +1010,6 @@ function addToSelection(valueString) {
     {
         if (!cleanList.includes(hsitem)) {
             let input = `<input type="checkbox" class="btn-check HSCategoryButton" id="ctrBtnCheck${i}" autocomplete="off"><label class="btn btn-outline-primary" for="ctrBtnCheck${i}">${hsitem}</label>`
-            //let option = `<option value="${i}">${hsitem}</option>`;
             optionlist.push(input);
         }
         i++;
@@ -1078,14 +1029,6 @@ function clearButtonGroup() {
     let selection = $("#HSCategoryButtons")[0];
     selection.innerHTML = "";
 }
-
-/*function uncheckCategoryButtons() {
-    selectedList = [];
-    $('#HSCategoryButtons input').each(function() {
-       this.checked = false;       
-    });    
-} */    
-
 
 function populateTextAnnotationForm(annotationItem, annotationExists) {
     // api/textannotations/<id>/
@@ -1180,7 +1123,6 @@ function truncate(input) {
 document.addEventListener("slide.bs.carousel", function(e){    
     let div = e.relatedTarget;
     let hrefs = div.querySelector('.text-href').innerText;
-    //let hrefs = div.getElementsByClassName('text-href')[0].innerText;
     getResource(hrefs, function(textItem) {
         populateAnnotationForm(textItem);
     });
@@ -1190,9 +1132,7 @@ document.addEventListener("slide.bs.carousel", function(e){
 // render local host upload as start page / home page
 
 $(document).ready(function () {
-    // MUUTOS
     sessionStorage.clear();
-    //$('.annotationMetaForm').hide(); // Hide annotation form
     $("#testform").toggle();
     init();
     getResource("http://localhost:5000/api/users/", renderStartup);

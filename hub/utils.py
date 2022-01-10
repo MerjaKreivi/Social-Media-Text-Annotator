@@ -1,8 +1,8 @@
-# PWP course 2021 University of Oulu
-# created by Merja Kreivi-Kauppinen and Juha Paaso
+# Meria's Annotator for Social Media Texts
+# University of Oulu
+# Created by Merja Kreivi-Kauppinen (2021-2022)
 
-# Image Annotator API - utils.py
-
+# Social-Media-Text-Annotator/HateSpeechAnnotator API utils.py
 # This file defines Mason builder classes
 
 # ------------------------------------------------------------------------

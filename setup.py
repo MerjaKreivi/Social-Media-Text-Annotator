@@ -1,6 +1,11 @@
-# PWP course 2021 University of Oulu
-# created by Merja Kreivi-Kauppinen and Juha Paaso
-# Image Annotator API - setup.py
+# Meria's Annotator for Social Media Texts
+# University of Oulu
+# Created by Merja Kreivi-Kauppinen (2021-2022)
+
+# Social-Media-Text-Annotator/HateSpeechAnnotator API setup.py
+# This file initializes RESTful web flask app
+
+# ------------------------------------------------------------------------------------------
 
 # In order to run tests project need to be installed so that it can be found from the virtual environment's path
 # Python packages are installed with setup script
@@ -14,16 +19,16 @@
 # In order for them to be included they also need to be listed in a file called MANIFEST.in.
 
 # requirements.txt file can be created with command
-# (.venv) C:\PWPproject\ImageAnnotator>pip freeze
-# (.venv) C:\PWPproject\ImageAnnotator>pip freeze > requirements.txt
+# (.venv) C:\Social-Media-Text-Annotator\HateSpeechAnnotator>pip freeze
+# (.venv) C:\Social-Media-Text-Annotator\HateSpeechAnnotator>pip freeze > requirements.txt
 
 from setuptools import find_packages, setup
 
 setup(
-    name="imageannotator",
+    name="HateSpeechAnnotator",
     version="0.1.0",
-    author="Merja Kreivi-Kauppinen and Juha Paaso",
-    url="https://github.com/jupaaso/image-annotator",
+    author="Merja Kreivi-Kauppinen",
+    url="https://github.com/MerjaKreivi/Social-Media-Text-Annotator/HateSpeechAnnotator/",
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,

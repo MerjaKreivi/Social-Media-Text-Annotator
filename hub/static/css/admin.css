@@ -1,3 +1,9 @@
+/* Meria's Annotator for Social Media Texts
+// University of Oulu
+// Created by Merja Kreivi-Kauppinen (2021-2022)
+
+// Social-Media-Text-Annotator/HateSpeechAnnotator API admin.js */
+
 /* Don't touch below --------------------------------- */
 
 form label {
@@ -53,15 +59,4 @@ form label:first-letter{
     margin-top: 10px;
     margin-bottom: 10px;
 }
-/*
-.carousel-item {
-    width: 100%;
-    height: 400px;
-  }
-  
-  .carousel-item img {
-    width: 70%;
-    height: 70%;
-    object-fit: cover;
-  }
-*/
+
