@@ -7,7 +7,7 @@
 /* Don't touch below --------------------------------- */
 
 form label {
-    font-weight: bold;
+    font-weight: normal;
     display:block;/*Necessary for the first letter*/
 }
 
@@ -30,7 +30,7 @@ body {
 /* Split the login screen in half */
 .usermetaform {
     height: 100%;
-    width: 40%;
+    width: 60%;
     position: fixed;
     z-index: 1;
     top: 0;
@@ -39,9 +39,10 @@ body {
 }
 
 /* Control the left side */
+/* #3E3F3A; */
 .left {
-    left: 0;
-    background-color: #3E3F3A;
+    left: 10 px;
+    background-color: #8E8C84;
     padding: 60px;
     color: white;
     font-weight: 300;
@@ -51,9 +52,20 @@ body {
 .right {
     right: 0;
     background-color: #F8F5F0;
-    width: 60%;
+    width: 40%;
     padding: 60px;
 }
+
+.middleBottom {
+    right: 10 px;
+    left: 10 px;
+    height: 30%;
+    width: 90%;
+    position: fixed;
+    background-color: #E9F3DB;
+    padding-bottom: 10 px;
+}
+
 
 .carousel-inner img {
     margin: auto;
@@ -61,5 +73,16 @@ body {
 
 .col-sm {
     margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.textTable-component {
+    position: relative;
+    text-align: left;
+    vertical-align: middle
+}
+
+.textTable-header{
+    margin-top: 40px;
     margin-bottom: 10px;
 }

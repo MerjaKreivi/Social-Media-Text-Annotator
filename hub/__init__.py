@@ -26,23 +26,26 @@ In order run HateSpeechAnnotator flask API and this file
 activate virtual environment, set flask, init database and populate database.
 
 Activate created python virtual environment (on cmd):
-    cd C:\Social-Media-Text-Annotator\HateSpeechAnnotator\.venv\Scripts
+    
+    cd C:\GIT\Repositories\Social-Media-Text-Annotator\.venv\Scripts
     activate.bat
 
 Go to ImageAnnotator folder: (provide 'cd ..' on cmd)
-    (.venv) C:\Social-Media-Text-Annotator\HateSpeechAnnotator>
+    (.venv) C:\GIT\Repositories\Social-Media-Text-Annotator>
 
 Set cofiguration setting class as 'development' or 'production' or 'default' or 'testing'
-    (.venv) C:\Social-Media-Text-Annotator\HateSpeechAnnotator>set FLASK_ENV=development
+    (.venv) C:\GIT\Repositories\Social-Media-Text-Annotator>set FLASK_ENV=development
 
 In order to start the server set the package name 'hub' and run Flask in the hub folder:
-    (.venv) C:\Social-Media-Text-Annotator\HateSpeechAnnotator>set FLASK_APP=hub
+    (.venv) C:\GIT\Repositories\Social-Media-Text-Annotator>set FLASK_APP=hub
 
+--------------------
 Init flask database basedir hub:
-    (.venv) C:\Social-Media-Text-Annotator\HateSpeechAnnotator>flask init-db
+    (.venv) C:\GIT\Repositories\Social-Media-Text-Annotator>flask init-db
 
 Populate flask database:
     (.venv) C:\Social-Media-Text-Annotator\HateSpeechAnnotator>flask populate-db
+--------------------
 
 Run flask local host at http://localhost:5000/admin/
 

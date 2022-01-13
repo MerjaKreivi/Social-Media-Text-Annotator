@@ -214,7 +214,8 @@ function renderAddUserResponse(data, status, xhr) {
 function renderStartup(body) {
     // clear and define the view before rendering
     $("div.navigation").empty();
-    $(".resulttable thead").empty();
+    // do not empty - to show bootswatch sandstone
+    //muutos $(".resulttable thead").empty();
     $(".resulttable tbody").empty();
 
     $("#userFormId").show();
@@ -384,7 +385,8 @@ function renderSelection(body) {
     $("#editUserBtnId").hide();
     $("#deleteUserBtnId").hide();
     $("#loginUserBtnId").hide();
-    $(".resulttable thead").empty();
+    // do not empty - to show bootswatch sandstone
+    // muutos $(".resulttable thead").empty();
     $(".resulttable tbody").empty(); 
     $("#userFormId").hide();
 
@@ -503,7 +505,8 @@ var updateButtonStatus = function() {
 function renderTextsCarousel(item) {
     // clear the view before rendering
     $("div.navigation").empty();
-    $(".resulttable thead").empty();
+    // do not empty - to show bootswatch sandstone
+    // muutos  $(".resulttable thead").empty();
     $(".resulttable tbody").empty();    
     $(".textListForm").hide();    
 
@@ -597,7 +600,8 @@ function renderTexts(body) {
     
     $("#HateSpeechTextarea").val('');
     $("div.navigation").empty();
-    $(".resulttable thead").empty();
+    // do not empty - to show bootswatch sandstone
+    // muutos $(".resulttable thead").empty();
     $(".resulttable tbody").empty();    
        // carousel class ref
     $(".carousel-indicators").empty();
