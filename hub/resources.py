@@ -443,6 +443,7 @@ class TextAnnotationCollection(Resource):
 
              # query the newly added annotation             
             db_annotation = TextAnnotation.query.filter_by(text_id=new_textannotation.text_id).first()
+            print(db_annotation.id)
             return Response(status=201, headers={"Location": url_for("api.textannotationitem", id=db_annotation.id)})
             
         except IntegrityError:

@@ -160,7 +160,7 @@ class HubBuilder(MasonBuilder):
 
    
 
-    ##### image -----------------------------------------------------
+    ##### text -----------------------------------------------------
 
     @staticmethod
     def text_schema():
@@ -230,7 +230,7 @@ class HubBuilder(MasonBuilder):
             schema=self.text_schema()
             )
 
-#### imageannotation -----------------------------------------------------
+#### textannotation -----------------------------------------------------
 
     @staticmethod
     def textannotation_schema():
@@ -330,4 +330,3 @@ def create_error_response(status_code, title, message=None):
     return Response(json.dumps(body), status_code, mimetype=MASON)
 
 # ----------------------------------------------------------------------------------
-

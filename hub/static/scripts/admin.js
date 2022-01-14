@@ -443,7 +443,7 @@ function TextContentRow(item) {
 function deleteTextContent(textItem) {
     let deleteCtrl = textItem["@controls"]["annometa:delete"];
     deleteTextResource(deleteCtrl.href);
-    getResource("http://localhost:5000/api/texts/", renderTexts);    
+    setTimeout(() => {getResource("http://localhost:5000/api/texts/", renderTexts)}, 1000);    
 }
 
 // REQUIRED for text list update, when a new is added
@@ -752,7 +752,7 @@ function editTextAnnotationContent(event) {
 // ADD - POST for text annotation --------------------------------------------------------------
 
 function submitTextAnnotationContent(event) {
-    event.stopPropagation();
+    //event.stopPropagation();
     let data = {};
     let form = $(".annotationMetaForm");
         
@@ -767,7 +767,7 @@ function submitTextAnnotationContent(event) {
     data.HSinUrbanFinnish = $("#HSinUrbanFinnish").val();
     data.HSinFinnish = $("#HSinFinnish").val();    
     
-    sendData(form.attr("action"), form.attr("method"), data, getSubmittedAnnotation);
+    sendData(form.attr("action"), form.attr("method"), data, getEditedAnnotation);
 }
 
 function populateEmptyTextAnnotationForm(textItem) {
@@ -810,7 +810,8 @@ function populateEmptyTextAnnotationForm(textItem) {
     $("#addAnnotationBtnId").show();
     $("#editAnnotationBtnId").hide();
     $("#deleteAnnotationBtnId").hide();
-    $("#addAnnotationBtnId").on( "click", function(event) {        
+    $("#addAnnotationBtnId").off('click').on( "click", function(event) {      
+        event.preventDefault();  
         submitTextAnnotationContent(event);
       });      
 }
@@ -879,7 +880,7 @@ function populateHSCategoryButtonGroups(grouplist) {
         btnGroup.setAttribute("role", "group");
         btnGroup.setAttribute("aria-label", "Hatespeech category selectors");
         // add buttons to btnGroup parent element
-        populateHSCategoryButtons(btnGroup, group);
+        populateHSCategoryButtons(btnGroup, group, i);
         colSMDiv.appendChild(btnGroup);
         rowDiv.appendChild(colSMDiv);
         buttonGroup.appendChild(rowDiv);
@@ -887,11 +888,11 @@ function populateHSCategoryButtonGroups(grouplist) {
     });
 }
 
-function populateHSCategoryButtons(parent, list) {
+function populateHSCategoryButtons(parent, list, groupId) {
     let i = 1;
     list.forEach(item => {
-        let input = `<input type="checkbox" class="btn-check HSCategoryButton" id="ctrBtnCheck${i}" autocomplete="off">`;
-        let label = `<label class="btn btn-outline-primary" for="btncheck${i}">${item}</label>`        
+        let input = `<input type="checkbox" class="btn-check HSCategoryButton" id="ctrBtnCheck${groupId}_${i}" autocomplete="off">`;
+        let label = `<label class="btn btn-outline-primary" for="ctrBtnCheck${groupId}_${i}">${item}</label>`        
         parent.insertAdjacentHTML( 'beforeend', input );        
         parent.insertAdjacentHTML( 'beforeend', label );
         i++;
@@ -1107,7 +1108,7 @@ function populateTextAnnotationForm(annotationItem, annotationExists) {
       });
 
     // define delete for annotation that already exists
-    $("#deleteAnnotationBtnId").on( "click", function(event) {
+    $("#deleteAnnotationBtnId").off("click").on( "click", function(event) {
         event.preventDefault();
         let deleteCtrl = annotationItem["@controls"]["annometa:delete"];
         $("#annotationMetaFormId").attr("action", deleteCtrl.href);
