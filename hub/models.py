@@ -85,19 +85,35 @@ def init_db_command():
 @click.command("populate-db")
 @with_appcontext
 
-
 def generate_test_data():
 
     #(upload_text_folder) = create_static_folders()
 
     # Create row for new user to database by using User -model
     user1 = User(user_name = "Meria Developer", user_password="mötkäle", user_nick="Merja")
+    user2 = User(user_name = "Matti Meikäläinen", user_password="1234567890", user_nick = "matikainen",)
+    user3 = User(user_name = "Test Engineer", user_password="1234test", user_nick = "testaaja",)
     
     # Add model to the session
     db.session.add_all([user1])
+    db.session.add_all([user2])
+    db.session.add_all([user3])
+    
+    # Add model to the session
+    # db.session.add_all([user1, user2, user3])
+    
     # Save session to database with commit
     db.session.commit()
 
+    print("\nADD USER \n")
+
+    # Execute SQL query for database by using Model.query
+    # OR for db.session.query(Model)
+    # query.all() get all rows in the database as a list
+    result_users = User.query.all()
+    for item in result_users:
+        print("User object: ", item ,"   User ID: ", item.id, "   Username:  ", item.user_name, "   User nick:  ", item.user_nick, "   User password:  ", item.user_password)
+        
     # Collect defined user from database
     userqueried = User.query.filter_by(user_name="Meria Developer").first()
 
@@ -134,4 +150,4 @@ def getCSVData():
     folder = '\\data\\'
     csv_file = 'HS_ALL_TEST_SET.xlsx'
     csv_source = cwd + folder + csv_file
-    return pd.read_excel(csv_source, nrows=10)
+    return pd.read_excel(csv_source, nrows=100)

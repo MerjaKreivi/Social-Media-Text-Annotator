@@ -133,12 +133,6 @@ function backToTextCollection() {
     getResource("http://localhost:5000/api/texts/", renderTexts);    
 }
 
-function getTextCollection(event) {
-    event.preventDefault();
-    $('.textAnnotationForm').css({'display':'none'});
-    getResource("http://localhost:5000/api/texts/", renderTexts);
-}
-
 // define delete of resource
 function deleteResource(href, callback) {    
     $.ajax({
@@ -196,6 +190,13 @@ function gotoToolbox(event) {
     });
 }
 
+//
+//function gotoData(event) {
+//    event.preventDefault();
+//    hideAnnoFormButtons();
+//    hideUserFormButtons();
+//    $('.textAnnotationForm').css({'display':'none'});
+//    getResource("http://localhost:5000/api/texts/", renderTexts);}
 
 // -------------------------------------------------------------------------------------
 // HOME page - start up page - log out page
@@ -645,11 +646,10 @@ function renderTextsCarousel(item) {
     $(".resulttable tbody").empty();    
     $(".textListForm").hide();    
 
-    $("div.navigation").html(
-        "<a href='" +
-        "' onClick='getTextCollection(event)'> Back to Data </a>"
-    );
- 
+    //$("div.navigation").html(
+    //    "<a href='" +
+    //    "' onClick='gotoData(event)'> Back to Data </a>");
+    
     $('.textAnnotationForm').css({'display':'block'});
     getResource("http://localhost:5000/api/texts/", function(texts) {        
         renderCarousel(texts, item);
@@ -716,7 +716,10 @@ function createTextId(id) {
     return textId;
 }
 
+// ---------------------------------------------------------------------
+// define page/window for text data table
 // function to render uploaded text data and metadata
+
 function renderTexts(body) {
     // clear the view before rendering    
     document.getElementById("leftSidebar").style.display = "none";
@@ -734,10 +737,10 @@ function renderTexts(body) {
     hideAnnoFormButtons();
     $("#textListFormId").show();
     
-    $("div.navigation").html(
-        "<a href='" +        
-        "' onClick='gotoToolbox(event)'>Go to Toolbox</a>"         
-    );        
+    //$("div.navigation").html(
+    //    "<a href='" +        
+    //    "' onClick='gotoToolbox(event)'> Go to Toolbox </a>"         
+    //);        
 
     let tbody = $(".resulttable tbody");
     tbody.empty();

@@ -55,7 +55,7 @@ import glob
 import base64
 from io import BytesIO
 import os
-from PIL import Image, ExifTags
+
 
 config = os.getenv('FLASK_ENV')
 print("configuration: ", config)
@@ -70,9 +70,9 @@ with app.app_context():
 # Testing User -model population
 
 # Create new row for new user to database by using User -model
-    user1 = User(user_name = "Meria Developer", user_password="mötkäle")
-    user2 = User(user_name = "Matti Meikäläinen", user_password="1234567890")
-    user3 = User(user_name = "Test Engineer", user_password="QAqcTsw0987")
+    user1 = User(user_name = "Meria Developer", user_nick = "pesonen", user_password="kukka")
+    user2 = User(user_name = "Matti Meikäläinen", user_nick = "matikainen", user_password="1234567890")
+    user3 = User(user_name = "Test Engineer", user_nick = "testaaja", user_password="1234test")
 
 # Add model to the session
     db.session.add_all([user1, user2, user3])
@@ -87,11 +87,12 @@ with app.app_context():
 # query.all() get all rows in the database as a list
     result_users = User.query.all()
     for item in result_users:
-        print("User object:  ", item ,"   User ID: ", item.id, "   Username:  ", item.user_name)
+        print("User object: ", item ,"   User ID: ", item.id, "   Username:  ", item.user_name, "   User nick:  ", item.user_nick, "   User password:  ", item.user_password)
 
 
 
 
+"""
 
 # -------------------------------------------------------------------
 # Testing ImageContent -model population
@@ -322,3 +323,5 @@ with app.app_context():
     print("Photo annotation text_free_comment:      ", lampaat_annotoitu.text_free_comment)
     print("Photo annotation positivity_class:       ", lampaat_annotoitu.positivity_class)
     print("Photo annotation slideshow_class:        ", lampaat_annotoitu.slideshow_class)
+
+"""
