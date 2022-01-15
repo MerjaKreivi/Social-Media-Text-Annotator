@@ -170,14 +170,86 @@ function updateResource(href, callback) {
 }
 
 // -------------------------------------------------------------------------------------
-// LOGIN USER and ADD USER page
-// define render for start page / user login page
-// database populated and users are already in database
+// go to destination functions
+
+//* $("div.navigation").html(
+    //    "<a href='" +
+    //    "' onClick='renderUserPage(event)'> Go to Home </a>"
+    //); 
+
+function gotoHome(event) {
+    event.preventDefault();
+    hideAnnoFormButtons();
+    hideUserFormButtons();
+    let currentUser = sessionStorage.getItem("CurrentUser");        
+    getResource("http://localhost:5000/api/users/" + currentUser, function(userData) {
+        renderHomePage(userData);
+    });
+}
+
+function gotoToolbox(event) {
+    event.preventDefault();
+    hideAnnoFormButtons();
+    let currentUser = sessionStorage.getItem("CurrentUser");        
+    getResource("http://localhost:5000/api/users/" + currentUser, function(userData) {
+        renderSelection(userData);
+    });
+}
+
+
+// -------------------------------------------------------------------------------------
+// HOME page - start up page - log out page
+
+function renderHomePage(body) {
+    // clear and define the view before rendering
+    $("div.navigation").empty();
+    // do not empty - to show bootswatch sandstone
+    //muutos $(".resulttable thead").empty();
+    $(".resulttable tbody").empty();
+
+    showHomeButtons();
+    hideUserFormButtons();
+    $("#userFormId").hide();
+    $("#newUserFormId").hide();
+    $("#editUserBtnId").hide();
+    $("#deleteUserBtnId").hide();
+    $("#textListBtnId").hide();    
+    $("#userAccountBtnId").hide();
+    $("#textUploadFormId").hide();
+    $("#user_nick").hide();
+    $("#user_nick_label").hide();
+ 
+    let form = $("#homeFormId");
+    
+    // define login button event
+    $("#loginAsUserButtonId").on( "click", function(event) {
+        event.preventDefault();
+    });
+
+    // define create account button event
+    $("#createUserButtonId").on("click", function(event) {        
+        event.preventDefault();
+    });
+}
+
+function hideHomeButtons() {
+    $("#loginAsUserButtonId").hide();
+    $("#createUserButtonId").hide();
+}
+
+function showHomeButtons() {
+    $("#loginAsUserButtonId").show();
+    $("#createUserButtonId").show();
+}
+
+// -------------------------------------------------------------------------------------
+// LOGIN USER page
+// database is populated and users are already in database
 // user item - api/users/<user>
 
 function renderLoginResponse(data, status, xhr) {
     if (xhr.status === 200) {
-        console.log("User login OK")
+        console.log("User login accepted.")
         let href = xhr.getResponseHeader("Location");
         if (href) {
             console.log(href);
@@ -187,14 +259,14 @@ function renderLoginResponse(data, status, xhr) {
     }
     else {
         console.log(xhr.status)
-        console.log("User login failed")
+        console.log("User login failed. New user? Create new account or try again.")
         alert("User login failed - invalid user name or password");
     }
 }
 
 function renderAddUserResponse(data, status, xhr) {
     if (xhr.status === 201) {
-        console.log("New user was created successfully")
+        console.log("New user was created successfully.")
         let href = xhr.getResponseHeader("Location");
         if (href) {
             console.log(href);
@@ -206,12 +278,12 @@ function renderAddUserResponse(data, status, xhr) {
     }
     else {
         console.log(xhr.status)
-        console.log("Add of user failed")
-        alert("Add of user failed - invalid user name or password");
+        console.log("Add of new user failed")
+        alert("Add of new user failed - invalid user name or password");
     }
 }
 
-function renderStartup(body) {
+function renderUserPage(body) {
     // clear and define the view before rendering
     $("div.navigation").empty();
     // do not empty - to show bootswatch sandstone
@@ -220,6 +292,10 @@ function renderStartup(body) {
 
     $("#userFormId").show();
     showUserFormButtons();
+    hideHomeButtons();
+    $("#newUserFormId").hide();
+    $("#loginAsUserButtonId").hide();
+    $("#createUserButtonId").hide();
     $("#editUserBtnId").hide();
     $("#deleteUserBtnId").hide();
     $("#textListBtnId").hide();    
@@ -230,6 +306,9 @@ function renderStartup(body) {
 
     $("#user_name").attr('disabled', false);    
 
+    // get resource 'users' here after Home page changes - see below
+    // getResource("http://localhost:5000/api/users/")
+
     let data = {};
     let form = $("#userFormId");
     
@@ -237,6 +316,7 @@ function renderStartup(body) {
     $("#loginUserBtnId").on( "click", function(event) {
         event.preventDefault();
         event.stopPropagation();
+        $("#loginUserBtnId").show();
         //console.log("User login not implemented yet");
         if ($("#user_name").val() !== '') {
             data.user_name = $("#user_name").val();
@@ -252,42 +332,17 @@ function renderStartup(body) {
         }
         if ($("#user_name").val() !== '' && $("#user_password").val() !== '') {
             console.log($("#user_name").val() + " " + $("#user_password").val())
-
-            loginCtrl = body["@controls"]["annometa:login"];
-            sendLoginData(loginCtrl.href, loginCtrl.method, data, renderLoginResponse);
+            // send login data after asynchronous resource has finished
+            getResource("http://localhost:5000/api/users/", function(body) {
+                loginCtrl = body["@controls"]["annometa:login"];
+                sendLoginData(loginCtrl.href, loginCtrl.method, data, renderLoginResponse);
+            });                            
         }       
     });
-
-    // define add POST for new user
-    $("#addUserBtnId").on("click", function(event) {        
-        event.preventDefault();
-        $("#user_nick_label").show();
-        $("#user_nick").show();
-        //console.log("Add user with post not implemented yet");
-        if ($("#user_name").val() !== '') {
-            data.user_name = $("#user_name").val();
-        }
-        else {
-            alert("Please enter user name")
-        }
-        if ($("#user_nick").val() !== '') {
-            data.user_nick = $("#user_nick").val();
-        }
-        else {
-            alert("Please enter a nick name")
-        }
-        if ($("#user_password").val() !== '') {
-            data.user_password = $("#user_password").val();
-        }
-        else {
-            alert("Please enter password")
-        }
-        if ($("#user_name").val() !== '' && $("#user_password").val() !== '') {
-            addUserCtrl = body["@controls"]["annometa:add-user"];
-            sendAddUserData(addUserCtrl.href, addUserCtrl.method, data, renderAddUserResponse);
-        }            
-    }); 
 }
+
+// --------------------------------------------------------------------------
+// hide and show functions for user account buttons
 
 function hideUserFormButtons() {
     $("#addUserBtnId").hide();
@@ -307,12 +362,84 @@ function showUserFormButtons() {
     $("#userAccountBtnId").show();
 }
 
+// -------------------------------------------------------------------------------------
+// CREATE NEW USER page
+// database is populated and users are already in database
+// user item - api/users/<user>
+// can be used to create new user account
+
+function renderNeWUserPage(body) {
+    // clear and define the view before rendering
+    $("div.navigation").empty();
+    // do not empty - to show bootswatch sandstone
+    //muutos $(".resulttable thead").empty();
+    $(".resulttable tbody").empty();
+
+    $("#newUserFormId").show();
+    showUserFormButtons();
+    hideHomeButtons();
+    $("#loginUserBtnId").hide();
+    $("#userFormId").hide();
+    $("#loginUserBtnId").hide();
+    $("#loginAsUserButtonId").hide();
+    $("#createUserButtonId").hide();
+    $("#editUserBtnId").hide();
+    $("#deleteUserBtnId").hide();
+    $("#textListBtnId").hide();    
+    $("#userAccountBtnId").hide();
+    $("#textUploadFormId").hide();
+    $("#user_nick").show();    
+    $("#user_nick_label").show();
+
+    $("#new_user_name").attr('disabled', false);    
+
+    // get resource 'users' here after Home page changes - see below
+    // getResource("http://localhost:5000/api/users/")
+
+    let data = {};
+    let form = $("#newUserFormId");
+    
+    // define add POST for new user
+    $("#addUserBtnId").on("click", function(event) {        
+        event.preventDefault();
+        $("#user_nick_label").show();
+        $("#user_nick").show();
+        //console.log("Add user with post not implemented yet");
+        if ($("#new_user_name").val() !== '') {
+            data.user_name = $("#new_user_name").val();
+        }
+        else {
+            alert("Please enter user name")
+        }
+        if ($("#new_user_nick").val() !== '') {
+            data.user_nick = $("#new_user_nick").val();
+        }
+        else {
+            alert("Please enter a nick name")
+        }
+        if ($("#new_user_password").val() !== '') {
+            data.user_password = $("#new_user_password").val();
+        }
+        else {
+            alert("Please enter password")
+        }
+        if ($("#new_user_name").val() !== '' && $("#new_user_password").val() !== '') {
+            console.log($("#new_user_name").val() + " " + $("#new_user_password").val())
+            // send login data after asynchronous resource has finished
+            getResource("http://localhost:5000/api/users/", function(body) {
+                addUserCtrl = body["@controls"]["annometa:add-user"];
+                sendAddUserData(addUserCtrl.href, addUserCtrl.method, data, renderAddUserResponse);
+            });
+        }            
+    }); 
+}
+
 // USER ACCOUNT page -------------------------------------------------------------
 // can be used to delete user or change password
 
 function renderUserData(body) {
     // show html form
-    $("#userFormId").show();
+    $("#newUserFormId").show();
     // show/hide buttons
     $("#deleteUserBtnId").show();
     $("#editUserBtnId").show();
@@ -320,9 +447,12 @@ function renderUserData(body) {
     $("#loginUserBtnId").hide();
     $("#textListBtnId").hide();    
     $("#userAccountBtnId").hide();
-    $("#user_name").attr("value", body.user_name);
-    $("#user_name").attr('disabled', true);
-    $("#user_password").attr("value", body.user_password);
+
+    $("#new_user_name").attr("value", body.user_name);
+    $("#new_user_name").attr('disabled', true);
+    $("#new_user_nick").attr("value", body.user_nick);
+    $("#new_user_nick").attr('disabled', true);
+    //$("#new_user_password").attr("value", body.user_password);
 
     let data = {};
 
@@ -330,12 +460,12 @@ function renderUserData(body) {
     $("#deleteUserBtnId").on( "click", function(event) {
         event.preventDefault();
         //console.log("User delete not implemented yet");
-        if ($("#user_password").val() !== '') {
-            data.user_password = $("#user_password").val();
-            data.user_name = $("#user_name").val();
+        if ($("#new_user_password").val() !== '') {
+            data.user_password = $("#new_user_password").val();
+            data.user_name = $("#new_user_name").val();
             let deleteUserCtrl = body["@controls"]["annometa:delete"];
             console.log()
-            deleteResource(deleteUserCtrl.href, renderStartup);
+            deleteResource(deleteUserCtrl.href, renderHomePage);
         }
         else {
             alert("Password cannot be empty")
@@ -346,13 +476,13 @@ function renderUserData(body) {
     $("#editUserBtnId").on( "click", function(event) {
         event.preventDefault();
         //console.log("User edit not implemented yet");
-        if ($("#user_password").val() !== '') {
-            data.user_password = $("#user_password").val();
-            data.user_name = $("#user_name").val();             
+        if ($("#new_user_password").val() !== '') {
+            data.user_password = $("#new_user_password").val();
+            data.user_name = $("#new_user_name").val();             
             let editCtrl = body["@controls"]["edit"];            
             console.log()
             sendData(editCtrl.href, editCtrl.method, data, function() {
-                $("#userFormId").hide();
+                $("#newUserFormId").hide();
                 getResource(body["@controls"]["self"]["href"], renderSelection);
             });
         }
@@ -362,7 +492,7 @@ function renderUserData(body) {
     });
 }
 
-// Main view page -------------------------------------------------------------
+// Toolbox page -------------------------------------------------------------
 
 // render device / user account selection
 function renderSelection(body) {    
@@ -378,9 +508,11 @@ function renderSelection(body) {
     $("div.navigation").empty();
     // show buttons
     showUserFormButtons();
+    
     $("#textListBtnId").show();
     $("#userAccountBtnId").show();
     // hide buttons and tables
+    $("#newUserFormId").hide();
     $("#addUserBtnId").hide();
     $("#editUserBtnId").hide();
     $("#deleteUserBtnId").hide();
@@ -402,6 +534,8 @@ function renderSelection(body) {
     });    
 }
 
+
+// Text table page -------------------------------------------------------------
 
 // define table items for text
 function createItemTable(item, links) {    
@@ -443,6 +577,7 @@ function TextContentRow(item) {
 function deleteTextContent(textItem) {
     let deleteCtrl = textItem["@controls"]["annometa:delete"];
     deleteTextResource(deleteCtrl.href);
+    // Define delay with set timeout
     setTimeout(() => {getResource("http://localhost:5000/api/texts/", renderTexts)}, 1000);    
 }
 
@@ -512,7 +647,7 @@ function renderTextsCarousel(item) {
 
     $("div.navigation").html(
         "<a href='" +
-        "' onClick='getTextCollection(event)'> Back to text list </a>"
+        "' onClick='getTextCollection(event)'> Back to Data </a>"
     );
  
     $('.textAnnotationForm').css({'display':'block'});
@@ -536,17 +671,6 @@ function populateAnnotationForm(item) {
         // create and define POST-add for new annotation
         populateEmptyTextAnnotationForm(item);
     }
-}
-
-function backToMain(event) {
-    event.preventDefault();
-
-    hideAnnoFormButtons();
-    
-    let currentUser = sessionStorage.getItem("CurrentUser");        
-    getResource("http://localhost:5000/api/users/" + currentUser, function(userData) {
-        renderSelection(userData);
-    });
 }
 
 function renderCarousel(body, selectedItem) {
@@ -612,7 +736,7 @@ function renderTexts(body) {
     
     $("div.navigation").html(
         "<a href='" +        
-        "' onClick='backToMain(event)'>Back to Main</a>"         
+        "' onClick='gotoToolbox(event)'>Go to Toolbox</a>"         
     );        
 
     let tbody = $(".resulttable tbody");
@@ -678,6 +802,16 @@ function getCheckedValue(radioButtonGroupName) {
     }        
 }
 
+// ----------------------------------------------------------------------------------
+
+function showAnnoFormButtons() {
+    $("#addAnnotationBtnId").show();
+    $("#editAnnotationBtnId").show();
+    $("#editAnnotationBtnId").prop("disabled", false);
+    $("#deleteAnnotationBtnId").show();
+    $("#deleteAnnotationBtnId").prop("disabled", false);
+}
+
 function hideAnnoFormButtons() {
     $("#addAnnotationBtnId").hide();
     $("#editAnnotationBtnId").hide();
@@ -693,14 +827,6 @@ function showSaveButtons() {
 function hideSaveButtons() {
     $("#submitChangesBtnId").hide();
     $("#cancelChangesBtnId").hide();
-}
-
-function showAnnoFormButtons() {
-    $("#addAnnotationBtnId").show();
-    $("#editAnnotationBtnId").show();
-    $("#editAnnotationBtnId").prop("disabled", false);
-    $("#deleteAnnotationBtnId").show();
-    $("#deleteAnnotationBtnId").prop("disabled", false);
 }
 
 // EDIT - PUT for text annotation --------------------------------------------------------------
@@ -951,7 +1077,7 @@ function checkSelectedCategories(valueString) {
         i++;
     });    
     
-     HSCategoryLists.forEach(group => {
+    HSCategoryLists.forEach(group => {
      		category = {};
         group.forEach(item => {
             let id = Math.random().toString();
@@ -959,7 +1085,8 @@ function checkSelectedCategories(valueString) {
         	category[item] = `<input type="checkbox" class="btn-check HSCategoryButton" id="ctrBtnCheck${guid}" autocomplete="off"><label class="btn btn-outline-primary" for="ctrBtnCheck${guid}">${item}</label>`;
         })
         categoryDictList.push(category);
-     });    
+    });
+      
     for(var key in selectedDict) {  	
         categoryDictList.forEach(catDict => 
         {
@@ -1105,17 +1232,20 @@ function populateTextAnnotationForm(annotationItem, annotationExists) {
         $("#annotationMetaFormId").attr("method", editCtrl.method);        
         showSaveButtons();
         editTextAnnotationContent(event);
-      });
+      }
+    );
 
     // define delete for annotation that already exists
-    $("#deleteAnnotationBtnId").off("click").on( "click", function(event) {
-        event.preventDefault();
-        let deleteCtrl = annotationItem["@controls"]["annometa:delete"];
-        $("#annotationMetaFormId").attr("action", deleteCtrl.href);
-        $("#annotationMetaFormId").attr("method", deleteCtrl.method);
-        console.log("Delete of text annotation was succesful " + deleteCtrl.href);
-        deleteResource(deleteCtrl.href, backToTextCollection);
-      });                
+    $("#deleteAnnotationBtnId").off("click").on("click",
+        function(event) {
+            event.preventDefault();
+            let deleteCtrl = annotationItem["@controls"]["annometa:delete"];
+            $("#annotationMetaFormId").attr("action", deleteCtrl.href);
+            $("#annotationMetaFormId").attr("method", deleteCtrl.method);
+            console.log("Delete of text annotation was succesful " + deleteCtrl.href);
+            deleteResource(deleteCtrl.href, backToTextCollection);
+        }
+    );
 }
 
 function truncate(input) {
@@ -1123,7 +1253,7 @@ function truncate(input) {
        return input.substring(0, 25) + '...';
     }
     return input;
- };
+};
 
 document.addEventListener("slide.bs.carousel", function(e){    
     let div = e.relatedTarget;
@@ -1131,14 +1261,15 @@ document.addEventListener("slide.bs.carousel", function(e){
     getResource(hrefs, function(textItem) {
         populateAnnotationForm(textItem);
     });
-    
-  });    
+});
+
+
 // ---------------------------------------------------------------------------
-// render local host upload as start page / home page
+// render local host upload as user page / login page
 
 $(document).ready(function () {
     sessionStorage.clear();
     $("#testform").toggle();
     init();
-    getResource("http://localhost:5000/api/users/", renderStartup);
+    getResource("http://localhost:5000/api/users/", renderHomePage);
 });

@@ -94,9 +94,12 @@ class UserCollection(Resource):
         except ValidationError as e:
             return create_error_response(400, "Invalid JSON document", str(e))
 
+        print(request.json["user_name"])
+        print(request.json["user_password"])
         new_user = User(
             user_name=request.json["user_name"],
-            user_password=request.json["user_password"]
+            user_password=request.json["user_password"],
+            user_nick=request.json["user_nick"]
         )
         try:
             db.session.add(new_user)

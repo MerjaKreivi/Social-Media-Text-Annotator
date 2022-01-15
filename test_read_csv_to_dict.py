@@ -15,7 +15,7 @@ import pandas as pd
 image_list = []
 
     # DO NOT USE absolut path
-    #source_images_folder = "C:\\Social-Media-Text-Annotator\\HateSpeechAnnotator\\data\\HS_ALL_TEST_SET\\"
+    #source_images_folder = "C:\\GIT\\Social-Media-Text-Annotator\\data\\HS_ALL_TEST_SET\\"
     # USE relative path instead
 
 cwd = os.getcwd()
