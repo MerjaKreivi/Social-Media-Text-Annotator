@@ -133,6 +133,12 @@ function backToTextCollection() {
     getResource("http://localhost:5000/api/texts/", renderTexts);    
 }
 
+function getTextCollection(event) {
+    event.preventDefault();
+    $('.textAnnotationForm').css({'display':'none'});
+    getResource("http://localhost:5000/api/texts/", renderTexts);
+}
+
 // define delete of resource
 function deleteResource(href, callback) {    
     $.ajax({
@@ -175,6 +181,7 @@ function gotoHome(event) {
     event.preventDefault();
     hideAnnoFormButtons();
     hideUserFormButtons();
+
     let currentUser = sessionStorage.getItem("CurrentUser");        
     getResource("http://localhost:5000/api/users/" + currentUser, function(userData) {
         renderHomePage(userData);
@@ -184,19 +191,17 @@ function gotoHome(event) {
 function gotoToolbox(event) {
     event.preventDefault();
     hideAnnoFormButtons();
+    hideSaveButtons();
+    $("#testform").hide();
+    $("#addAnnotationBtnId").hide();
+    $("#editAnnotationBtnId").hide();
+    $("#deleteAnnotationBtnId").hide();
+
     let currentUser = sessionStorage.getItem("CurrentUser");        
     getResource("http://localhost:5000/api/users/" + currentUser, function(userData) {
         renderSelection(userData);
     });
 }
-
-//
-//function gotoData(event) {
-//    event.preventDefault();
-//    hideAnnoFormButtons();
-//    hideUserFormButtons();
-//    $('.textAnnotationForm').css({'display':'none'});
-//    getResource("http://localhost:5000/api/texts/", renderTexts);}
 
 // -------------------------------------------------------------------------------------
 // HOME page - start up page - log out page
@@ -646,9 +651,14 @@ function renderTextsCarousel(item) {
     $(".resulttable tbody").empty();    
     $(".textListForm").hide();    
 
+    $("div.navigation").html(
+        "<a href='" +
+        "' onClick='getTextCollection(event)'> Back to text list </a>"
+    );
+
     //$("div.navigation").html(
     //    "<a href='" +
-    //    "' onClick='gotoData(event)'> Back to Data </a>");
+    //    "' onClick='backToData(event)'> Back to Data </a>");
     
     $('.textAnnotationForm').css({'display':'block'});
     getResource("http://localhost:5000/api/texts/", function(texts) {        

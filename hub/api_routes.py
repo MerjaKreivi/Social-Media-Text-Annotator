@@ -11,7 +11,7 @@ from flask_restful import Api
 
 # import hub.resources
 from hub.resources import UserItem, UserCollection, UserLogin
-from hub.resources import TextItem, TextCollection, TextItemCount, TextItemPageCount
+from hub.resources import TextItem, TextCollection, TextItemCount, TextItemPageCount, TextItemsInPages
 from hub.resources import TextAnnotationItem, TextAnnotationCollection
 
 # -----------------------------------------------------------
@@ -30,8 +30,11 @@ api.add_resource(UserItem, "/users/<user_name>/")
 
 api.add_resource(TextCollection, "/texts/")
 api.add_resource(TextItem, "/texts/<id>/")
+
+# routes for pagination
 api.add_resource(TextItemCount, "/texts/count/")
 api.add_resource(TextItemPageCount, "/texts/pages/count/<itemsOnPage>/")
+api.add_resource(TextItemsInPages, "/texts/pages/<itemsOnPage>/")
 
 api.add_resource(TextAnnotationCollection, "/textannotations/")
 api.add_resource(TextAnnotationItem, "/textannotations/<id>/")
