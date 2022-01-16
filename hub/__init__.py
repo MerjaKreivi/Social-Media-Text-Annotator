@@ -30,6 +30,8 @@ Activate created python virtual environment (on cmd):
     cd C:\GIT\Repositories\Social-Media-Text-Annotator\.venv\Scripts
     activate.bat
 
+    c:/GIT/Repositories/Social-Media-Text-Annotator/.venv/Scripts/activate.bat
+
 Go to ImageAnnotator folder: (provide 'cd ..' on cmd)
     (.venv) C:\GIT\Repositories\Social-Media-Text-Annotator>
 

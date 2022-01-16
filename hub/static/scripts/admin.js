@@ -9,6 +9,7 @@
 const DEBUG = true;
 const MASONJSON = "application/vnd.mason+json";
 const PLAINJSON = "application/json";
+
 const HSCategoryList = ["violence", "swear", "troll", "bully", "ethnic", "politics", "sexual", "idiom", "immigration", "women", "group", "religion", "opinion"];
 
 const HSCategoryLists = [["national", "immigration", "foreign", "ethnic", "religion"],

@@ -341,6 +341,7 @@ class TextCollection(Resource):
         except IntegrityError:
             return create_error_response(409, "Already exists", "Text with id '{}' already exists".format(request.json["id"]))
 
+
 # resource class for pagination
 class TextItemCount(Resource):
     def get(self):
@@ -379,17 +380,19 @@ class TextItemPageCount(Resource):
 
 class TextItemsInPages(Resource):
     def get(self, itemsOnPage):
-        pages = 1
+        totalnumberOfPages = 1
         # query number of text items
         numberOfItems = TextContent.query.count()
         if (numberOfItems > 0):
             try:
                 # change 'items-on-page' value to integer-value
-                asInt = int(itemsOnPage)
+                asInt = int(itemsOnPage)                
                 if asInt > 0:
+                    # if number of text items > value (text items on page))
                     if (numberOfItems > asInt):
                         # number of pages - rounding up
-                        pages = math.ceil(numberOfItems/asInt)                                                       
+                        totalnumberOfPages = math.ceil(numberOfItems/asInt)
+                        # create body with hub builder                                   
                         body = HubBuilder()
                         body.add_namespace("annometa", LINK_RELATIONS_URL)
                         body.add_control("self", url_for("api.textcollection"))
@@ -410,27 +413,57 @@ class TextItemsInPages(Resource):
                             # if text have annotations - ad ID control
                             if text.text_annotations != []:
                                 item.add_control("textannotation", url_for("api.textannotationitem", id=text.text_annotations[0].id))
-                            # add items to dict body
+                            # add text annnotation item ID to dict body
                             body["items"].append(item)                        
                         
                         totalItems = 0                        
                         i = 1
-                        while i <= pages:                            
+                        print(f'togtal number of pages {totalnumberOfPages}')
+                        while i <= totalnumberOfPages:                            
                             #print(f'Page {i}')
                             #print(f'Total items {totalItems}')
-                            itemsOnPage = 0
+                            itemsPerPageCounter = 0
                             page = []
-                            while itemsOnPage < asInt:
+                            while itemsPerPageCounter < asInt:
                                 if (totalItems < len(body["items"])):
+                                    # add text items on page                                    
                                     page.append(body["items"][totalItems])
-                                    itemsOnPage = itemsOnPage + 1
+                                    itemsPerPageCounter = itemsPerPageCounter + 1
                                     totalItems = totalItems + 1
-                                    #print(f'item {itemsOnPage} on page {i} with total items of {totalItems}')
-                                i = i + 1
-                                body["pages"].append(page)
+                                    #print(f'item {itemsPerPageCounter} on page {i} with total items of {totalItems}')
+                                else:
+                                    break
+                            # add a page on pages set
+                            body["pages"].append(page)
+                            i = i + 1
+                            # definition default=str below because of datetime objects - return dict body of pages                        
+                        return Response(json.dumps(body, default=str), status=200, mimetype=MASON)
+                    else:
+                        body = HubBuilder()
+                        body.add_namespace("annometa", LINK_RELATIONS_URL)
+                        body.add_control("self", url_for("api.textcollection"))
+                        body.add_control_add_text()
+                        body["items"] = []
+                        body["pages"] = []
 
-                # definition default=str below because of datetime objects
-                return Response(json.dumps(body, default=str), status=200, mimetype=MASON)        
+                        # collect text-examples with data one-by-one
+                        for text in TextContent.query.all():                            
+                            item = HubBuilder(
+                                id = text.id,
+                                user_id = text.user_id,
+                                HSOriginalComment = text.HSOriginalComment,
+                                date = text.date
+                            )
+                            item.add_control("self", url_for("api.textitem", id=text.id))
+                            item.add_control("profile", TEXT_PROFILE)
+                            # if text have annotations - ad ID control
+                            if text.text_annotations != []:
+                                item.add_control("textannotation", url_for("api.textannotationitem", id=text.text_annotations[0].id))
+                            # add text annnotation item ID to dict body
+                            body["items"].append(item)
+                        return Response(json.dumps(body, default=str), status=200, mimetype=MASON)
+                else:
+                    return create_error_response(415, "Unsupported media type", "Item count must be an integer as string.")                                
             except IntegrityError:
                 return create_error_response(415, "Unsupported media type", "Item count must be an integer as string.")
 
