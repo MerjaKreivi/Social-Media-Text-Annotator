@@ -80,6 +80,9 @@ class MasonBuilder(dict):
 
         self["@controls"][ctrl_name] = kwargs
         self["@controls"][ctrl_name]["href"] = href
+    
+    def add_pagecount(self, pagecount):
+        self["@pagecount"] = pagecount
 
 
 # -------------------------------------------------------------------------------------------------

@@ -11,6 +11,7 @@ import os
 import sys
 import math
 from io import BufferedReader
+import itertools
 
 import json
 from jsonschema import validate, ValidationError
@@ -48,6 +49,10 @@ def myconverter(o):
     if isinstance(o, datetime.datetime):
         return o.__str__()
 
+def asPages(lst, n):
+    #Yield successive n-sized chunks from lst.
+    for i in range(0, len(lst), n):
+        yield lst[i:i + n]
 
 # ------------------------------------------------------------------------------------------
 # User and UserCollection Resources
@@ -373,7 +378,6 @@ class TextItemPageCount(Resource):
             except IntegrityError:
                 return create_error_response(415, "Unsupported media type", "Item count must be an integer as string.")
 
-
 # resource class for pagination
 # wrap text items on 'pages' for pagination purposes
 # ready built text-page-wrapUps are send to js functions
@@ -397,8 +401,9 @@ class TextItemsInPages(Resource):
                         body.add_namespace("annometa", LINK_RELATIONS_URL)
                         body.add_control("self", url_for("api.textcollection"))
                         body.add_control_add_text()
+                        body.add_pagecount(totalnumberOfPages)
                         body["items"] = []
-                        body["pages"] = []
+                        body["pages"] = []                        
 
                         # collect text-examples with data one-by-one
                         for text in TextContent.query.all():                            
@@ -424,6 +429,10 @@ class TextItemsInPages(Resource):
                             #print(f'Total items {totalItems}')
                             itemsPerPageCounter = 0
                             page = []
+                            pagenumber = {"pagenumber":i }
+                            _copy = pagenumber.copy()
+                            page.append(_copy)
+
                             while itemsPerPageCounter < asInt:
                                 if (totalItems < len(body["items"])):
                                     # add text items on page                                    
@@ -433,8 +442,8 @@ class TextItemsInPages(Resource):
                                     #print(f'item {itemsPerPageCounter} on page {i} with total items of {totalItems}')
                                 else:
                                     break
-                            # add a page on pages set
-                            body["pages"].append(page)
+                            # add a page on pages set                                                                                   
+                            body["pages"].append(page)                            
                             i = i + 1
                             # definition default=str below because of datetime objects - return dict body of pages                        
                         return Response(json.dumps(body, default=str), status=200, mimetype=MASON)
@@ -443,6 +452,7 @@ class TextItemsInPages(Resource):
                         body.add_namespace("annometa", LINK_RELATIONS_URL)
                         body.add_control("self", url_for("api.textcollection"))
                         body.add_control_add_text()
+                        body.add_pagecount(1)
                         body["items"] = []
                         body["pages"] = []
 
@@ -467,6 +477,55 @@ class TextItemsInPages(Resource):
             except IntegrityError:
                 return create_error_response(415, "Unsupported media type", "Item count must be an integer as string.")
 
+class TextItemsOnPage(Resource):    
+    def get(self):        
+            # get request parameters fro request that should be in form
+            # http://localhost:5000/api/texts/pages/page?page=7&showOnPage=15
+            page_number = request.args.get('page')                
+            number_of_items_on_page = request.args.get('showOnPage')
+            
+            numberOfItems = TextContent.query.count()
+            if (numberOfItems > 0):
+                try:
+                    # change 'items-on-page' value to integer-value                  
+                    int_pageNumber = int(page_number)                
+                    int_items_on_page = int(number_of_items_on_page)
+                    if int_items_on_page > 0:
+                        # if number of text items > value (text items on page))
+                        if (numberOfItems > int_items_on_page):
+                            # number of pages - rounding up                            
+                            totalnumberOfPages = math.ceil(numberOfItems/int_items_on_page)
+                            # create body with hub builder                                   
+                            body = HubBuilder()
+                            body.add_namespace("annometa", LINK_RELATIONS_URL)
+                            body.add_control("self", url_for("api.textcollection"))
+                            body.add_control_add_text()
+                            body.add_pagecount(totalnumberOfPages)                       
+                            body["items"] = []                        
+
+                            pages = asPages(list(TextContent.query.all()), int_items_on_page)                        
+                        
+                            myPage = next(itertools.islice(pages, int_pageNumber-1, None))                        
+
+                            for text in myPage:                            
+                                item = HubBuilder(
+                                    id = text.id,
+                                    user_id = text.user_id,
+                                    HSOriginalComment = text.HSOriginalComment,
+                                    date = text.date
+                                )
+                                item.add_control("self", url_for("api.textitem", id=text.id))
+                                item.add_control("profile", TEXT_PROFILE)
+                                # if text have annotations - ad ID control
+                                if text.text_annotations != []:
+                                    item.add_control("textannotation", url_for("api.textannotationitem", id=text.text_annotations[0].id))
+                                # add text annnotation item ID to dict body
+                                body["items"].append(item)
+                            return Response(json.dumps(body, default=str), status=200, mimetype=MASON)
+                    else:
+                        return create_error_response(415, "Unsupported media type", "Item count must be an integer as string.")         
+                except IntegrityError:
+                    return create_error_response(415, "Unsupported media type", "Item count must be an integer as string.")
 
 class TextAnnotationCollection(Resource):
     """

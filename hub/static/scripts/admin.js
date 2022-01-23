@@ -19,6 +19,10 @@ const HSCategoryLists = [["national", "immigration", "foreign", "ethnic", "relig
                         ["swear", "bully", "troll", "coded", "idiom"],
                         ["other"]]
 
+// for pagination purposes
+let current_page = 1;
+const numberOfItemsOnPage = 15;
+
 function renderError(jqxhr) {
     let msg = jqxhr.responseJSON["@error"]["@message"];
     showToast(msg);
@@ -131,13 +135,13 @@ function backToTextCollection() {
     });    
     $('#testform').hide(); 
     hideAnnoFormButtons();
-    getResource("http://localhost:5000/api/texts/", renderTexts);    
+    getResource(`http://localhost:5000/api/texts/pages/page?page=${sessionStorage.getItem("current_page")}&showOnPage=${numberOfItemsOnPage}`, renderTextsInPage);
 }
 
 function getTextCollection(event) {
     event.preventDefault();
     $('.textAnnotationForm').css({'display':'none'});
-    getResource("http://localhost:5000/api/texts/", renderTexts);
+    getResource(`http://localhost:5000/api/texts/pages/page?page=${sessionStorage.getItem("current_page")}&showOnPage=${numberOfItemsOnPage}`, renderTextsInPage);
 }
 
 // define delete of resource
@@ -171,7 +175,7 @@ function updateResource(href, callback) {
 }
 
 // -------------------------------------------------------------------------------------
-// go to destination functions
+// go to destination on front SPA
 
 //* $("div.navigation").html(
     //    "<a href='" +
@@ -531,8 +535,9 @@ function renderSelection(body) {
 
     // use .off to prevent textListBtnId event firing more than once
     $("#textListBtnId").off('click').on('click', function(event) {
-        event.preventDefault();        
-        getResource("http://localhost:5000/api/texts/", renderTexts);        
+        event.preventDefault();                
+        sessionStorage.setItem("current_page", current_page);            
+        getResource(`http://localhost:5000/api/texts/pages/page?page=${sessionStorage.getItem("current_page")}&showOnPage=${numberOfItemsOnPage}`, renderTextsInPage);
     });
 
     $("#userAccountBtnId").on( "click", function(event) {
@@ -569,6 +574,14 @@ function createItemTable(item, links) {
             "</td><td>" + links + "</td></tr>";   
 }
 
+function renderTextPage(parent, page) {        
+    page.forEach(function (textItemOnPage) {
+        if (!("pagenumber" in textItemOnPage)) {
+            parent.append(TextContentRow(textItemOnPage));
+        }
+    });
+}
+
 // define item print outs for Text Content metadata 
 function TextContentRow(item) {
     let links = "<a href='" +
@@ -585,13 +598,13 @@ function deleteTextContent(textItem) {
     let deleteCtrl = textItem["@controls"]["annometa:delete"];
     deleteTextResource(deleteCtrl.href);
     // Define delay with set timeout
-    setTimeout(() => {getResource("http://localhost:5000/api/texts/", renderTexts)}, 1000);    
+    setTimeout(() => {getResource(`http://localhost:5000/api/texts/pages/page?page=${sessionStorage.getItem("current_page")}&showOnPage=${numberOfItemsOnPage}`, renderTextsInPage)}, 1000);
 }
 
 // REQUIRED for text list update, when a new is added
 function getSubmittedTextContent(data, status, jqxhr) {
     renderMsg("Text update was successful");    
-    getResource("http://localhost:5000/api/texts/", renderTexts);   
+    getResource(`http://localhost:5000/api/texts/pages/page?page=${sessionStorage.getItem("current_page")}&showOnPage=${numberOfItemsOnPage}`, renderTextsInPage);
 }
 
 // for adding a new text - define render for TextContent
@@ -762,6 +775,105 @@ function renderTexts(body) {
     renderTextForm(body["@controls"]["annometa:add-text"]);
 }
 
+// ---------------------------------------------------------------------
+// NOT USED currently, renders all pages 
+// define page/window for paginated text data table
+// function to render uploaded text data and metadata in pages
+
+function renderTextsInPages(body) {
+    // clear the view before rendering    
+    document.getElementById("leftSidebar").style.display = "none";
+    document.getElementById("rightSidebar").style.display = "none";
+    
+    $("#HateSpeechTextarea").val('');
+    $("div.navigation").empty();
+    // do not empty - to show bootswatch sandstone
+    // muutos $(".resulttable thead").empty();
+    $(".resulttable tbody").empty();    
+       // carousel class ref
+    $(".carousel-indicators").empty();
+    $(".carousel-inner").empty();
+    
+    hideAnnoFormButtons();
+    $("#textListFormId").show();       
+
+    $(".resulttable").empty();    
+    
+    renderPaginationLinks( document.getElementById("hatespeechPagesId"), body["@pagecount"], sessionStorage.getItem("current_page"));
+
+    for (let i = 0; i < body.pages.length; i++) {
+        $element = $(('<tbody></tbody>'));
+        $element.attr("page", i+1);
+        $(".resulttable").append($element);
+        renderTextPage($element, body.pages[i]);        
+    }
+    
+    renderTextForm(body["@controls"]["annometa:add-text"]);
+}
+
+// ---------------------------------------------------------------------
+// define page/window for paginated text data table
+// function to render uploaded text data and metadata in pages
+
+function renderTextsInPage(body) {
+    // clear the view before rendering    
+    document.getElementById("leftSidebar").style.display = "none";
+    document.getElementById("rightSidebar").style.display = "none";
+    
+    $("#HateSpeechTextarea").val('');
+    $("div.navigation").empty();
+    // do not empty - to show bootswatch sandstone
+    // muutos $(".resulttable thead").empty();
+    $(".resulttable tbody").empty();    
+       // carousel class ref
+    $(".carousel-indicators").empty();
+    $(".carousel-inner").empty();
+    
+    hideAnnoFormButtons();
+    $("#textListFormId").show();         
+    
+    renderPaginationLinks( document.getElementById("hatespeechPagesId"), body["@pagecount"], sessionStorage.getItem("current_page"));
+
+    let tbody = $(".resulttable tbody");
+    tbody.empty();
+    body.items.forEach(function (item) {
+        tbody.append(TextContentRow(item));
+    });  
+    
+    renderTextForm(body["@controls"]["annometa:add-text"]);
+}
+
+// make the pagination links at the bottom of the page
+function renderPaginationLinks(parent, pageCount, currentPage) {
+    $("#hatespeechPagesId").empty();        
+    for (let i = 1; i <= pageCount; i++) {                        
+        let button = addPageItem(i, currentPage);
+        parent.appendChild(button);
+    }    
+}
+
+// make the individual page link to the bottom of the page
+function addPageItem(pagenumber, currentPage) {
+    let paginationBtn = document.createElement("li");
+    paginationBtn.classList.add("page-item");
+    let pageLink = document.createElement("a");
+    pageLink.classList.add("page-link");
+    pageLink.setAttribute("href", "#");
+    pageLink.innerText = pagenumber;
+    if (parseInt(currentPage) === pagenumber) {
+        paginationBtn.classList.add("active");
+    }
+    paginationBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        console.log(e.target.innerText);
+        sessionStorage.setItem("current_page", e.target.innerText);
+        getResource(`http://localhost:5000/api/texts/pages/page?page=${e.target.innerText}&showOnPage=${numberOfItemsOnPage}`, renderTextsInPage);
+
+    });
+    paginationBtn.append(pageLink);
+    
+    return paginationBtn;
+}
 // helper functions for text annotation -----------------------------------
 
 function createheaderForFormRow(valueString) {
