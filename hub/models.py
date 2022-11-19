@@ -47,7 +47,9 @@ class TextAnnotation(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="SET NULL"))
     HS_binary = db.Column(db.Boolean, nullable=False)
     HS_class= db.Column(db.Integer, nullable=False)
-    HS_category = db.Column(db.String(128), nullable=True)
+    HS_target = db.Column(db.String(128), nullable=True)
+    HS_topic = db.Column(db.String(128), nullable=True)
+    HS_form = db.Column(db.String(128), nullable=True)
     SentencePolarity = db.Column(db.Integer, nullable=True)
     SentenceEmotionCategory = db.Column(db.String(128), nullable=True)
     HSinUrbanFinnish = db.Column(db.String(1024), nullable=True)
@@ -131,7 +133,9 @@ def generate_test_data():
 
         annotationObj = TextAnnotation(HS_binary=dictionaryList[i]["HSbinary"], 
                                         HS_class=dictionaryList[i]["HSclass"],
-                                        HS_category=dictionaryList[i]["HScategory"],
+                                        HS_target=dictionaryList[i]["HStarget"],
+                                        HS_topic=dictionaryList[i]["HStopic"],
+                                        HS_form=dictionaryList[i]["HSform"],
                                         SentencePolarity=dictionaryList[i]["sentencePolarity"],
                                         SentenceEmotionCategory=dictionaryList[i]["sentenceEmotionCategory"],
                                         HSinUrbanFinnish=dictionaryList[i]["HSinUrbanFinnish"],

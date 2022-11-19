@@ -552,7 +552,9 @@ class TextAnnotationCollection(Resource):
                 user_id = db_text.user_id,
                 HS_binary = db_text.HS_binary,
                 HS_class = db_text.HS_class,
-                HS_category = db_text.HS_category,
+                HS_target = db_text.HS_target,
+                HS_topic  = db_text.HS_topic,
+                HS_form = db_text.HS_form,
                 SentencePolarity = db_text.SentencePolarity,
                 SentenceEmotionCategory = db_text.SentenceEmotionCategory,
                 HSinUrbanFinnish = db_text.HSinUrbanFinnish,
@@ -591,7 +593,9 @@ class TextAnnotationCollection(Resource):
             user_id = request.json["user_id"],
             HS_binary = request.json["HS_binary"],
             HS_class = request.json["HS_class"],
-            HS_category = request.json["HS_category"],
+            HS_target = request.json["HS_target"],
+            HS_topic = request.json["HS_topic"],
+            HS_form = request.json["HS_form"],
             SentencePolarity = request.json["SentencePolarity"],
             SentenceEmotionCategory = request.json["SentenceEmotionCategory"],
             HSinUrbanFinnish = request.json["HSinUrbanFinnish"],
@@ -634,7 +638,9 @@ class TextAnnotationItem(Resource):
             user_id = db_text.user_id,
             HS_binary = db_text.HS_binary,
             HS_class = db_text.HS_class,
-            HS_category = db_text.HS_category,
+            HS_target = db_text.HS_target,
+            HS_topic  = db_text.HS_topic,
+            HS_form = db_text.HS_form,
             SentencePolarity = db_text.SentencePolarity,
             SentenceEmotionCategory = db_text.SentenceEmotionCategory,
             HSinUrbanFinnish = db_text.HSinUrbanFinnish,
@@ -683,8 +689,10 @@ class TextAnnotationItem(Resource):
 
         db_text_anno.user_id=request.json["user_id"]
         db_text_anno.HS_binary = request.json["HS_binary"]
-        db_text_anno.HS_class = request.json["HS_class"]
-        db_text_anno.HS_category = request.json["HS_category"]
+        db_text_anno.HS_class = request.json["HS_class"]        
+        db_text_anno.HS_target = request.json["HS_target"]
+        db_text_anno.HS_topic  = request.json["HS_topic"]
+        db_text_anno.HS_form = request.json["HS_form"]
         db_text_anno.SentencePolarity = request.json["SentencePolarity"]
         db_text_anno.SentenceEmotionCategory = request.json["SentenceEmotionCategory"]
         db_text_anno.HSinUrbanFinnish = request.json["HSinUrbanFinnish"]
