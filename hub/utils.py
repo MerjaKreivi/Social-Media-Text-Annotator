@@ -239,7 +239,8 @@ class HubBuilder(MasonBuilder):
     def textannotation_schema():
         schema = {
             "type": "object",
-            "required": ["HS_binary", "HS_class", "HS_category", 
+            "required": ["HS_binary", "HS_class",
+            "HS_target","HS_topic","HS_form",
             "SentencePolarity", "SentenceEmotionCategory",
             "HSinUrbanFinnish", "HSinFinnish"]
         }
@@ -252,8 +253,16 @@ class HubBuilder(MasonBuilder):
             "description": "Classifier to define if image is hate speech",
             "type": "number"
         }       
-        props ["HS_category"] = {
-            "description": "Classifier to define category value for text",
+        props ["HS_target"] = {
+            "description": "Classifier to define HS target category value for text",
+            "type": "string"
+        }
+        props ["HS_topic"] = {
+            "description": "Classifier to define HS topic category value for text",
+            "type": "string"
+        }
+        props ["HS_form"] = {
+            "description": "Classifier to define HS form category value for text",
             "type": "string"
         }
         props ["SentencePolarity"] = {
