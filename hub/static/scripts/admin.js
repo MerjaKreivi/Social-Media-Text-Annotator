@@ -19,6 +19,10 @@ const HSCategoryLists = [["national", "immigration", "foreign", "ethnic", "relig
                         ["swear", "bully", "troll", "coded", "idiom"],
                         ["other"]]
 
+const HSTopicList = ["national", "ethnic", "foreign", "immigration", "religion", "politics", "opinion", "work", "sexual", "gender", "women", "appearance", "health", "status", "social media", "family", "trolling", "other"];
+const HSTargetList = ["person", "group", "community", "none", "self-hate"];
+const HSFormList = ["threat", "insult", "discrimination", "harassment","incitement", "disinformation", "targeting", "joke","idiom", "swearing", "violence", "bully","granulated", "undefined"];
+
 // for pagination purposes
 let current_page = 1;
 const numberOfItemsOnPage = 15;
@@ -551,7 +555,7 @@ function renderSelection(body) {
 
 // define table items for text
 function createItemTable(item, links) {    
-    let textlink = truncate(item.HSOriginalComment);
+    let textlink = truncate(item.sample);
     // @controls.textannotation.href
     // to have annotation reference here in some day
     //let annotationPolarity = "No annotation";
@@ -560,7 +564,7 @@ function createItemTable(item, links) {
     "data-bs-trigger='focus'" + 
     "title='Complete text'" + 
     "data-bs-content='" + 
-    item.HSOriginalComment + "'>" + 
+    item.sample + "'>" + 
     textlink + "</a>";
 
     /* Future implementation, For retrieving annotation reference
@@ -630,7 +634,7 @@ function renderTextForm(ctrl) {
                  
         let data = {};
         data.user_name = sessionStorage.getItem("CurrentUser");
-        data.HSOriginalComment =  $("#HateSpeechTextarea").val();
+        data.sample =  $("#HateSpeechTextarea").val();
         sendData(form.attr("action"), form.attr("method"), data, getSubmittedTextContent);        
     }); 
 }
@@ -724,7 +728,7 @@ function createCarouselItem(item, setAsActive) {
 
 function createCarouselTextElement(item) {
     let textItem = "<p>" + 
-    item.HSOriginalComment + 
+    item.sample + 
     "</p>";
     return textItem;
 }
@@ -968,7 +972,10 @@ function putTextAnnotationContent(event) {
     data.HS_binary = isHateSpeech();    
     data.SentencePolarity = getCheckedValue("polarityRadioOptions");    
     data.HS_class =  getCheckedValue("intensityRadioOptions");
-    data.HS_category = getSelectedValues();    
+    //data.HS_category = getSelectedValues();    
+    data.HS_topic = getSelectedValues("HSTopicButton");    
+    data.HS_form = getSelectedValues("HSFormButton");    
+    data.HS_target = getSelectedValues("HSTargetButton");    
     data.SentenceEmotionCategory = $("#SentenceEmotionCategory").val();
     data.HSinUrbanFinnish = $("#HSinUrbanFinnish").val();
     data.HSinFinnish = $("#HSinFinnish").val();    
@@ -976,9 +983,9 @@ function putTextAnnotationContent(event) {
     sendData(form.attr("action"), form.attr("method"), data, getEditedAnnotation);
 }
 
-function getSelectedValues() {
+function getSelectedValues(HSCategory) {
     selectedList = [];
-    $('.HSCategoryButton').each(function() {
+    $(`.${HSCategory}`).each(function() {
         if (this.checked)
             selectedList.push( this.labels[0].innerText);       
     });
@@ -1014,7 +1021,10 @@ function submitTextAnnotationContent(event) {
     data.HS_binary = isHateSpeech();
     data.SentencePolarity = getCheckedValue("polarityRadioOptions");    
     data.HS_class =  getCheckedValue("intensityRadioOptions");
-    data.HS_category = getSelectedValues();   
+    //data.HS_category = getSelectedValues();    
+    data.HS_topic = getSelectedValues("HSTopicButton");    
+    data.HS_form = getSelectedValues("HSFormButton");    
+    data.HS_target = getSelectedValues("HSTargetButton");   
     data.SentenceEmotionCategory = $("#SentenceEmotionCategory").val();
     data.HSinUrbanFinnish = $("#HSinUrbanFinnish").val();
     data.HSinFinnish = $("#HSinFinnish").val();    
@@ -1043,8 +1053,14 @@ function populateEmptyTextAnnotationForm(textItem) {
     uncheckRadioButton("polarityRadioOptions");
     uncheckRadioButton("intensityRadioOptions");
         
-    clearHSCategoryPlaceHolder();
-    populateHSCategoryButtonGroups(HSCategoryLists);
+    //clearHSCategoryPlaceHolder();
+    clearHSTargetPlaceHolder();
+    clearHSTopicPlaceHolder();
+    clearHSFormPlaceHolder();
+    //populateHSCategoryButtonGroups(HSCategoryLists);
+    populateHSTopicButtonGroups(HSTopicList);
+    populateHSFormButtonGroups(HSFormList);
+    populateHSTargetButtonGroups(HSTargetList);
 
     // enable fields
     $("#testform").find('*').attr('disabled', false);        
@@ -1097,7 +1113,7 @@ function updateRadioValue(group, value) {
     }            
 }
 
-function populateHSCategorySelection(list) {
+/*function populateHSCategorySelection(list) {
     let selection = $("#HSCategorySelect");
     let i = 1;
     for (const item in list) {
@@ -1105,9 +1121,9 @@ function populateHSCategorySelection(list) {
         selection.appendChild(option);
         i++;
     }
-}
+}*/
 
-function populateHSCategoryButtonGroups(grouplist) {
+/*function populateHSCategoryButtonGroups(grouplist) {
     let buttonGroup = document.getElementById("HSCategoryPlaceHolder");
     let i = 1;
     grouplist.forEach(group => {
@@ -1138,9 +1154,108 @@ function populateHSCategoryButtonGroups(grouplist) {
         buttonGroup.appendChild(rowDiv);
         i++;   
     });
+}*/
+
+function populateHSTopicButtonGroups(grouplist) {
+    let buttonGroup = document.getElementById("HSTopicPlaceHolder");
+    let i = 1;
+    grouplist.forEach(group => {
+        let rowDiv = document.createElement("div");
+        rowDiv.classList.add("row");
+        // Make an div element like this : <div class="col-md-2 col-form-label"><label class="HS_category_header">HS categories</label></div>
+        let colDiv = document.createElement("div");
+        colDiv.classList.add("col-md-2");
+        colDiv.classList.add("col-form-label");
+        let label = document.createElement("label");
+        label.classList.add("HS_category_header");
+        label.innerText = `HS Topic`;
+        colDiv.appendChild(label);
+        rowDiv.appendChild(colDiv);
+        
+        let colSMDiv = document.createElement("div");
+        colSMDiv.classList.add("col-sm");
+        // Make an div element like this : <div class="btn-group" id="HSCategoryButtons" role="group" aria-label="Hatespeech category selectors"></div>
+        let btnGroup = document.createElement("div");
+        btnGroup.classList.add("btn-group");
+        btnGroup.id = `HSTopicButtons_${i}`;
+        btnGroup.setAttribute("role", "group");
+        btnGroup.setAttribute("aria-label", "Hatespeech topic selectors");
+        // add buttons to btnGroup parent element
+        populateHSTopicButtons(btnGroup, group, i);
+        colSMDiv.appendChild(btnGroup);
+        rowDiv.appendChild(colSMDiv);
+        buttonGroup.appendChild(rowDiv);
+        i++;   
+    });
 }
 
-function populateHSCategoryButtons(parent, list, groupId) {
+function populateHSFormButtonGroups(grouplist) {
+    let buttonGroup = document.getElementById("HSFormPlaceHolder");
+    let i = 1;
+    grouplist.forEach(group => {
+        let rowDiv = document.createElement("div");
+        rowDiv.classList.add("row");
+        // Make an div element like this : <div class="col-md-2 col-form-label"><label class="HS_category_header">HS categories</label></div>
+        let colDiv = document.createElement("div");
+        colDiv.classList.add("col-md-2");
+        colDiv.classList.add("col-form-label");
+        let label = document.createElement("label");
+        label.classList.add("HS_category_header");
+        label.innerText = `HS Form`;
+        colDiv.appendChild(label);
+        rowDiv.appendChild(colDiv);
+        
+        let colSMDiv = document.createElement("div");
+        colSMDiv.classList.add("col-sm");
+        // Make an div element like this : <div class="btn-group" id="HSCategoryButtons" role="group" aria-label="Hatespeech category selectors"></div>
+        let btnGroup = document.createElement("div");
+        btnGroup.classList.add("btn-group");
+        btnGroup.id = `HSFormButtons_${i}`;
+        btnGroup.setAttribute("role", "group");
+        btnGroup.setAttribute("aria-label", "Hatespeech form selectors");
+        // add buttons to btnGroup parent element
+        populateHSFormButtons(btnGroup, group, i);
+        colSMDiv.appendChild(btnGroup);
+        rowDiv.appendChild(colSMDiv);
+        buttonGroup.appendChild(rowDiv);
+        i++;   
+    });
+}
+
+function populateHSTargetButtonGroups(grouplist) {
+    let buttonGroup = document.getElementById("HSTargetPlaceHolder");
+    let i = 1;
+    grouplist.forEach(group => {
+        let rowDiv = document.createElement("div");
+        rowDiv.classList.add("row");
+        // Make an div element like this : <div class="col-md-2 col-form-label"><label class="HS_category_header">HS categories</label></div>
+        let colDiv = document.createElement("div");
+        colDiv.classList.add("col-md-2");
+        colDiv.classList.add("col-form-label");
+        let label = document.createElement("label");
+        label.classList.add("HS_category_header");
+        label.innerText = `HS Target`;
+        colDiv.appendChild(label);
+        rowDiv.appendChild(colDiv);
+        
+        let colSMDiv = document.createElement("div");
+        colSMDiv.classList.add("col-sm");
+        // Make an div element like this : <div class="btn-group" id="HSCategoryButtons" role="group" aria-label="Hatespeech category selectors"></div>
+        let btnGroup = document.createElement("div");
+        btnGroup.classList.add("btn-group");
+        btnGroup.id = `HSTargetButtons_${i}`;
+        btnGroup.setAttribute("role", "group");
+        btnGroup.setAttribute("aria-label", "Hatespeech target selectors");
+        // add buttons to btnGroup parent element
+        populateHSTargetButtons(btnGroup, group, i);
+        colSMDiv.appendChild(btnGroup);
+        rowDiv.appendChild(colSMDiv);
+        buttonGroup.appendChild(rowDiv);
+        i++;   
+    });
+}
+
+/*function populateHSCategoryButtons(parent, list, groupId) {
     let i = 1;
     list.forEach(item => {
         let input = `<input type="checkbox" class="btn-check HSCategoryButton" id="ctrBtnCheck${groupId}_${i}" autocomplete="off">`;
@@ -1149,9 +1264,42 @@ function populateHSCategoryButtons(parent, list, groupId) {
         parent.insertAdjacentHTML( 'beforeend', label );
         i++;
     });
+}*/
+
+function populateHSTopicButtons(parent, list, groupId) {
+    let i = 1;
+    list.forEach(item => {
+        let input = `<input type="checkbox" class="btn-check HSTopicButton" id="ctrBtnCheck${groupId}_${i}" autocomplete="off">`;
+        let label = `<label class="btn btn-outline-primary" for="ctrBtnCheck${groupId}_${i}">${item}</label>`        
+        parent.insertAdjacentHTML( 'beforeend', input );        
+        parent.insertAdjacentHTML( 'beforeend', label );
+        i++;
+    });
 }
 
-function populateSelectedHSCategoryButtonGroups (grouplist) {
+function populateHSFormButtons(parent, list, groupId) {
+    let i = 1;
+    list.forEach(item => {
+        let input = `<input type="checkbox" class="btn-check HSFormButton" id="ctrBtnCheck${groupId}_${i}" autocomplete="off">`;
+        let label = `<label class="btn btn-outline-primary" for="ctrBtnCheck${groupId}_${i}">${item}</label>`        
+        parent.insertAdjacentHTML( 'beforeend', input );        
+        parent.insertAdjacentHTML( 'beforeend', label );
+        i++;
+    });
+}
+
+function populateHSTargetButtons(parent, list, groupId) {
+    let i = 1;
+    list.forEach(item => {
+        let input = `<input type="checkbox" class="btn-check HSTargetButton" id="ctrBtnCheck${groupId}_${i}" autocomplete="off">`;
+        let label = `<label class="btn btn-outline-primary" for="ctrBtnCheck${groupId}_${i}">${item}</label>`        
+        parent.insertAdjacentHTML( 'beforeend', input );        
+        parent.insertAdjacentHTML( 'beforeend', label );
+        i++;
+    });
+}
+
+/*function populateSelectedHSCategoryButtonGroups (grouplist) {
     let buttonGroup = document.getElementById("HSCategoryPlaceHolder");
     let i = 1;
     grouplist.forEach(group => {    
@@ -1182,6 +1330,105 @@ function populateSelectedHSCategoryButtonGroups (grouplist) {
         buttonGroup.appendChild(rowDiv);
         i++;
     });
+}*/
+
+function populateSelectedHSTargetButtonGroups (grouplist) {
+    let buttonGroup = document.getElementById("HSTargetPlaceHolder");
+    let i = 1;
+    grouplist.forEach(group => {    
+        let rowDiv = document.createElement("div");
+        rowDiv.classList.add("row");
+        // Make an div element like this : <div class="col-md-2 col-form-label"><label class="HS_category_header">HS categories</label></div>
+        let colDiv = document.createElement("div");
+        colDiv.classList.add("col-md-2");
+        colDiv.classList.add("col-form-label");
+        let label = document.createElement("label");
+        label.classList.add("HS_category_header");
+        label.innerText = `HS Target`;
+        colDiv.appendChild(label);
+        rowDiv.appendChild(colDiv);
+        
+        let colSMDiv = document.createElement("div");
+        colSMDiv.classList.add("col-sm");
+        //Make an div element like this : <div class="btn-group" id="HSTargetButtons_" role="group" aria-label="Hatespeech category selectors"></div>
+        let btnGroup = document.createElement("div");
+        btnGroup.classList.add("btn-group");
+        btnGroup.id = `HSTargetButtons_${i}`;
+        btnGroup.setAttribute("role", "group");
+        btnGroup.setAttribute("aria-label", "Hatespeech target selectors");
+        // add buttons to btnGroup parent element
+        populateSelectedHSCategoryButtons(btnGroup, group);
+        colSMDiv.appendChild(btnGroup);
+        rowDiv.appendChild(colSMDiv);
+        buttonGroup.appendChild(rowDiv);
+        i++;
+    });
+}
+
+function populateSelectedHSTopicButtonGroups (grouplist) {
+    let buttonGroup = document.getElementById("HSTopicPlaceHolder");
+    let i = 1;
+    grouplist.forEach(group => {    
+        let rowDiv = document.createElement("div");
+        rowDiv.classList.add("row");
+        // Make an div element like this : <div class="col-md-2 col-form-label"><label class="HS_category_header">HS categories</label></div>
+        let colDiv = document.createElement("div");
+        colDiv.classList.add("col-md-2");
+        colDiv.classList.add("col-form-label");
+        let label = document.createElement("label");
+        label.classList.add("HS_category_header");
+        label.innerText = `HS Topic`;
+        colDiv.appendChild(label);
+        rowDiv.appendChild(colDiv);
+        
+        let colSMDiv = document.createElement("div");
+        colSMDiv.classList.add("col-sm");
+        //Make an div element like this : <div class="btn-group" id="HSTopicButtons_" role="group" aria-label="Hatespeech category selectors"></div>
+        let btnGroup = document.createElement("div");
+        btnGroup.classList.add("btn-group");
+        btnGroup.id = `HSTopicButtons_${i}`;
+        btnGroup.setAttribute("role", "group");
+        btnGroup.setAttribute("aria-label", "Hatespeech topic selectors");
+        // add buttons to btnGroup parent element
+        populateSelectedHSCategoryButtons(btnGroup, group);
+        colSMDiv.appendChild(btnGroup);
+        rowDiv.appendChild(colSMDiv);
+        buttonGroup.appendChild(rowDiv);
+        i++;
+    });
+}
+
+function populateSelectedHSFormButtonGroups (grouplist) {
+    let buttonGroup = document.getElementById("HSFormPlaceHolder");
+    let i = 1;
+    grouplist.forEach(group => {    
+        let rowDiv = document.createElement("div");
+        rowDiv.classList.add("row");
+        // Make an div element like this : <div class="col-md-2 col-form-label"><label class="HS_category_header">HS categories</label></div>
+        let colDiv = document.createElement("div");
+        colDiv.classList.add("col-md-2");
+        colDiv.classList.add("col-form-label");
+        let label = document.createElement("label");
+        label.classList.add("HS_category_header");
+        label.innerText = `HS Form`;
+        colDiv.appendChild(label);
+        rowDiv.appendChild(colDiv);
+        
+        let colSMDiv = document.createElement("div");
+        colSMDiv.classList.add("col-sm");
+        //Make an div element like this : <div class="btn-group" id="HSTopicButtons_" role="group" aria-label="Hatespeech category selectors"></div>
+        let btnGroup = document.createElement("div");
+        btnGroup.classList.add("btn-group");
+        btnGroup.id = `HSFormButtons_${i}`;
+        btnGroup.setAttribute("role", "group");
+        btnGroup.setAttribute("aria-label", "Hatespeech form selectors");
+        // add buttons to btnGroup parent element
+        populateSelectedHSCategoryButtons(btnGroup, group);
+        colSMDiv.appendChild(btnGroup);
+        rowDiv.appendChild(colSMDiv);
+        buttonGroup.appendChild(rowDiv);
+        i++;
+    });
 }
 
 function populateSelectedHSCategoryButtons (parent, dict) {    
@@ -1190,7 +1437,7 @@ function populateSelectedHSCategoryButtons (parent, dict) {
     });
 }
 
-function checkSelectedCategories(valueString) {	
+function checkSelectedCategories(valueString, categoryName, categoryList) {	
     let valuelist = valueString.split(",");
     let selectedDict = {};
     let categoryDictList = [];
@@ -1198,17 +1445,19 @@ function checkSelectedCategories(valueString) {
     valuelist.forEach(element => 
     {    	
         let inLowerCase = element.toLowerCase().trim();        
-        let input = `<input type="checkbox" class="btn-check HSCategoryButton" id="ctrBtnCheck${i}" autocomplete="off" checked><label class="btn btn-outline-primary" for="ctrBtnCheck${i}">${inLowerCase}</label>`;
+        let input = `<input type="checkbox" class="btn-check ${categoryName}" id="ctrBtnCheck${i}" autocomplete="off" checked><label class="btn btn-outline-primary" for="ctrBtnCheck${i}">${inLowerCase}</label>`;
         selectedDict[inLowerCase] = input;
         i++;
     });    
     
+    // tämä ei le enää lista listoja vaan lista
+    // muuta ennen testiä
     HSCategoryLists.forEach(group => {
      		category = {};
         group.forEach(item => {
             let id = Math.random().toString();
             const guid = id.split('.').pop();
-        	category[item] = `<input type="checkbox" class="btn-check HSCategoryButton" id="ctrBtnCheck${guid}" autocomplete="off"><label class="btn btn-outline-primary" for="ctrBtnCheck${guid}">${item}</label>`;
+        	category[item] = `<input type="checkbox" class="btn-check ${categoryName}" id="ctrBtnCheck${guid}" autocomplete="off"><label class="btn btn-outline-primary" for="ctrBtnCheck${guid}">${item}</label>`;
         })
         categoryDictList.push(category);
     });
@@ -1250,7 +1499,7 @@ function checkSelectedCategories(valueString) {
 }
 
 
-function addToSelection(valueString) {
+/*function addToSelection(valueString) {
     let valuelist = valueString.split(",");
     let cleanList = [];
     let optionlist = [];
@@ -1276,10 +1525,24 @@ function addToSelection(valueString) {
     optionlist.forEach(optionItem => {
         selection.innerHTML += optionItem;
     });    
+}*/
+
+/*function clearHSCategoryPlaceHolder() {
+    let selection = $("#HSCategoryPlaceHolder")[0];
+    selection.innerHTML = "";
+}*/
+
+function clearHSTargetPlaceHolder() {
+    let selection = $("#HSTargetPlaceHolder")[0];
+    selection.innerHTML = "";
+}
+function clearHSTopicPlaceHolder() {
+    let selection = $("#HSTopicPlaceHolder")[0];
+    selection.innerHTML = "";
 }
 
-function clearHSCategoryPlaceHolder() {
-    let selection = $("#HSCategoryPlaceHolder")[0];
+function clearHSFormPlaceHolder() {
+    let selection = $("#HSFormPlaceHolder")[0];
     selection.innerHTML = "";
 }
 
@@ -1321,11 +1584,24 @@ function populateTextAnnotationForm(annotationItem, annotationExists) {
                 case "HS_class":
                     updateRadioValue("intensityRadioOptions", value);
                     break;
-                case "HS_category":                                                        
+                /*case "HS_category":                                                        
                     clearHSCategoryPlaceHolder();                    
                     let buttonElements = checkSelectedCategories(value);
-                    populateSelectedHSCategoryButtonGroups(buttonElements);
-                    break;                                
+                    populateSelectedHSCategoryButtonGroups(buttonElements);                    
+                    break;*/
+                case "HS_target":                                                        
+                    clearHSTargetPlaceHolder();                    
+                    let buttonTargetElements = checkSelectedCategories(value, "HSTargetButton", HSTargetList);
+                    populateSelectedHSTargetButtonGroups(buttonTargetElements);                    
+                    break;
+                case "HS_topic":                                                        
+                    clearHSTopicPlaceHolder();                    
+                    let buttonTopicElements = checkSelectedCategories(value, "HSTopicButton", HSTopicList);
+                    populateSelectedHSTopicButtonGroups(buttonTopicElements);
+                case "HS_form":                                                        
+                    clearHSFormPlaceHolder();                    
+                    let buttonFormElements = checkSelectedCategories(value, "HSFormButton", HSFormList);
+                    populateSelectedHSFormButtonGroups(buttonFormElements);
                 case "SentencePolarity":
                     updateRadioValue("polarityRadioOptions", value);
                     break;                
