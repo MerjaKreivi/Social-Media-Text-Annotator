@@ -161,20 +161,18 @@ class HubBuilder(MasonBuilder):
             schema=self.user_schema()
         )
 
-   
-
     ##### text -----------------------------------------------------
 
     @staticmethod
     def text_schema():
         schema = {
             "type": "object",
-            "required": ["HSOriginalComment"]
+            "required": ["sample"]
             #"required": ["HSOriginalComment", "date"]
         }
         props = schema["properties"] = {}
-        props ["HSOriginalComment"] = {
-            "description": "Text in string form",
+        props ["sample"] = {
+            "description": "Social media text sample in string form",
             "type": "string"
         }        
         #props ["date"] = {
@@ -239,46 +237,50 @@ class HubBuilder(MasonBuilder):
     def textannotation_schema():
         schema = {
             "type": "object",
-            "required": ["HS_binary", "HS_class",
+            "required": ["HS_binary", "HS_strength",
             "HS_target","HS_topic","HS_form",
-            "SentencePolarity", "SentenceEmotionCategory",
-            "HSinUrbanFinnish", "HSinFinnish"]
+            "sentiment", "polarity", "main_emotion",
+            "urban_finnish", "correct_finnish"]
         }
         props = schema["properties"] = {}
         props ["HS_binary"] = {
-            "description": "Classifier to define if image is meme",
+            "description": "Category to define if text is hate speech",
             "type": "boolean"
         }
-        props ["HS_class"] = {
-            "description": "Classifier to define if image is hate speech",
+        props ["HS_strength"] = {
+            "description": "Category to define how hateful hate speech is",
             "type": "number"
         }       
         props ["HS_target"] = {
-            "description": "Classifier to define HS target category value for text",
+            "description": "Category to define target subcategory for hate speech",
             "type": "string"
         }
         props ["HS_topic"] = {
-            "description": "Classifier to define HS topic category value for text",
+            "description": "Category to define topic subcategory for hate speech",
             "type": "string"
         }
         props ["HS_form"] = {
-            "description": "Classifier to define HS form category value for text",
+            "description": "Category to define form subcategory for hate speech",
             "type": "string"
         }
-        props ["SentencePolarity"] = {
-            "description": "Classifier to define hate speech sentence polarity",
+        props ["sentiment"] = {
+            "description": "Category to define sentiment subcategory for text sample",
             "type": "number"
         }
-        props ["SentenceEmotionCategory"] = {
-            "description": "Hate speech Sentence Emotion Category",
+        props ["polarity"] = {
+            "description": "Category to define polarity value for text sample",
+            "type": "number"
+        }
+        props ["main_emotion"] = {
+            "description": "Category to define main emotion subcategory for text sample",
             "type": "string"
         }
-        props ["HSinUrbanFinnish"] = {
-            "description": "Hate speech in urban Finnish",
+        props ["urban_finnish"] = {
+            "description": "Text sample in urban Finnish - separated words",
             "type": "string"
         }
-        props ["HSinFinnish"] = {
-            "description": "Hate speech in literal Finnish",
+        props ["correct_finnish"] = {
+            "description": "Text sample in literal and correct Finnish",
             "type": "string"
         }
         return schema

@@ -225,7 +225,7 @@ class TextItem(Resource):
         body = HubBuilder(
                 id = db_text.id,
                 user_id = db_text.user_id,
-                HSOriginalComment = db_text.HSOriginalComment,
+                sample = db_text.sample,
                 date = db_text.date
         )
 
@@ -254,13 +254,13 @@ class TextItem(Resource):
         if not request.json:
             return create_error_response(415, "Unsupported media type", "Requests must be JSON")
 
-        if "HSModifiedComment" in request.json:
-            if request.json["HSModifiedComment"] == "" or request.json["HSModifiedComment"] == None:
+        if "modifiedSample" in request.json:
+            if request.json["modifiedSample"] == "" or request.json["modifiedSample"] == None:
                 return create_error_response(400, "Invalid JSON document", "No edited text provided")
         else:
             return create_error_response(400, "Invalid JSON document", "No file name provided")      
         
-        db_text.HSOriginalComment = request.json["HSModifiedComment"]
+        db_text.sample = request.json["modifiedSample"]
         db.session.commit()        
         
         return Response(status=204, headers={"Location": url_for("api.textitem", id=db_text.id)})
@@ -298,7 +298,7 @@ class TextCollection(Resource):
             item = HubBuilder(
                 id = text.id,
                 user_id = text.user_id,
-                HSOriginalComment = text.HSOriginalComment,
+                sample = text.sample,
                 date = text.date
             )
             item.add_control("self", url_for("api.textitem", id=text.id))
@@ -332,7 +332,7 @@ class TextCollection(Resource):
 
         new_text = TextContent(            
             user_id = request.json["user_name"],
-            HSOriginalComment = request.json["HSOriginalComment"]            
+            sample = request.json["sample"]            
         )
 
         try:
@@ -410,7 +410,7 @@ class TextItemsInPages(Resource):
                             item = HubBuilder(
                                 id = text.id,
                                 user_id = text.user_id,
-                                HSOriginalComment = text.HSOriginalComment,
+                                sample = text.sample,
                                 date = text.date
                             )
                             item.add_control("self", url_for("api.textitem", id=text.id))
@@ -461,7 +461,7 @@ class TextItemsInPages(Resource):
                             item = HubBuilder(
                                 id = text.id,
                                 user_id = text.user_id,
-                                HSOriginalComment = text.HSOriginalComment,
+                                sample = text.sample,
                                 date = text.date
                             )
                             item.add_control("self", url_for("api.textitem", id=text.id))
@@ -511,7 +511,7 @@ class TextItemsOnPage(Resource):
                                 item = HubBuilder(
                                     id = text.id,
                                     user_id = text.user_id,
-                                    HSOriginalComment = text.HSOriginalComment,
+                                    sample = text.sample,
                                     date = text.date
                                 )
                                 item.add_control("self", url_for("api.textitem", id=text.id))
@@ -551,14 +551,15 @@ class TextAnnotationCollection(Resource):
                 text_id = db_text.text_id,
                 user_id = db_text.user_id,
                 HS_binary = db_text.HS_binary,
-                HS_class = db_text.HS_class,
+                HS_strength = db_text.HS_strength,
                 HS_target = db_text.HS_target,
                 HS_topic  = db_text.HS_topic,
                 HS_form = db_text.HS_form,
-                SentencePolarity = db_text.SentencePolarity,
-                SentenceEmotionCategory = db_text.SentenceEmotionCategory,
-                HSinUrbanFinnish = db_text.HSinUrbanFinnish,
-                HSinFinnish = db_text.HSinFinnish
+                sentiment = db_text.sentiment,
+                polarity = db_text.polarity,
+                main_emotion = db_text.main_emotion,
+                urban_finnish = db_text.urban_finnish,
+                correct_finnish = db_text.correct_finnish
             )
             item.add_control("self", url_for("api.textannotationcollection"))
             item.add_control("profile", TEXTANNOTATION_PROFILE)
@@ -592,14 +593,15 @@ class TextAnnotationCollection(Resource):
             text_id = request.json["text_id"],
             user_id = request.json["user_id"],
             HS_binary = request.json["HS_binary"],
-            HS_class = request.json["HS_class"],
+            HS_strength = request.json["HS_strength"],
             HS_target = request.json["HS_target"],
             HS_topic = request.json["HS_topic"],
             HS_form = request.json["HS_form"],
-            SentencePolarity = request.json["SentencePolarity"],
-            SentenceEmotionCategory = request.json["SentenceEmotionCategory"],
-            HSinUrbanFinnish = request.json["HSinUrbanFinnish"],
-            HSinFinnish = request.json["HSinFinnish"],            
+            sentiment = request.json["sentiment"],
+            polarity = request.json["polarity"],
+            main_emotion = request.json["main_emotion"],
+            urban_finnish = request.json["urban_finnish"],
+            correct_finnish = request.json["correct_finnish"],            
         )
 
         try:
@@ -637,14 +639,15 @@ class TextAnnotationItem(Resource):
             text_id = db_text.text_id,
             user_id = db_text.user_id,
             HS_binary = db_text.HS_binary,
-            HS_class = db_text.HS_class,
+            HS_strength = db_text.HS_strength,
             HS_target = db_text.HS_target,
             HS_topic  = db_text.HS_topic,
             HS_form = db_text.HS_form,
-            SentencePolarity = db_text.SentencePolarity,
-            SentenceEmotionCategory = db_text.SentenceEmotionCategory,
-            HSinUrbanFinnish = db_text.HSinUrbanFinnish,
-            HSinFinnish = db_text.HSinFinnish
+            sentiment = db_text.sentiment,
+            polarity = db_text.polarity,
+            main_emotion = db_text.main_emotion,
+            urban_finnish = db_text.urban_finnish,
+            correct_finnish = db_text.correct_finnish
         )
 
         body.add_namespace("annometa", LINK_RELATIONS_URL)
@@ -689,14 +692,15 @@ class TextAnnotationItem(Resource):
 
         db_text_anno.user_id=request.json["user_id"]
         db_text_anno.HS_binary = request.json["HS_binary"]
-        db_text_anno.HS_class = request.json["HS_class"]        
+        db_text_anno.HS_strength = request.json["HS_strength"]        
         db_text_anno.HS_target = request.json["HS_target"]
         db_text_anno.HS_topic  = request.json["HS_topic"]
         db_text_anno.HS_form = request.json["HS_form"]
-        db_text_anno.SentencePolarity = request.json["SentencePolarity"]
-        db_text_anno.SentenceEmotionCategory = request.json["SentenceEmotionCategory"]
-        db_text_anno.HSinUrbanFinnish = request.json["HSinUrbanFinnish"]
-        db_text_anno.HSinFinnish = request.json["HSinFinnish"]        
+        db_text_anno.sentiment = request.json["sentiment"]
+        db_text_anno.polarity = request.json["polarity"]
+        db_text_anno.main_emotion = request.json["main_emotion"]
+        db_text_anno.urban_finnish = request.json["urban_finnish"]
+        db_text_anno.correct_finnish = request.json["correct_finnish"]        
 
         try:
             db.session.commit()

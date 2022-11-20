@@ -32,7 +32,7 @@ class TextContent(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="SET NULL"))
 
-    HSOriginalComment = db.Column(db.String(1024), nullable=False)
+    sample = db.Column(db.String(1024), nullable=False)
     date = db.Column(db.DateTime, nullable=False, default=datetime.now())
 
     text_annotations = db.relationship("TextAnnotation", back_populates="texts")
@@ -46,14 +46,15 @@ class TextAnnotation(db.Model):
     text_id = db.Column(db.Integer, db.ForeignKey("textcontent.id", ondelete="SET NULL"))
     user_id = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="SET NULL"))
     HS_binary = db.Column(db.Boolean, nullable=False)
-    HS_class= db.Column(db.Integer, nullable=False)
+    HS_strength= db.Column(db.Integer, nullable=False)
     HS_target = db.Column(db.String(128), nullable=True)
     HS_topic = db.Column(db.String(128), nullable=True)
     HS_form = db.Column(db.String(128), nullable=True)
-    SentencePolarity = db.Column(db.Integer, nullable=True)
-    SentenceEmotionCategory = db.Column(db.String(128), nullable=True)
-    HSinUrbanFinnish = db.Column(db.String(1024), nullable=True)
-    HSinFinnish = db.Column(db.String(1024), nullable=True)
+    sentiment = db.Column(db.String(128), nullable=True)
+    polarity = db.Column(db.Integer, nullable=True)
+    main_emotion = db.Column(db.String(128), nullable=True)
+    urban_finnish = db.Column(db.String(1024), nullable=True)
+    correct_finnish = db.Column(db.String(1024), nullable=True)
 
     texts = db.relationship("TextContent", back_populates="text_annotations", uselist=True)
     text_annotators = db.relationship("User", back_populates="text_annotator", uselist=True)
@@ -90,7 +91,6 @@ def init_db_command():
 def generate_test_data():
 
     #(upload_text_folder) = create_static_folders()
-
     # Create row for new user to database by using User -model
     user1 = User(user_name = "Meria Developer", user_password="mötkäle", user_nick="Merja")
     user2 = User(user_name = "Matti Meikäläinen", user_password="1234567890", user_nick = "matikainen",)
@@ -119,30 +119,32 @@ def generate_test_data():
     # Collect defined user from database
     userqueried = User.query.filter_by(user_name="Meria Developer").first()
 
-    # Add images of image_list (collected from defined folder in path) for defined user in database
+    # Add text samples of sample_list (collected from defined folder in path) for defined user in database
     # and commit to database
     textRows = getCSVData()
     dictionaryList = textRows.to_dict('index')
+    print(dictionaryList)
 
     i = 0
     while i < len(dictionaryList):
         
-        textObj = TextContent(HSOriginalComment=dictionaryList[i]["HSoriginalComment"])
+        textObj = TextContent(sample=dictionaryList[i]["sample"])
         userqueried.text_user.append(textObj)
         db.session.commit()
 
         annotationObj = TextAnnotation(HS_binary=dictionaryList[i]["HSbinary"], 
-                                        HS_class=dictionaryList[i]["HSclass"],
+                                        HS_strength=dictionaryList[i]["HSstrength"],
                                         HS_target=dictionaryList[i]["HStarget"],
                                         HS_topic=dictionaryList[i]["HStopic"],
                                         HS_form=dictionaryList[i]["HSform"],
-                                        SentencePolarity=dictionaryList[i]["sentencePolarity"],
-                                        SentenceEmotionCategory=dictionaryList[i]["sentenceEmotionCategory"],
-                                        HSinUrbanFinnish=dictionaryList[i]["HSinUrbanFinnish"],
-                                        HSinFinnish=dictionaryList[i]["HSinFinnish"])
+                                        sentiment=dictionaryList[i]["sentiment"],
+                                        polarity=dictionaryList[i]["polarity"],
+                                        main_emotion=dictionaryList[i]["mainEmotion"],
+                                        urban_finnish=dictionaryList[i]["urbanFinnish"],
+                                        correct_finnish=dictionaryList[i]["correctFinnish"])
         userqueried.text_annotator.append(annotationObj)
         textObj.text_annotations.append(annotationObj)
-        #textObj = TextContent(HSOriginalComment=dictionaryList[i]["HSoriginalComment"], text_annotations=annotationObj)
+        #textObj = TextContent(sample=dictionaryList[i]["sample"], text_annotations=annotationObj)
                         
         db.session.commit()
         i= i+1
