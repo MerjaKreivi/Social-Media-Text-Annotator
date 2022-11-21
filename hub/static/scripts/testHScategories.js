@@ -95,3 +95,4 @@ function checkSelectedCategories(valueString) {
 
 
 checkSelectedCategories("opinion, immigration, status, smedia, idiom");
+

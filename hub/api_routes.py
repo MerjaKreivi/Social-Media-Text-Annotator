@@ -38,6 +38,5 @@ api.add_resource(TextItemsInPages, "/texts/pages/<itemsOnPage>/")
 #api.add_resource(TextItemsOnPage, "/texts/pages/page/<pageId>/")
 api.add_resource(TextItemsOnPage, "/texts/pages/page")
 
-
 api.add_resource(TextAnnotationCollection, "/textannotations/")
 api.add_resource(TextAnnotationItem, "/textannotations/<id>/")

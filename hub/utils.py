@@ -265,7 +265,7 @@ class HubBuilder(MasonBuilder):
         }
         props ["sentiment"] = {
             "description": "Category to define sentiment subcategory for text sample",
-            "type": "number"
+            "type": "string"
         }
         props ["polarity"] = {
             "description": "Category to define polarity value for text sample",

@@ -259,22 +259,42 @@
                         <input class="form-control-plaintext" id="annotationId" type="text" placeholder="Annotation not yet saved..." readonly>
                     </div>        
                 </div>
+                <!-- set sentiment subcategories -->
                 <div class="row">
-                    <div class="col-md-2 col-form-label"><label class="HS_binary">Hate speech?</label></div>
+                    <div class="col-md-2 col-form-label"><label class="sentiment_header">Sentiment label</label></div>
+                    <div class="col-sm">
+                        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                            <div class="form-check form-check-inline">
+                                <input class="btn-check" type="radio" name="sentimentRadioOptions" id="positive" value="positive" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="positive">positive</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="btn-check" type="radio" name="sentimentRadioOptions" id="neutral" value="neutral" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="neutral">neutral</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="btn-check" type="radio" name="sentimentRadioOptions" id="negative" value="negative" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="negative">negative</label>
+                            </div>           
+                        </div> 
+                    </div>                   
+                </div>
+                <!-- set polarity subcategories -->
+                <div class="row">
+                    <div class="col-md-2 col-form-label"><label class="polarity_header">Polarity label</label></div>
                     <div class="col-sm">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="binaryRadioOptions" id="notHateSpeechRadio" value="false">
-                            <label class="form-check-label" for="notHateSpeechRadio">Not hate speech</label>
+                            <input class="form-check-input" type="radio" name="polarityRadioOptions" id="polarityRadio-5" value="-5">
+                            <label class="form-check-label" for="polarityRadio-4">-5</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="binaryRadioOptions" id="isHateSpeechRadio" value="true">
-                            <label class="form-check-label" for="isHateSpeechRadio">Is hate speech</label>
-                        </div>                                
-                    </div>                    
-                </div>
-                <div class="row">
-                    <div class="col-md-2 col-form-label"><label class="HS_polarity_header">Sentence polarity</label></div>
-                    <div class="col-sm">
+                            <input class="form-check-input" type="radio" name="polarityRadioOptions" id="polarityRadio-4" value="-4">
+                            <label class="form-check-label" for="polarityRadio-4">-4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="polarityRadioOptions" id="polarityRadio-3" value="-3">
+                            <label class="form-check-label" for="polarityRadio-3">-3</label>
+                        </div>        
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="polarityRadioOptions" id="polarityRadio-2" value="-2">
                             <label class="form-check-label" for="polarityRadio-2">-2</label>
@@ -295,57 +315,91 @@
                             <input class="form-check-input" type="radio" name="polarityRadioOptions" id="polarityRadio2" value="2">
                             <label class="form-check-label" for="polarityRadio2">2</label>
                         </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="polarityRadioOptions" id="polarityRadio3" value="3">
+                            <label class="form-check-label" for="polarityRadio3">3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="polarityRadioOptions" id="polarityRadio4" value="4">
+                            <label class="form-check-label" for="polarityRadio4">4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="polarityRadioOptions" id="polarityRadio5" value="5">
+                            <label class="form-check-label" for="polarityRadio5">5</label>
+                        </div>
                     </div>
-                </div>                
-                <!-- <div id="HSCategoryPlaceHolder">                   -->
                 </div>
-                <div id="HSTargetPlaceHolder">                    
-                </div>
-                <div id="HSTopicPlaceHolder">                    
-                </div>
-                <div id="HSFormPlaceHolder">                    
-                </div>
+                <!-- set categories for hate speech binary labels -->
                 <div class="row">
-                    <div class="col-md-2 col-form-label"><label class="HS_class_header">HS intensity</label></div>
+                    <div class="col-md-2 col-form-label"><label class="HS_binary">Does sample include hate speech?</label></div>
                     <div class="col-sm">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="intensityRadioOptions" id="intensityRadio-5" value="-5">
-                            <label class="form-check-label" for="intensityRadio-5">-5</label>
+                            <input class="form-check-input" type="radio" name="binaryRadioOptions" id="notHateSpeechRadio" value="false">
+                            <label class="form-check-label" for="notHateSpeechRadio">Not hate speech</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="intensityRadioOptions" id="intensityRadio-4" value="-4">
-                            <label class="form-check-label" for="intensityRadio-4">-4</label>
+                            <input class="form-check-input" type="radio" name="binaryRadioOptions" id="isHateSpeechRadio" value="true">
+                            <label class="form-check-label" for="isHateSpeechRadio">Includes hate speech</label>
+                        </div>                                
+                    </div>                    
+                </div>
+                <!-- set hate speech strength (or intensity) subcategories  -->
+                <div class="row">
+                    <div class="col-md-2 col-form-label"><label class="HS_strength_header">Hate speech strength label</label></div>
+                    <div class="col-sm">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="HSstrengthRadioOptions" id="HSstrengthRadio5" value="-5">
+                            <label class="form-check-label" for="HSstrengthRadio5">-5</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="HSstrengthRadioOptions" id="HSstrengthRadio4" value="-4">
+                            <label class="form-check-label" for="HSstrengthRadio4">-4</label>
                         </div>        
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="intensityRadioOptions" id="intensityRadio-3" value="-3">
-                            <label class="form-check-label" for="intensityRadio-3">-3</label>
+                            <input class="form-check-input" type="radio" name="HSstrengthRadioOptions" id="HSstrengthRadio3" value="-3">
+                            <label class="form-check-label" for="HSstrengthRadio3">-3</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="intensityRadioOptions" id="intensityRadio-2" value="-2">
-                            <label class="form-check-label" for="intensityRadio-2">-2</label>
+                            <input class="form-check-input" type="radio" name="HSstrengthRadioOptions" id="HSstrengthRadio2" value="-2">
+                            <label class="form-check-label" for="HSstrengthRadio2">-2</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="intensityRadioOptions" id="intensityRadio-1" value="-1">
-                            <label class="form-check-label" for="intensityRadio-1">-1</label>
+                            <input class="form-check-input" type="radio" name="HSstrengthRadioOptions" id="HSstrengthRadio1" value="-1">
+                            <label class="form-check-label" for="HSstrengthRadio1">-1</label>
                         </div>
                     </div>
                 </div>           
-                <div class="row">
-                    <div class="col-md-2 col-form-label"><label class="SentenceEmotionCategory_header">Sentence Emotion Category</label></div>
+                <!-- set hate speech subcategories  -->
+                <!-- <div id="HSCategoryPlaceHolder"> -->
+            </div>
+            <div id="HSTargetPlaceHolder">      
+            </div>
+            <div id="HSTopicPlaceHolder">             
+            </div>
+            <div id="HSFormPlaceHolder">         
+            </div>
+            <div id="MainEmotionPlaceHolder">         
+            </div>
+            <!-- set text labeling subcategories  -->
+               <!--</div> -->
+               
+                <!-- <div class="row">
+                    <div class="col-md-2 col-form-label"><label class="Main_Emotion_header">Main emotion label</label></div>
                     <div class="col-sm">
-                        <input class="form-control" id="SentenceEmotionCategory" type="text" disabled>                            
+                        <input class="form-control" id="main_emotion" type="text" disabled>                            
                     </div> 
-                </div>                                                                                                   
+                </div>  -->
+                <!-- set text labeling subcategories  -->                                                                                   
                 <div class="row">
-                    <div class="col-md-2 col-form-label"><label class="HSinUrbanFinnish_header">HS in Urban Finnish</label></div>
+                    <div class="col-md-2 col-form-label"><label class="Urban_Finnish_header">Sample in urban Finnish</label></div>
                     <div class="col-sm">
-                        <input class="form-control" id="HSinUrbanFinnish" type="text" disabled>                            
+                        <input class="form-control" id="urban_finnish" type="text" disabled>                            
                     </div> 
                 </div>
                 <div class="row">
-                    <div class="col-md-2 col-form-label"><label class="HSinFinnish_header">HS in Finnish</label></div>
+                    <div class="col-md-2 col-form-label"><label class="Correct_Finnish_header">Sample in correct Finnish</label></div>
                     <div class="col-sm">
-                        <input class="form-control" id="HSinFinnish" type="text" disabled>                            
+                        <input class="form-control" id="correct_finnish" type="text" disabled>                            
                     </div> 
                 </div>
                 <div class="container" style="margin-top: 20px;">

@@ -10,6 +10,8 @@ const DEBUG = true;
 const MASONJSON = "application/vnd.mason+json";
 const PLAINJSON = "application/json";
 
+const MainEmotionList = ["neutral_none", "joy", "happiness", "trust", "surprise", "mixed_emotions", "sadness", "unpleasent", "disgust", "anticipation_critical_sarcastic", "contempt_disrespect", "fear", "anger_hate", "aggressive_violent"];
+
 const HSCategoryList = ["violence", "swear", "troll", "bully", "ethnic", "politics", "sexual", "idiom", "immigration", "women", "group", "religion", "opinion"];
 
 const HSCategoryLists = [["national", "immigration", "foreign", "ethnic", "religion"],
@@ -21,7 +23,7 @@ const HSCategoryLists = [["national", "immigration", "foreign", "ethnic", "relig
 
 const HSTopicList = ["national", "ethnic", "foreign", "immigration", "religion", "politics", "opinion", "work", "sexual", "gender", "women", "appearance", "health", "status", "social media", "family", "trolling", "other"];
 const HSTargetList = ["person", "group", "community", "none", "self-hate"];
-const HSFormList = ["threat", "insult", "discrimination", "harassment","incitement", "disinformation", "targeting", "joke","idiom", "swearing", "violence", "bully","granulated", "undefined"];
+const HSFormList = ["threat", "insult", "discrimination", "harassment", "incitement", "disinformation", "targeting", "joke", "idiom", "swearing", "violence", "bully", "granulated", "undefined"];
 
 // for pagination purposes
 let current_page = 1;
@@ -758,7 +760,7 @@ function renderTexts(body) {
     // do not empty - to show bootswatch sandstone
     // muutos $(".resulttable thead").empty();
     $(".resulttable tbody").empty();    
-       // carousel class ref
+    // carousel class ref
     $(".carousel-indicators").empty();
     $(".carousel-inner").empty();
     
@@ -932,6 +934,15 @@ function getCheckedValue(radioButtonGroupName) {
     }        
 }
 
+function getCheckedSentimentValue(radioButtonGroupName) {
+    const rbs = document.querySelectorAll(`input[name="${radioButtonGroupName}"]`);
+    for (const rb of rbs) {
+        if (rb.checked) {
+           return rb.value;                    
+        }
+    }        
+}
+
 // ----------------------------------------------------------------------------------
 
 function showAnnoFormButtons() {
@@ -969,16 +980,22 @@ function putTextAnnotationContent(event) {
     data.id = parseInt(($('input[id="annotationId"]', '#testform').val()));
     data.text_id = parseInt(($('input[id="textId"]', '#testform').val()));
     data.user_id = parseInt(($('input[id="userId"]', '#testform').val()));
-    data.HS_binary = isHateSpeech();    
-    data.SentencePolarity = getCheckedValue("polarityRadioOptions");    
-    data.HS_class =  getCheckedValue("intensityRadioOptions");
-    //data.HS_category = getSelectedValues();    
-    data.HS_topic = getSelectedValues("HSTopicButton");    
-    data.HS_form = getSelectedValues("HSFormButton");    
-    data.HS_target = getSelectedValues("HSTargetButton");    
-    data.SentenceEmotionCategory = $("#SentenceEmotionCategory").val();
-    data.HSinUrbanFinnish = $("#HSinUrbanFinnish").val();
-    data.HSinFinnish = $("#HSinFinnish").val();    
+    data.HS_binary = isHateSpeech();
+    // sentiment subcategories
+    data.sentiment = getCheckedSentimentValue("sentimentRadioOptions");
+    // data.sentiment = getSelectedValues("SentimentButton");
+    // data.SentencePolarity = getCheckedValue("polarityRadioOptions");
+    data.polarity = getCheckedValue("polarityRadioOptions");
+    //data.HS_class =  getCheckedValue("intensityRadioOptions");
+    data.HS_strength =  getCheckedValue("HSstrengthRadioOptions");
+    //data.HS_category = getSelectedValues();
+    data.HS_topic = getSelectedValues("HSTopicButton");
+    data.HS_form = getSelectedValues("HSFormButton");
+    data.HS_target = getSelectedValues("HSTargetButton");
+    data.main_emotion = getSelectedValues("MainEmotionButton");
+    //data.main_emotion = $("#main_emotion").val();
+    data.urban_finnish = $("#urban_finnish").val();
+    data.correct_finnish = $("#correct_finnish").val();    
 
     sendData(form.attr("action"), form.attr("method"), data, getEditedAnnotation);
 }
@@ -1014,20 +1031,25 @@ function submitTextAnnotationContent(event) {
     //event.stopPropagation();
     let data = {};
     let form = $(".annotationMetaForm");
-        
+
     data.id = parseInt(($('input[id="annotationId"]', '#testform').val()));
     data.text_id = parseInt(($('input[id="textId"]', '#testform').val()));
     data.user_id = parseInt(($('input[id="userId"]', '#testform').val()));
+    data.sentiment = getCheckedSentimentValue("sentimentRadioOptions");
+    //data.sentiment = getSelectedValues("SentimentButton");
+    //data.SentencePolarity = getCheckedValue("polarityRadioOptions");   
+    data.polarity = getCheckedValue("polarityRadioOptions");
     data.HS_binary = isHateSpeech();
-    data.SentencePolarity = getCheckedValue("polarityRadioOptions");    
-    data.HS_class =  getCheckedValue("intensityRadioOptions");
-    //data.HS_category = getSelectedValues();    
-    data.HS_topic = getSelectedValues("HSTopicButton");    
-    data.HS_form = getSelectedValues("HSFormButton");    
-    data.HS_target = getSelectedValues("HSTargetButton");   
-    data.SentenceEmotionCategory = $("#SentenceEmotionCategory").val();
-    data.HSinUrbanFinnish = $("#HSinUrbanFinnish").val();
-    data.HSinFinnish = $("#HSinFinnish").val();    
+    //data.HS_class =  getCheckedValue("intensityRadioOptions");
+    data.HS_strength =  getCheckedValue("HSstrengthRadioOptions");
+    //data.HS_category = getSelectedValues();
+    data.HS_topic = getSelectedValues("HSTopicButton");
+    data.HS_form = getSelectedValues("HSFormButton");
+    data.HS_target = getSelectedValues("HSTargetButton");
+    data.main_emotion = getSelectedValues("MainEmotionButton");
+    //data.main_emotion = $("#main_emotion").val();
+    data.urban_finnish= $("#urban_finnish").val();
+    data.correct_finnish = $("#correct_finnish").val();
     
     sendData(form.attr("action"), form.attr("method"), data, getEditedAnnotation);
 }
@@ -1044,20 +1066,24 @@ function populateEmptyTextAnnotationForm(textItem) {
     $("#annotationId").attr("value", $("#annotationId").attr("placeholder"));
 
     // clear text fields if not already empty
-    $("#HSinFinnish").val('');
-    $("#HSinUrbanFinnish").val('');
-    $("#SentenceEmotionCategory").val('');   
+    $("#correct_finnish").val('');
+    $("#urban_finnish").val('');
+    //$("#main_emotion").val('');   
 
     // uncheck all radio button groups
-    uncheckRadioButton("binaryRadioOptions");
+    uncheckRadioButton("sentimentRadioOptions");
     uncheckRadioButton("polarityRadioOptions");
-    uncheckRadioButton("intensityRadioOptions");
+    uncheckRadioButton("binaryRadioOptions");
+    uncheckRadioButton("HSstrengthRadioOptions");
         
-    //clearHSCategoryPlaceHolder();
+    //clear subcategory place holders
+    clearMainEmotionPlaceHolder();
     clearHSTargetPlaceHolder();
     clearHSTopicPlaceHolder();
     clearHSFormPlaceHolder();
-    //populateHSCategoryButtonGroups(HSCategoryLists);
+
+    //populate HS subcategories button groups accroding to defined lists
+    populateMainEmotionButtonGroups(MainEmotionList);
     populateHSTopicButtonGroups(HSTopicList);
     populateHSFormButtonGroups(HSFormList);
     populateHSTargetButtonGroups(HSTargetList);
@@ -1113,6 +1139,16 @@ function updateRadioValue(group, value) {
     }            
 }
 
+function updateRadioString(group, value) {
+    const rbs = document.querySelectorAll(`input[name="${group}"]`);            
+    for (const rb of rbs) {
+        if (rb.value === value) {
+            rb.checked = true;
+            break;
+        }
+    }            
+}
+
 /*function populateHSCategorySelection(list) {
     let selection = $("#HSCategorySelect");
     let i = 1;
@@ -1156,10 +1192,43 @@ function updateRadioValue(group, value) {
     });
 }*/
 
+function populateMainEmotionButtonGroups(grouplist) {
+    let buttonGroup = document.getElementById("MainEmotionPlaceHolder");
+    //let i = 1;
+    //grouplist.forEach(group => {
+        let rowDiv = document.createElement("div");
+        rowDiv.classList.add("row");
+        // Make an div element like this : <div class="col-md-2 col-form-label"><label class="HS_category_header">HS categories</label></div>
+        let colDiv = document.createElement("div");
+        colDiv.classList.add("col-md-2");
+        colDiv.classList.add("col-form-label");
+        let label = document.createElement("label");
+        label.classList.add("main_emotion_header");
+        label.innerText = `Main Emotion`;
+        colDiv.appendChild(label);
+        rowDiv.appendChild(colDiv);
+        
+        let colSMDiv = document.createElement("div");
+        colSMDiv.classList.add("col-sm");
+        // Make an div element like this : <div class="btn-group" id="HSCategoryButtons" role="group" aria-label="Hatespeech category selectors"></div>
+        let btnGroup = document.createElement("div");
+        btnGroup.classList.add("btn-group");
+        btnGroup.id = `MainEmotionButtons`;
+        btnGroup.setAttribute("role", "group");
+        btnGroup.setAttribute("aria-label", "Main emotion selectors");
+        // add buttons to btnGroup parent element        
+        populateMainEmotionButtons(btnGroup, grouplist, "MainEmotionButton");
+        colSMDiv.appendChild(btnGroup);
+        rowDiv.appendChild(colSMDiv);
+        buttonGroup.appendChild(rowDiv);
+        //i++;   
+    //});
+}
+
 function populateHSTopicButtonGroups(grouplist) {
     let buttonGroup = document.getElementById("HSTopicPlaceHolder");
-    let i = 1;
-    grouplist.forEach(group => {
+    //let i = 1;
+    //grouplist.forEach(group => {
         let rowDiv = document.createElement("div");
         rowDiv.classList.add("row");
         // Make an div element like this : <div class="col-md-2 col-form-label"><label class="HS_category_header">HS categories</label></div>
@@ -1177,22 +1246,22 @@ function populateHSTopicButtonGroups(grouplist) {
         // Make an div element like this : <div class="btn-group" id="HSCategoryButtons" role="group" aria-label="Hatespeech category selectors"></div>
         let btnGroup = document.createElement("div");
         btnGroup.classList.add("btn-group");
-        btnGroup.id = `HSTopicButtons_${i}`;
+        btnGroup.id = `HSTopicButtons`;
         btnGroup.setAttribute("role", "group");
         btnGroup.setAttribute("aria-label", "Hatespeech topic selectors");
-        // add buttons to btnGroup parent element
-        populateHSTopicButtons(btnGroup, group, i);
+        // add buttons to btnGroup parent element        
+        populateHSCategoryButtons(btnGroup, grouplist, "HSTopicButton");
         colSMDiv.appendChild(btnGroup);
         rowDiv.appendChild(colSMDiv);
         buttonGroup.appendChild(rowDiv);
-        i++;   
-    });
+        //i++;   
+    //});
 }
 
 function populateHSFormButtonGroups(grouplist) {
     let buttonGroup = document.getElementById("HSFormPlaceHolder");
-    let i = 1;
-    grouplist.forEach(group => {
+    //let i = 1;
+    //grouplist.forEach(group => {
         let rowDiv = document.createElement("div");
         rowDiv.classList.add("row");
         // Make an div element like this : <div class="col-md-2 col-form-label"><label class="HS_category_header">HS categories</label></div>
@@ -1210,22 +1279,22 @@ function populateHSFormButtonGroups(grouplist) {
         // Make an div element like this : <div class="btn-group" id="HSCategoryButtons" role="group" aria-label="Hatespeech category selectors"></div>
         let btnGroup = document.createElement("div");
         btnGroup.classList.add("btn-group");
-        btnGroup.id = `HSFormButtons_${i}`;
+        btnGroup.id = `HSFormButtons`;
         btnGroup.setAttribute("role", "group");
         btnGroup.setAttribute("aria-label", "Hatespeech form selectors");
         // add buttons to btnGroup parent element
-        populateHSFormButtons(btnGroup, group, i);
+        populateHSCategoryButtons(btnGroup, grouplist, "HSFormButton");
         colSMDiv.appendChild(btnGroup);
         rowDiv.appendChild(colSMDiv);
         buttonGroup.appendChild(rowDiv);
-        i++;   
-    });
+        //i++;   
+    //});
 }
 
 function populateHSTargetButtonGroups(grouplist) {
     let buttonGroup = document.getElementById("HSTargetPlaceHolder");
-    let i = 1;
-    grouplist.forEach(group => {
+    //let i = 1;
+    //grouplist.forEach(group => {
         let rowDiv = document.createElement("div");
         rowDiv.classList.add("row");
         // Make an div element like this : <div class="col-md-2 col-form-label"><label class="HS_category_header">HS categories</label></div>
@@ -1243,64 +1312,42 @@ function populateHSTargetButtonGroups(grouplist) {
         // Make an div element like this : <div class="btn-group" id="HSCategoryButtons" role="group" aria-label="Hatespeech category selectors"></div>
         let btnGroup = document.createElement("div");
         btnGroup.classList.add("btn-group");
-        btnGroup.id = `HSTargetButtons_${i}`;
+        btnGroup.id = `HSTargetButtons`;
         btnGroup.setAttribute("role", "group");
         btnGroup.setAttribute("aria-label", "Hatespeech target selectors");
         // add buttons to btnGroup parent element
-        populateHSTargetButtons(btnGroup, group, i);
+        populateHSCategoryButtons(btnGroup, grouplist, "HSTargetButton");
         colSMDiv.appendChild(btnGroup);
         rowDiv.appendChild(colSMDiv);
         buttonGroup.appendChild(rowDiv);
-        i++;   
-    });
+        //i++;   
+    //});
 }
 
-/*function populateHSCategoryButtons(parent, list, groupId) {
+function populateHSCategoryButtons(parent, list, groupId) {
     let i = 1;
     list.forEach(item => {
-        let input = `<input type="checkbox" class="btn-check HSCategoryButton" id="ctrBtnCheck${groupId}_${i}" autocomplete="off">`;
-        let label = `<label class="btn btn-outline-primary" for="ctrBtnCheck${groupId}_${i}">${item}</label>`        
-        parent.insertAdjacentHTML( 'beforeend', input );        
-        parent.insertAdjacentHTML( 'beforeend', label );
-        i++;
-    });
-}*/
-
-function populateHSTopicButtons(parent, list, groupId) {
-    let i = 1;
-    list.forEach(item => {
-        let input = `<input type="checkbox" class="btn-check HSTopicButton" id="ctrBtnCheck${groupId}_${i}" autocomplete="off">`;
-        let label = `<label class="btn btn-outline-primary" for="ctrBtnCheck${groupId}_${i}">${item}</label>`        
+        let input = `<input type="checkbox" class="btn-check ${groupId}" id="${groupId}_ctrBtnCheck_${i}" autocomplete="off">`;
+        let label = `<label class="btn btn-outline-primary" for="${groupId}_ctrBtnCheck_${i}">${item}</label>`        
         parent.insertAdjacentHTML( 'beforeend', input );        
         parent.insertAdjacentHTML( 'beforeend', label );
         i++;
     });
 }
 
-function populateHSFormButtons(parent, list, groupId) {
+function populateMainEmotionButtons(parent, list, groupId) {
     let i = 1;
     list.forEach(item => {
-        let input = `<input type="checkbox" class="btn-check HSFormButton" id="ctrBtnCheck${groupId}_${i}" autocomplete="off">`;
-        let label = `<label class="btn btn-outline-primary" for="ctrBtnCheck${groupId}_${i}">${item}</label>`        
+        let input = `<input type="checkbox" class="btn-check ${groupId}" id="${groupId}_ctrBtnCheck_${i}" autocomplete="off">`;
+        let label = `<label class="btn btn-outline-primary" for="${groupId}_ctrBtnCheck_${i}">${item}</label>`        
         parent.insertAdjacentHTML( 'beforeend', input );        
         parent.insertAdjacentHTML( 'beforeend', label );
         i++;
     });
 }
 
-function populateHSTargetButtons(parent, list, groupId) {
-    let i = 1;
-    list.forEach(item => {
-        let input = `<input type="checkbox" class="btn-check HSTargetButton" id="ctrBtnCheck${groupId}_${i}" autocomplete="off">`;
-        let label = `<label class="btn btn-outline-primary" for="ctrBtnCheck${groupId}_${i}">${item}</label>`        
-        parent.insertAdjacentHTML( 'beforeend', input );        
-        parent.insertAdjacentHTML( 'beforeend', label );
-        i++;
-    });
-}
-
-/*function populateSelectedHSCategoryButtonGroups (grouplist) {
-    let buttonGroup = document.getElementById("HSCategoryPlaceHolder");
+function populateSelectedMainEmotionButtonGroups (grouplist) {
+    let buttonGroup = document.getElementById("MainEmotionPlaceHolder");
     let i = 1;
     grouplist.forEach(group => {    
         let rowDiv = document.createElement("div");
@@ -1310,27 +1357,27 @@ function populateHSTargetButtons(parent, list, groupId) {
         colDiv.classList.add("col-md-2");
         colDiv.classList.add("col-form-label");
         let label = document.createElement("label");
-        label.classList.add("HS_category_header");
-        label.innerText = `HS categories ${i}`;
+        label.classList.add("main_emotion_header");
+        label.innerText = `Main Emotion`;
         colDiv.appendChild(label);
         rowDiv.appendChild(colDiv);
         
         let colSMDiv = document.createElement("div");
         colSMDiv.classList.add("col-sm");
-        //Make an div element like this : <div class="btn-group" id="HSCategoryButtons" role="group" aria-label="Hatespeech category selectors"></div>
+        //Make an div element like this : <div class="btn-group" id="HSTargetButtons_" role="group" aria-label="Hatespeech category selectors"></div>
         let btnGroup = document.createElement("div");
         btnGroup.classList.add("btn-group");
-        btnGroup.id = `HSCategoryButtons_${i}`;
+        btnGroup.id = `MainEmotionButtons_${i}`;
         btnGroup.setAttribute("role", "group");
-        btnGroup.setAttribute("aria-label", "Hatespeech category selectors");
+        btnGroup.setAttribute("aria-label", "Main emotion selectors");
         // add buttons to btnGroup parent element
-        populateSelectedHSCategoryButtons(btnGroup, group);
+        populateSelectedMainEmotionButtons(btnGroup, group);
         colSMDiv.appendChild(btnGroup);
         rowDiv.appendChild(colSMDiv);
         buttonGroup.appendChild(rowDiv);
         i++;
     });
-}*/
+}
 
 function populateSelectedHSTargetButtonGroups (grouplist) {
     let buttonGroup = document.getElementById("HSTargetPlaceHolder");
@@ -1437,6 +1484,12 @@ function populateSelectedHSCategoryButtons (parent, dict) {
     });
 }
 
+function populateSelectedMainEmotionButtons (parent, dict) {    
+    dict.forEach(item => {       
+        parent.insertAdjacentHTML( 'beforeend', item );               
+    });
+}
+
 function checkSelectedCategories(valueString, categoryName, categoryList) {	
     let valuelist = valueString.split(",");
     let selectedDict = {};
@@ -1445,14 +1498,14 @@ function checkSelectedCategories(valueString, categoryName, categoryList) {
     valuelist.forEach(element => 
     {    	
         let inLowerCase = element.toLowerCase().trim();        
-        let input = `<input type="checkbox" class="btn-check ${categoryName}" id="ctrBtnCheck${i}" autocomplete="off" checked><label class="btn btn-outline-primary" for="ctrBtnCheck${i}">${inLowerCase}</label>`;
+        let input = `<input type="checkbox" class="btn-check ${categoryName}" id="${categoryName}_ctrBtnCheck_${i}" autocomplete="off" checked><label class="btn btn-outline-primary" for="${categoryName}_ctrBtnCheck_${i}">${inLowerCase}</label>`;
         selectedDict[inLowerCase] = input;
         i++;
     });    
     
     // tämä ei le enää lista listoja vaan lista
     // muuta ennen testiä
-    HSCategoryLists.forEach(group => {
+    /*HSCategoryLists.forEach(group => {
      		category = {};
         group.forEach(item => {
             let id = Math.random().toString();
@@ -1460,7 +1513,16 @@ function checkSelectedCategories(valueString, categoryName, categoryList) {
         	category[item] = `<input type="checkbox" class="btn-check ${categoryName}" id="ctrBtnCheck${guid}" autocomplete="off"><label class="btn btn-outline-primary" for="ctrBtnCheck${guid}">${item}</label>`;
         })
         categoryDictList.push(category);
-    });
+    });*/
+    
+    let category = {};
+    categoryList.forEach(item => {
+        let id = Math.random().toString();
+        const guid = id.split('.').pop();
+        category[item] = `<input type="checkbox" class="btn-check ${categoryName}" id="${categoryName}_ctrBtnCheck_${guid}" autocomplete="off"><label class="btn btn-outline-primary" for="${categoryName}_ctrBtnCheck_${guid}">${item}</label>`;
+    })
+    categoryDictList.push(category);
+    
       
     for(var key in selectedDict) {  	
         categoryDictList.forEach(catDict => 
@@ -1489,7 +1551,7 @@ function checkSelectedCategories(valueString, categoryName, categoryList) {
     }
     let selectionLists = [];
     categoryDictList.forEach(dict => {
-        selectionList = [];
+        let selectionList = [];
         for (const value of Object.values(dict)) {
       	    selectionList.push(value);
 		}
@@ -1531,6 +1593,12 @@ function checkSelectedCategories(valueString, categoryName, categoryList) {
     let selection = $("#HSCategoryPlaceHolder")[0];
     selection.innerHTML = "";
 }*/
+/*
+function clearSentimentPlaceHolder() {
+    let selection = $("#SentimentPlaceHolder")[0];
+    selection.innerHTML = "";
+}
+*/
 
 function clearHSTargetPlaceHolder() {
     let selection = $("#HSTargetPlaceHolder")[0];
@@ -1540,12 +1608,14 @@ function clearHSTopicPlaceHolder() {
     let selection = $("#HSTopicPlaceHolder")[0];
     selection.innerHTML = "";
 }
-
 function clearHSFormPlaceHolder() {
     let selection = $("#HSFormPlaceHolder")[0];
     selection.innerHTML = "";
 }
-
+function clearMainEmotionPlaceHolder() {
+    let selection = $("#MainEmotionPlaceHolder")[0];
+    selection.innerHTML = "";
+}
 function clearButtonGroup() {    
     let selection = $("#HSCategoryButtons")[0];
     selection.innerHTML = "";
@@ -1581,44 +1651,68 @@ function populateTextAnnotationForm(annotationItem, annotationExists) {
                         $("#notHateSpeechRadio").prop("checked", true);
                     }
                     break;
-                case "HS_class":
-                    updateRadioValue("intensityRadioOptions", value);
+                case "sentiment":
+                    updateRadioString("sentimentRadioOptions", value);
                     break;
-                /*case "HS_category":                                                        
-                    clearHSCategoryPlaceHolder();                    
-                    let buttonElements = checkSelectedCategories(value);
-                    populateSelectedHSCategoryButtonGroups(buttonElements);                    
-                    break;*/
+                case "polarity":
+                    updateRadioValue("polarityRadioOptions", value);
+                    break;             
+                case "HS_strength":
+                    updateRadioValue("HSstrengthRadioOptions", value);
+                    break;
                 case "HS_target":                                                        
-                    clearHSTargetPlaceHolder();                    
-                    let buttonTargetElements = checkSelectedCategories(value, "HSTargetButton", HSTargetList);
-                    populateSelectedHSTargetButtonGroups(buttonTargetElements);                    
+                    clearHSTargetPlaceHolder();
+                    if (value !== null) {
+                        let buttonTargetElements = checkSelectedCategories(value, "HSTargetButton", HSTargetList);
+                        populateSelectedHSTargetButtonGroups(buttonTargetElements);                    
+                    }
+                    else {
+                        populateHSTargetButtonGroups(HSTargetList);
+                    }
                     break;
                 case "HS_topic":                                                        
                     clearHSTopicPlaceHolder();                    
-                    let buttonTopicElements = checkSelectedCategories(value, "HSTopicButton", HSTopicList);
-                    populateSelectedHSTopicButtonGroups(buttonTopicElements);
+                    if (value !== null) {
+                        let buttonTopicElements = checkSelectedCategories(value, "HSTopicButton", HSTopicList);
+                        populateSelectedHSTopicButtonGroups(buttonTopicElements);
+                    }
+                    else {
+                        populateHSTopicButtonGroups(HSTopicList);
+                    }
+                    break;
                 case "HS_form":                                                        
-                    clearHSFormPlaceHolder();                    
-                    let buttonFormElements = checkSelectedCategories(value, "HSFormButton", HSFormList);
-                    populateSelectedHSFormButtonGroups(buttonFormElements);
-                case "SentencePolarity":
-                    updateRadioValue("polarityRadioOptions", value);
-                    break;                
-                case "SentenceEmotionCategory":                    
-                    $("#SentenceEmotionCategory").val(value);
+                    clearHSFormPlaceHolder();
+                    if (value !== null) {
+                        let buttonFormElements = checkSelectedCategories(value, "HSFormButton", HSFormList);
+                        populateSelectedHSFormButtonGroups(buttonFormElements);
+                    }
+                    else {
+                        populateHSFormButtonGroups(HSFormList);
+                    }
                     break;
-                case "HSinUrbanFinnish":                    
-                    $("#HSinUrbanFinnish").val(value);
+                case "main_emotion":                                                        
+                    clearMainEmotionPlaceHolder();
+                    if (value !== null) {
+                        let buttonElements = checkSelectedCategories(value, "MainEmotionButton", MainEmotionList);
+                        populateSelectedMainEmotionButtonGroups(buttonElements);
+                    }
+                    else {
+                        populateMainEmotionButtonGroups(MainEmotionList);
+                    }
                     break;
-                case "HSinFinnish":                    
-                    $("#HSinFinnish").val(value);
+                //case "main_emotion":                    
+                //    $("#main_emotion").val(value);
+                //    break;
+                case "urban_finnish":                    
+                    $("#urban_finnish").val(value);
+                    break;
+                case "correct_finnish":                    
+                    $("#correct_finnish").val(value);
                     break;                
                 default:
                     break;
             }            
             // define add-post button for new annotation
-            
             $("#testform").find('*').attr('disabled', true);
             showAnnoFormButtons();
             hideSaveButtons();
@@ -1650,6 +1744,8 @@ function populateTextAnnotationForm(annotationItem, annotationExists) {
     );
 }
 
+// ---------------------------------------------------------------------------
+// limit text length of input to 25 chars
 function truncate(input) {
     if (input.length > 25) {
        return input.substring(0, 25) + '...';
@@ -1665,10 +1761,8 @@ document.addEventListener("slide.bs.carousel", function(e){
     });
 });
 
-
 // ---------------------------------------------------------------------------
 // render local host upload as user page / login page
-
 $(document).ready(function () {
     sessionStorage.clear();
     $("#testform").toggle();

@@ -25,7 +25,6 @@ from sqlalchemy import event
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.engine import Engine
 
-
 #from hub import db or database
 #import hub.api_routes
 #from hub.api_routes import *
@@ -668,21 +667,29 @@ class TextAnnotationItem(Resource):
         """
         db_text_anno = TextAnnotation.query.filter_by(id=id).first()
 
+        #print("db_text_anno:  ", db_text_anno)
+
         if db_text_anno is None:
             return create_error_response(404, "Not found", "No text annotation was found with id {}".format(id))
         if not request.json:
             return create_error_response(415, "Unsupported media type", "Requests must be JSON")
 
+        print("request.json:  ", request.json)
+
         if "text_id" in request.json:
             if request.json["text_id"] == "" or request.json["text_id"] == None:
+                print("text_id is empty")
                 return create_error_response(400, "Invalid JSON document", "No text id provided")
         else:
+            print("text_id is missing")
             return create_error_response(400, "Invalid JSON document", "No text id provided")   
 
         if "user_id" in request.json:
             if request.json["user_id"] == "" or request.json["user_id"] == None:
+                print("user_id is empty")
                 return create_error_response(400, "Invalid JSON document", "No user id provided")
         else:
+            print("user_id is missing")
             return create_error_response(400, "Invalid JSON document", "No user id provided")   
 
         try:
