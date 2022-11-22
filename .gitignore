@@ -3,7 +3,6 @@ largeTestfile
 .venv
 node_modules
 __pycache__
-iitunVuoriv8
 HateSpeechAnnotator.egg-info
 hub/__pycache__/models.cpython-39.pyc
 hub/__pycache__/resources.cpython-39.pyc
