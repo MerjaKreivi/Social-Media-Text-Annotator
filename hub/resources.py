@@ -25,7 +25,6 @@ from sqlalchemy import event
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.engine import Engine
 
-
 #from hub import db or database
 #import hub.api_routes
 #from hub.api_routes import *
@@ -225,7 +224,7 @@ class TextItem(Resource):
         body = HubBuilder(
                 id = db_text.id,
                 user_id = db_text.user_id,
-                HSOriginalComment = db_text.HSOriginalComment,
+                sample = db_text.sample,
                 date = db_text.date
         )
 
@@ -254,13 +253,13 @@ class TextItem(Resource):
         if not request.json:
             return create_error_response(415, "Unsupported media type", "Requests must be JSON")
 
-        if "HSModifiedComment" in request.json:
-            if request.json["HSModifiedComment"] == "" or request.json["HSModifiedComment"] == None:
+        if "modifiedSample" in request.json:
+            if request.json["modifiedSample"] == "" or request.json["modifiedSample"] == None:
                 return create_error_response(400, "Invalid JSON document", "No edited text provided")
         else:
             return create_error_response(400, "Invalid JSON document", "No file name provided")      
         
-        db_text.HSOriginalComment = request.json["HSModifiedComment"]
+        db_text.sample = request.json["modifiedSample"]
         db.session.commit()        
         
         return Response(status=204, headers={"Location": url_for("api.textitem", id=db_text.id)})
@@ -298,7 +297,7 @@ class TextCollection(Resource):
             item = HubBuilder(
                 id = text.id,
                 user_id = text.user_id,
-                HSOriginalComment = text.HSOriginalComment,
+                sample = text.sample,
                 date = text.date
             )
             item.add_control("self", url_for("api.textitem", id=text.id))
@@ -332,7 +331,7 @@ class TextCollection(Resource):
 
         new_text = TextContent(            
             user_id = request.json["user_name"],
-            HSOriginalComment = request.json["HSOriginalComment"]            
+            sample = request.json["sample"]            
         )
 
         try:
@@ -410,7 +409,7 @@ class TextItemsInPages(Resource):
                             item = HubBuilder(
                                 id = text.id,
                                 user_id = text.user_id,
-                                HSOriginalComment = text.HSOriginalComment,
+                                sample = text.sample,
                                 date = text.date
                             )
                             item.add_control("self", url_for("api.textitem", id=text.id))
@@ -461,7 +460,7 @@ class TextItemsInPages(Resource):
                             item = HubBuilder(
                                 id = text.id,
                                 user_id = text.user_id,
-                                HSOriginalComment = text.HSOriginalComment,
+                                sample = text.sample,
                                 date = text.date
                             )
                             item.add_control("self", url_for("api.textitem", id=text.id))
@@ -511,7 +510,7 @@ class TextItemsOnPage(Resource):
                                 item = HubBuilder(
                                     id = text.id,
                                     user_id = text.user_id,
-                                    HSOriginalComment = text.HSOriginalComment,
+                                    sample = text.sample,
                                     date = text.date
                                 )
                                 item.add_control("self", url_for("api.textitem", id=text.id))
@@ -551,12 +550,15 @@ class TextAnnotationCollection(Resource):
                 text_id = db_text.text_id,
                 user_id = db_text.user_id,
                 HS_binary = db_text.HS_binary,
-                HS_class = db_text.HS_class,
-                HS_category = db_text.HS_category,
-                SentencePolarity = db_text.SentencePolarity,
-                SentenceEmotionCategory = db_text.SentenceEmotionCategory,
-                HSinUrbanFinnish = db_text.HSinUrbanFinnish,
-                HSinFinnish = db_text.HSinFinnish
+                HS_strength = db_text.HS_strength,
+                HS_target = db_text.HS_target,
+                HS_topic  = db_text.HS_topic,
+                HS_form = db_text.HS_form,
+                sentiment = db_text.sentiment,
+                polarity = db_text.polarity,
+                main_emotion = db_text.main_emotion,
+                urban_finnish = db_text.urban_finnish,
+                correct_finnish = db_text.correct_finnish
             )
             item.add_control("self", url_for("api.textannotationcollection"))
             item.add_control("profile", TEXTANNOTATION_PROFILE)
@@ -590,12 +592,15 @@ class TextAnnotationCollection(Resource):
             text_id = request.json["text_id"],
             user_id = request.json["user_id"],
             HS_binary = request.json["HS_binary"],
-            HS_class = request.json["HS_class"],
-            HS_category = request.json["HS_category"],
-            SentencePolarity = request.json["SentencePolarity"],
-            SentenceEmotionCategory = request.json["SentenceEmotionCategory"],
-            HSinUrbanFinnish = request.json["HSinUrbanFinnish"],
-            HSinFinnish = request.json["HSinFinnish"],            
+            HS_strength = request.json["HS_strength"],
+            HS_target = request.json["HS_target"],
+            HS_topic = request.json["HS_topic"],
+            HS_form = request.json["HS_form"],
+            sentiment = request.json["sentiment"],
+            polarity = request.json["polarity"],
+            main_emotion = request.json["main_emotion"],
+            urban_finnish = request.json["urban_finnish"],
+            correct_finnish = request.json["correct_finnish"],            
         )
 
         try:
@@ -633,12 +638,15 @@ class TextAnnotationItem(Resource):
             text_id = db_text.text_id,
             user_id = db_text.user_id,
             HS_binary = db_text.HS_binary,
-            HS_class = db_text.HS_class,
-            HS_category = db_text.HS_category,
-            SentencePolarity = db_text.SentencePolarity,
-            SentenceEmotionCategory = db_text.SentenceEmotionCategory,
-            HSinUrbanFinnish = db_text.HSinUrbanFinnish,
-            HSinFinnish = db_text.HSinFinnish
+            HS_strength = db_text.HS_strength,
+            HS_target = db_text.HS_target,
+            HS_topic  = db_text.HS_topic,
+            HS_form = db_text.HS_form,
+            sentiment = db_text.sentiment,
+            polarity = db_text.polarity,
+            main_emotion = db_text.main_emotion,
+            urban_finnish = db_text.urban_finnish,
+            correct_finnish = db_text.correct_finnish
         )
 
         body.add_namespace("annometa", LINK_RELATIONS_URL)
@@ -659,21 +667,29 @@ class TextAnnotationItem(Resource):
         """
         db_text_anno = TextAnnotation.query.filter_by(id=id).first()
 
+        #print("db_text_anno:  ", db_text_anno)
+
         if db_text_anno is None:
             return create_error_response(404, "Not found", "No text annotation was found with id {}".format(id))
         if not request.json:
             return create_error_response(415, "Unsupported media type", "Requests must be JSON")
 
+        print("request.json:  ", request.json)
+
         if "text_id" in request.json:
             if request.json["text_id"] == "" or request.json["text_id"] == None:
+                print("text_id is empty")
                 return create_error_response(400, "Invalid JSON document", "No text id provided")
         else:
+            print("text_id is missing")
             return create_error_response(400, "Invalid JSON document", "No text id provided")   
 
         if "user_id" in request.json:
             if request.json["user_id"] == "" or request.json["user_id"] == None:
+                print("user_id is empty")
                 return create_error_response(400, "Invalid JSON document", "No user id provided")
         else:
+            print("user_id is missing")
             return create_error_response(400, "Invalid JSON document", "No user id provided")   
 
         try:
@@ -683,12 +699,15 @@ class TextAnnotationItem(Resource):
 
         db_text_anno.user_id=request.json["user_id"]
         db_text_anno.HS_binary = request.json["HS_binary"]
-        db_text_anno.HS_class = request.json["HS_class"]
-        db_text_anno.HS_category = request.json["HS_category"]
-        db_text_anno.SentencePolarity = request.json["SentencePolarity"]
-        db_text_anno.SentenceEmotionCategory = request.json["SentenceEmotionCategory"]
-        db_text_anno.HSinUrbanFinnish = request.json["HSinUrbanFinnish"]
-        db_text_anno.HSinFinnish = request.json["HSinFinnish"]        
+        db_text_anno.HS_strength = request.json["HS_strength"]        
+        db_text_anno.HS_target = request.json["HS_target"]
+        db_text_anno.HS_topic  = request.json["HS_topic"]
+        db_text_anno.HS_form = request.json["HS_form"]
+        db_text_anno.sentiment = request.json["sentiment"]
+        db_text_anno.polarity = request.json["polarity"]
+        db_text_anno.main_emotion = request.json["main_emotion"]
+        db_text_anno.urban_finnish = request.json["urban_finnish"]
+        db_text_anno.correct_finnish = request.json["correct_finnish"]        
 
         try:
             db.session.commit()
