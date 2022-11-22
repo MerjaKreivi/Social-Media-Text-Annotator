@@ -1,5 +1,5 @@
-# Merias-Social-Media-Text-Annotator
- 
+# Meria's Social Media Text Annotator
+
 Meria's Annotator for social media text samples was created as a part of scientific work of thesis. 
 It was created by Merja Kreivi-Kauppinen (2021-2022) at University of Oulu.
 Meria's Annotator facilitates manual hate speech labeling process.
