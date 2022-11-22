@@ -92,9 +92,9 @@ def generate_test_data():
 
     #(upload_text_folder) = create_static_folders()
     # Create row for new user to database by using User -model
-    user1 = User(user_name = "Meria Developer", user_password="mötkäle", user_nick="Merja")
-    user2 = User(user_name = "Matti Meikäläinen", user_password="1234567890", user_nick = "matikainen",)
-    user3 = User(user_name = "Test Engineer", user_password="1234test", user_nick = "testaaja",)
+    user1 = User(user_name = "Meria Developer", user_password="mötkäle", user_nick="Meria")
+    user2 = User(user_name = "Vili Visitor", user_password="kukka", user_nick = "Visitor",)
+    user3 = User(user_name = "Test Engineer", user_password="1234test", user_nick = "Tester",)
     
     # Add model to the session
     db.session.add_all([user1])

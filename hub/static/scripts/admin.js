@@ -10,7 +10,7 @@ const DEBUG = true;
 const MASONJSON = "application/vnd.mason+json";
 const PLAINJSON = "application/json";
 
-const MainEmotionList = ["neutral_none", "joy", "happiness", "trust", "surprise", "mixed_emotions", "sadness", "unpleasent", "disgust", "anticipation_critical_sarcastic", "contempt_disrespect", "fear", "anger_hate", "aggressive_violent"];
+const MainEmotionList = ["mixed emotions", "neutral none", "joy", "happiness", "trust", "surprise", "sadness", "unpleasent", "disgust", "anticipation critical", "sarcastic", "contempt disrespect", "fear", "anger hate", "aggressive violent"];
 
 const HSCategoryList = ["violence", "swear", "troll", "bully", "ethnic", "politics", "sexual", "idiom", "immigration", "women", "group", "religion", "opinion"];
 
@@ -21,9 +21,9 @@ const HSCategoryLists = [["national", "immigration", "foreign", "ethnic", "relig
                         ["swear", "bully", "troll", "coded", "idiom"],
                         ["other"]]
 
-const HSTopicList = ["national", "ethnic", "foreign", "immigration", "religion", "politics", "opinion", "work", "sexual", "gender", "women", "appearance", "health", "status", "social media", "family", "trolling", "other"];
+const HSTopicList = ["national", "ethnic", "foreign", "immigration", "religion", "politics", "opinion", "work", "sexual", "gender", "women", "appearance", "health", "status", "social media", "family school friends", "trolling", "other"];
 const HSTargetList = ["person", "group", "community", "none", "self-hate"];
-const HSFormList = ["threat", "insult", "discrimination", "harassment", "incitement", "disinformation", "targeting", "joke", "idiom", "swearing", "violence", "bully", "granulated", "undefined"];
+const HSFormList = ["threat", "insult", "discrimination", "harassment", "incitement", "disinformation", "targeting", "joke sarcasm", "idiom", "swearing", "violence", "bully", "granulated", "undefined"];
 
 // for pagination purposes
 let current_page = 1;
@@ -1560,46 +1560,6 @@ function checkSelectedCategories(valueString, categoryName, categoryList) {
     return selectionLists;
 }
 
-
-/*function addToSelection(valueString) {
-    let valuelist = valueString.split(",");
-    let cleanList = [];
-    let optionlist = [];
-    let i = 1;
-    valuelist.forEach(element => 
-    {
-        let inLowerCase = element.toLowerCase().trim();
-        let input = `<input type="checkbox" class="btn-check HSCategoryButton" id="ctrBtnCheck${i}" autocomplete="off" checked><label class="btn btn-outline-primary" for="ctrBtnCheck${i}">${inLowerCase}</label>`;
-        optionlist.push(input);
-        cleanList.push(inLowerCase);
-        i++;
-    });    
-    i = optionlist.length + 1;
-    HSCategoryList.forEach(hsitem => 
-    {
-        if (!cleanList.includes(hsitem)) {
-            let input = `<input type="checkbox" class="btn-check HSCategoryButton" id="ctrBtnCheck${i}" autocomplete="off"><label class="btn btn-outline-primary" for="ctrBtnCheck${i}">${hsitem}</label>`
-            optionlist.push(input);
-        }
-        i++;
-    });
-    let selection = $("#HSCategoryButtons")[0];
-    optionlist.forEach(optionItem => {
-        selection.innerHTML += optionItem;
-    });    
-}*/
-
-/*function clearHSCategoryPlaceHolder() {
-    let selection = $("#HSCategoryPlaceHolder")[0];
-    selection.innerHTML = "";
-}*/
-/*
-function clearSentimentPlaceHolder() {
-    let selection = $("#SentimentPlaceHolder")[0];
-    selection.innerHTML = "";
-}
-*/
-
 function clearHSTargetPlaceHolder() {
     let selection = $("#HSTargetPlaceHolder")[0];
     selection.innerHTML = "";
@@ -1700,9 +1660,6 @@ function populateTextAnnotationForm(annotationItem, annotationExists) {
                         populateMainEmotionButtonGroups(MainEmotionList);
                     }
                     break;
-                //case "main_emotion":                    
-                //    $("#main_emotion").val(value);
-                //    break;
                 case "urban_finnish":                    
                     $("#urban_finnish").val(value);
                     break;
