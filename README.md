@@ -4,6 +4,8 @@ Meria's Annotator for social media text samples was created as a part of scienti
 It was created by Merja Kreivi-Kauppinen (2021-2022) at University of Oulu.
 Meria's Annotator facilitates manual hate speech labeling process.
 
+![iitunVuoriv8](https://user-images.githubusercontent.com/55892486/203386366-596fcb21-90b7-4ee8-b21f-f88d7d27d9ca.png)
+
 Meria's Annotator includes small GUI for the Social-Media-Text-Annotator API. 
 This web API is programmed with Python, Flask RESTful, Flask SQLAlchemy, SQLite, jQuery, Vanilla JavaScript, HTML and CSS Bootstrap. 
 
