@@ -78,3 +78,11 @@ Run flask local host at http://localhost:5000/admin/ with command:
 Open Social-Media-Text-Annotator API at local host window by command:
 
     http://localhost:5000/admin/
+
+## Login at home page
+
+![Annotator_login](https://user-images.githubusercontent.com/55892486/203415953-4dd66915-f4cf-4b1a-bdb5-8cf6de04f3c1.png)
+
+## Annotator is built up with carousel
+
+![Annotator_carousel](https://user-images.githubusercontent.com/55892486/203416140-e4ed4080-fbb5-4d51-9cf8-189e73fffa98.png)
