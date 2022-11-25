@@ -72,8 +72,37 @@ class User(db.Model):
     user_nick = db.Column(db.String(128), unique=True, nullable=False)
 
     text_user = db.relationship("TextContent", back_populates="text_users")    
-
     text_annotator = db.relationship("TextAnnotation", back_populates="text_annotators")    
+
+# database model for data table ---------------------------------------------------------
+""" 
+class DataTable(db.Model):
+    __tablename__ = 'datatable'
+    id = db.Column(db.Integer, primary_key=True)
+    text_id = db.Column(db.Integer, db.ForeignKey("textcontent.id", ondelete="SET NULL"))
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="SET NULL"))
+    annotation_id = db.Column(db.Integer, db.ForeignKey("textannotation.id", ondelete="SET NULL"))
+    #
+    sample = db.Column(db.String(1024), nullable=False)
+    #
+    HS_binary = db.Column(db.Boolean, nullable=False)
+    HS_strength= db.Column(db.Integer, nullable=False)
+    # jos true muuttaa false - mitä muuta pitää muuttaa
+    HS_target = db.Column(db.String(128), nullable=True)
+    HS_topic = db.Column(db.String(128), nullable=True)
+    HS_form = db.Column(db.String(128), nullable=True)
+    sentiment = db.Column(db.String(128), nullable=True)
+    polarity = db.Column(db.Integer, nullable=True)
+    main_emotion = db.Column(db.String(128), nullable=True)
+    urban_finnish = db.Column(db.String(1024), nullable=True)
+    correct_finnish = db.Column(db.String(1024), nullable=True)
+    user_nick = db.Column(db.String(128), unique=True, nullable=False)
+
+    texts = db.relationship("TextContent", back_populates="text_annotations", uselist=True)
+    text_annotators = db.relationship("User", back_populates="text_annotator", uselist=True)
+    # käytetään uselist vai ei ?
+    text_annotations = db.relationship("TextAnnotation", back_populates="texts", uselist=True)
+"""
 
 # --------------------------------------------------------------------------------------------
 # HELPER FUNCTIONS - CLICK COMMANDS

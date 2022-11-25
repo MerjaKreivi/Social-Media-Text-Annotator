@@ -526,6 +526,9 @@ class TextItemsOnPage(Resource):
                 except IntegrityError:
                     return create_error_response(415, "Unsupported media type", "Item count must be an integer as string.")
 
+###############################################################
+# voiko tätä resurssia käyttää data taulukon rakentamiseen ?
+
 class TextAnnotationCollection(Resource):
     """
     Resource for TextAnnotationCollection. 
