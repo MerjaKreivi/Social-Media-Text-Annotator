@@ -12,6 +12,9 @@ import sys
 import math
 from io import BufferedReader
 import itertools
+import time
+import pandas as pd
+import openpyxl
 
 import json
 from jsonschema import validate, ValidationError
@@ -271,7 +274,10 @@ class TextItem(Resource):
         db_text = TextContent.query.filter_by(id=id).first()
         if db_text is None:
             return create_error_response(404, "Not found", "No text was found with id {}".format(id))
-        
+        for db_annotation in TextAnnotation.query.all():            
+            if (db_annotation.text_id == db_text.id):
+                db.session.delete(db_annotation) 
+
         db.session.delete(db_text)
         db.session.commit()
         return Response(status=204)
@@ -526,9 +532,6 @@ class TextItemsOnPage(Resource):
                 except IntegrityError:
                     return create_error_response(415, "Unsupported media type", "Item count must be an integer as string.")
 
-###############################################################
-# voiko tätä resurssia käyttää data taulukon rakentamiseen ?
-
 class TextAnnotationCollection(Resource):
     """
     Resource for TextAnnotationCollection. 
@@ -617,6 +620,67 @@ class TextAnnotationCollection(Resource):
             
         except IntegrityError:
             return create_error_response(409, "Already exists", "Text annotation with id '{}' already exists".format(request.json["id"]))
+
+##############################################################
+
+class DataCollectionByNickname(Resource):
+    """
+    Resource for DataCollectionByNickname. 
+    Function GET gets all data in collection with user nick name    
+    """
+
+    def get(self):
+        """
+        GET method gets all data from DataCollectionByNickname
+        """        
+
+        body = HubBuilder()
+        body.add_namespace("annometa", LINK_RELATIONS_URL)
+        body.add_control("self", url_for("api.datacollectionbynickname"))
+        body.add_control_add_textannotation()
+        body["items"] = []
+
+        # create empty holders 
+        annotation_dictionary = {}
+        list_of_dictionaries = []
+        # query all text annoations
+        try:
+            for db_text in TextAnnotation.query.all():                
+                # query annotator for annotator control
+                annotator = User.query.filter_by(id=db_text.user_id).first()
+                sample_text = TextContent.query.filter_by(id=db_text.text_id).first()            
+                # collect annotation_dictionary of one sample
+                annotation_dictionary = (dict(sample = sample_text.sample, sentiment = db_text.sentiment,
+                    polarity = db_text.polarity,
+                    HS_binary = db_text.HS_binary,
+                    HS_strength = db_text.HS_strength,
+                    HS_target = db_text.HS_target,
+                    HS_topic  = db_text.HS_topic,
+                    HS_form = db_text.HS_form,
+                    main_emotion = db_text.main_emotion,
+                    urban_finnish = db_text.urban_finnish,
+                    correct_finnish = db_text.correct_finnish,
+                    user_nick = annotator.user_nick))
+                # append annotation_dictionary to list_of_dictionaries one by one
+                list_of_dictionaries.append(annotation_dictionary)
+
+            # create panda dataframe
+            df = pd.DataFrame(list_of_dictionaries)
+            cwd = os.getcwd()        
+            timestr = time.strftime("%Y%m%d-%H%M%S")
+            folder = '\\data\\'
+            csv_file = 'Manually_Annotated_'
+            csv_postfix = '.xlsx'
+            csv_source = cwd + folder + csv_file + timestr + csv_postfix
+            # get dataframe to excel at defined source file
+            df.to_excel(csv_source)
+            body = HubBuilder() 
+            body.add_info_string("Texts have beem saved to " + csv_source)
+        except:
+            return create_error_response(400, "Failed to create excel file", "Failed with error '{}' ".format(sys.exc_info()[0]))
+
+        return Response(json.dumps(body), status=200, mimetype=MASON)
+
 
 class TextAnnotationItem(Resource):
     """

@@ -12,7 +12,7 @@ from flask_restful import Api
 # import hub.resources
 from hub.resources import UserItem, UserCollection, UserLogin
 from hub.resources import TextItem, TextCollection, TextItemCount, TextItemPageCount, TextItemsInPages, TextItemsOnPage
-from hub.resources import TextAnnotationItem, TextAnnotationCollection
+from hub.resources import TextAnnotationItem, TextAnnotationCollection, DataCollectionByNickname
 
 # -----------------------------------------------------------
 # define api blueprint prefix
@@ -40,3 +40,6 @@ api.add_resource(TextItemsOnPage, "/texts/pages/page")
 
 api.add_resource(TextAnnotationCollection, "/textannotations/")
 api.add_resource(TextAnnotationItem, "/textannotations/<id>/")
+
+# DataCollectionByNickname - datacollectionbynickname
+api.add_resource(DataCollectionByNickname, "/datacollectionbynickname/")

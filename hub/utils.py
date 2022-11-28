@@ -84,6 +84,9 @@ class MasonBuilder(dict):
     def add_pagecount(self, pagecount):
         self["@pagecount"] = pagecount
 
+    def add_info_string(self, info_string):
+        self["@infostring"] = info_string
+
 
 # -------------------------------------------------------------------------------------------------
 # Define hub builder class and create hub builder with MasonBuilder
@@ -168,7 +171,6 @@ class HubBuilder(MasonBuilder):
         schema = {
             "type": "object",
             "required": ["sample"]
-            #"required": ["HSOriginalComment", "date"]
         }
         props = schema["properties"] = {}
         props ["sample"] = {
@@ -331,6 +333,18 @@ class HubBuilder(MasonBuilder):
             method="GET",
             encoding="json",
             title="Add control to get all text annotations",
+            schema=self.textannotation_schema()
+            )
+
+### Data collection by nickname
+
+    def add_control_all_database(self):
+        self.add_control(
+            "annometa:datacollectionbynickname",
+            "/api/datacollectionbynickname/",
+            method="GET",
+            encoding="json",
+            title="Add control to get all data by nickname",
             schema=self.textannotation_schema()
             )
 

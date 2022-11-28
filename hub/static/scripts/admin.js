@@ -838,6 +838,15 @@ function renderTextsInPage(body) {
     hideAnnoFormButtons();
     $("#textListFormId").show();         
     
+    // TODO: lisää excel napin event handler täällä
+    $("#exportToExcelBtn").off('click').on('click', function(event) {
+        //let exportBtn = document.getElementById("exportToExcelBtn");
+        //exportBtn.setAttribute("disabled", "true");
+        $("#exportToExcelBtn").prop("disabled", true);
+        $("#exportToExcelBtn").prepend("<span class='spinner-border spinner-border-sm exportToExcel' role='status' aria-hidden='true'></span>");
+        exportTextsToExcel(event);
+    });
+
     renderPaginationLinks( document.getElementById("hatespeechPagesId"), body["@pagecount"], sessionStorage.getItem("current_page"));
 
     let tbody = $(".resulttable tbody");
@@ -1699,6 +1708,17 @@ function populateTextAnnotationForm(annotationItem, annotationExists) {
             deleteResource(deleteCtrl.href, backToTextCollection);
         }
     );
+}
+
+function exportTextsToExcel(event) {
+    getResource(`http://localhost:5000/api/datacollectionbynickname`, function(body){
+        // TODO: erset button here
+        //body["@pagecount"]
+        let infoString = body["@infostring"];
+        renderMsg(infoString);
+        $("#exportToExcelBtn").prop("disabled", false);
+        $( ".exportToExcel").remove();
+    });
 }
 
 // ---------------------------------------------------------------------------
