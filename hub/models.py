@@ -45,8 +45,8 @@ class TextAnnotation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text_id = db.Column(db.Integer, db.ForeignKey("textcontent.id", ondelete="SET NULL"))
     user_id = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="SET NULL"))
-    HS_binary = db.Column(db.Boolean, nullable=False)
-    HS_strength= db.Column(db.Integer, nullable=False)
+    HS_binary = db.Column(db.Boolean, nullable=True)
+    HS_strength= db.Column(db.Integer, nullable=True)
     HS_target = db.Column(db.String(128), nullable=True)
     HS_topic = db.Column(db.String(128), nullable=True)
     HS_form = db.Column(db.String(128), nullable=True)
@@ -122,7 +122,7 @@ def generate_test_data():
     # and commit to database
     textRows = getCSVData()
     dictionaryList = textRows.to_dict('index')
-    print(dictionaryList)
+    #print(dictionaryList)
 
     i = 0
     while i < len(dictionaryList):
@@ -153,6 +153,9 @@ def generate_test_data():
 def getCSVData():
     cwd = os.getcwd()
     folder = '\\data\\'
-    csv_file = 'HS_ALL_TEST_SET.xlsx'
+    #csv_file = 'HS_ALL_TEST_SET.xlsx'
+    csv_file = 'Manually_Annotated_Collection.xlsx'
     csv_source = cwd + folder + csv_file
-    return pd.read_excel(csv_source, nrows=100)
+    # HOW MANY SAMPLES?
+    # nrows: int, default None - Number of rows to parse.
+    return pd.read_excel(csv_source, nrows=None)

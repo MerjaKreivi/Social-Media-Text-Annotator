@@ -22,12 +22,12 @@ const HSCategoryLists = [["national", "immigration", "foreign", "ethnic", "relig
                         ["other"]]
 
 const HSTopicList = ["national", "ethnic", "foreign", "immigration", "religion", "politics", "opinion", "work", "sexual", "gender", "women", "appearance", "health", "status", "social media", "family school friends", "trolling", "other"];
-const HSTargetList = ["person", "group", "community", "none", "self-hate"];
+const HSTargetList = ["person", "group", "community", "none", "self-hate", "self-harm"];
 const HSFormList = ["threat", "insult", "discrimination", "harassment", "incitement", "disinformation", "targeting", "joke sarcasm", "idiom", "swearing", "violence", "bully", "granulated", "undefined"];
 
-// for pagination purposes
+// for pagination purposes - DEFINE the size of data pages
 let current_page = 1;
-const numberOfItemsOnPage = 15;
+const numberOfItemsOnPage = 100;
 
 function renderError(jqxhr) {
     let msg = jqxhr.responseJSON["@error"]["@message"];

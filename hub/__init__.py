@@ -66,7 +66,10 @@ from hub.constants import *
 
 # -----------------------------------------------------------------
 # initialize database with SQAlchemy
-db = SQLAlchemy()
+### TESTI, alla oleva alkuperäinen !!!
+### db = SQLAlchemy()
+### TESTI, poistetaan (raised as a result of Query-invoked autoflush -virhe
+db = SQLAlchemy(session_options={"autoflush": False})
 
 # get file location, print file location if needed
 basedir = os.path.abspath(os.path.dirname(__file__))
