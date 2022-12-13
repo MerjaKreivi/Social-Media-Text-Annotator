@@ -27,7 +27,7 @@ const HSFormList = ["threat", "insult", "discrimination", "harassment", "incitem
 
 // for pagination purposes - DEFINE the size of data pages
 let current_page = 1;
-const numberOfItemsOnPage = 100;
+const numberOfItemsOnPage = 50;
 
 function renderError(jqxhr) {
     let msg = jqxhr.responseJSON["@error"]["@message"];

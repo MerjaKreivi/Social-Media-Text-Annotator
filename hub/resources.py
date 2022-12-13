@@ -650,7 +650,9 @@ class DataCollectionByNickname(Resource):
                 annotator = User.query.filter_by(id=db_text.user_id).first()
                 sample_text = TextContent.query.filter_by(id=db_text.text_id).first()            
                 # collect annotation_dictionary of one sample
-                annotation_dictionary = (dict(sample = sample_text.sample, sentiment = db_text.sentiment,
+                annotation_dictionary = (dict(
+                    sample = sample_text.sample,
+                    sentiment = db_text.sentiment,
                     polarity = db_text.polarity,
                     HS_binary = db_text.HS_binary,
                     HS_strength = db_text.HS_strength,

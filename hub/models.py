@@ -153,9 +153,10 @@ def generate_test_data():
 def getCSVData():
     cwd = os.getcwd()
     folder = '\\data\\'
-    #csv_file = 'HS_ALL_TEST_SET.xlsx'
-    csv_file = 'Manually_Annotated_Collection.xlsx'
+    csv_file = 'HS_ALL_TEST_SET.xlsx'
+    #csv_file = 'Manually_Annotated_Collection.xlsx'
     csv_source = cwd + folder + csv_file
     # HOW MANY SAMPLES?
     # nrows: int, default None - Number of rows to parse.
-    return pd.read_excel(csv_source, nrows=None)
+    return pd.read_excel(csv_source, nrows=500)
+    #return pd.read_excel(csv_source, nrows=None)
