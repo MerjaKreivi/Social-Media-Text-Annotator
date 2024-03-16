@@ -45,16 +45,16 @@ class TextAnnotation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text_id = db.Column(db.Integer, db.ForeignKey("textcontent.id", ondelete="SET NULL"))
     user_id = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="SET NULL"))
-    HS_binary = db.Column(db.Boolean, nullable=True)
-    HS_strength= db.Column(db.Integer, nullable=True)
-    HS_target = db.Column(db.String(128), nullable=True)
-    HS_topic = db.Column(db.String(128), nullable=True)
-    HS_form = db.Column(db.String(128), nullable=True)
+    HSbinary = db.Column(db.Boolean, nullable=True)
+    HSstrength= db.Column(db.Integer, nullable=True)
+    HStarget = db.Column(db.String(128), nullable=True)
+    HStopic = db.Column(db.String(128), nullable=True)
+    HSform = db.Column(db.String(128), nullable=True)
     sentiment = db.Column(db.String(128), nullable=True)
     polarity = db.Column(db.Integer, nullable=True)
-    main_emotion = db.Column(db.String(128), nullable=True)
-    urban_finnish = db.Column(db.String(1024), nullable=True)
-    correct_finnish = db.Column(db.String(1024), nullable=True)
+    emotion = db.Column(db.String(128), nullable=True)
+    urbanFinnish = db.Column(db.String(1024), nullable=True)
+    correctFinnish = db.Column(db.String(1024), nullable=True)
 
     texts = db.relationship("TextContent", back_populates="text_annotations", uselist=True)
     text_annotators = db.relationship("User", back_populates="text_annotator", uselist=True)
@@ -69,7 +69,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.String(128), unique=True, nullable=False)
     user_password = db.Column(db.String(32), nullable=True)
-    user_nick = db.Column(db.String(128), unique=True, nullable=False)
+    userNick = db.Column(db.String(128), unique=True, nullable=False)
 
     text_user = db.relationship("TextContent", back_populates="text_users")    
     text_annotator = db.relationship("TextAnnotation", back_populates="text_annotators")    
@@ -91,9 +91,9 @@ def generate_test_data():
 
     #(upload_text_folder) = create_static_folders()
     # Create row for new user to database by using User -model
-    user1 = User(user_name = "Meria Developer", user_password="mötkäle", user_nick="Meria")
-    user2 = User(user_name = "Vili Visitor", user_password="kukka", user_nick = "Visitor",)
-    user3 = User(user_name = "Test Engineer", user_password="1234test", user_nick = "Tester",)
+    user1 = User(user_name = "Meria Developer", user_password="mötkäle", userNick="Meria")
+    user2 = User(user_name = "Vili Visitor", user_password="kukka", userNick = "Visitor",)
+    user3 = User(user_name = "Test Engineer", user_password="1234test", userNick = "Tester",)
     
     # Add model to the session
     db.session.add_all([user1])
@@ -113,7 +113,7 @@ def generate_test_data():
     # query.all() get all rows in the database as a list
     result_users = User.query.all()
     for item in result_users:
-        print("User object: ", item ,"   User ID: ", item.id, "   Username:  ", item.user_name, "   User nick:  ", item.user_nick, "   User password:  ", item.user_password)
+        print("User object: ", item ,"   User ID: ", item.id, "   Username:  ", item.user_name, "   User nick:  ", item.userNick, "   User password:  ", item.user_password)
         
     # Collect defined user from database
     userqueried = User.query.filter_by(user_name="Meria Developer").first()
@@ -131,32 +131,32 @@ def generate_test_data():
         userqueried.text_user.append(textObj)
         db.session.commit()
 
-        annotationObj = TextAnnotation(HS_binary=dictionaryList[i]["HSbinary"], 
-                                        HS_strength=dictionaryList[i]["HSstrength"],
-                                        HS_target=dictionaryList[i]["HStarget"],
-                                        HS_topic=dictionaryList[i]["HStopic"],
-                                        HS_form=dictionaryList[i]["HSform"],
+        annotationObj = TextAnnotation(HSbinary=dictionaryList[i]["HSbinary"], 
+                                        HSstrength=dictionaryList[i]["HSstrength"],
+                                        HStarget=dictionaryList[i]["HStarget"],
+                                        HStopic=dictionaryList[i]["HStopic"],
+                                        HSform=dictionaryList[i]["HSform"],
                                         sentiment=dictionaryList[i]["sentiment"],
                                         polarity=dictionaryList[i]["polarity"],
-                                        main_emotion=dictionaryList[i]["mainEmotion"],
-                                        urban_finnish=dictionaryList[i]["urbanFinnish"],
-                                        correct_finnish=dictionaryList[i]["correctFinnish"])
+                                        emotion=dictionaryList[i]["emotion"],
+                                        urbanFinnish=dictionaryList[i]["urbanFinnish"],
+                                        correctFinnish=dictionaryList[i]["correctFinnish"])
         userqueried.text_annotator.append(annotationObj)
         textObj.text_annotations.append(annotationObj)
         #textObj = TextContent(sample=dictionaryList[i]["sample"], text_annotations=annotationObj)
                         
         db.session.commit()
         i= i+1
-    
+
 # -------------------------------------------------------------------------------
 
 def getCSVData():
     cwd = os.getcwd()
     folder = '\\data\\'
-    csv_file = 'HS_ALL_TEST_SET.xlsx'
-    #csv_file = 'Manually_Annotated_Collection.xlsx'
+    csv_file = 'HS_ALL_TEST_SET.xlsx'        
     csv_source = cwd + folder + csv_file
     # HOW MANY SAMPLES?
     # nrows: int, default None - Number of rows to parse.
-    return pd.read_excel(csv_source, nrows=500)
+    return pd.read_excel(csv_source, nrows=400)
+    #return pd.read_excel(csv_source, nrows=100)
     #return pd.read_excel(csv_source, nrows=None)

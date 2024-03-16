@@ -173,7 +173,7 @@ def _populate_database():
                                     text_class=anno["text_class"], 
                                     polarity_classA=anno["polarity_classA"], 
                                     polarity_classB=anno["polarity_classB"], 
-                                    HS_strength=anno["HS_strength"],
+                                    HSstrength=anno["HSstrength"],
                                     HS_category=anno["HS_category"],
                                     text_text=anno["text_text"],
                                     text_language=anno["text_language"]) 
@@ -297,7 +297,7 @@ def _get_imageannotation_json():
         "text_class": True,
         "polarity_classA": 3,
         "polarity_classB": -3,
-        "HS_strength": -1,
+        "HSstrength": -1,
         "HS_category": "joke",
         "text_text": "Tähän jotain suomenkielistä tekstiä ;-)))) !!",
         "text_language": "finnish"
@@ -313,7 +313,7 @@ def _get_imageannotation_json_newAnno():
         "text_class": True,
         "polarity_classA": 2,
         "polarity_classB": -2,
-        "HS_strength": -2,
+        "HSstrength": -2,
         "HS_category": "bully",
         "text_text": "lisää tekstiä",
         "text_language": "finnish"
@@ -892,7 +892,7 @@ class TestImageannotationCollection(object):
             assert "text_class" in item
             assert "polarity_classA" in item
             assert "polarity_classB" in item
-            assert "HS_strength" in item
+            assert "HSstrength" in item
             assert "HS_category" in item
             assert "text_text" in item
             assert "text_language" in item
@@ -977,7 +977,7 @@ class TestImageannotationItem(object):
         assert body["text_class"] == True
         assert body["polarity_classA"] == -1
         assert body["polarity_classB"] == -3
-        assert body["HS_strength"] == -2
+        assert body["HSstrength"] == -2
         assert body["HS_category"] == 'bully'
         assert body["text_text"] == 'Tähän jotain suomenkielistä tekstiä ;-)))) !!'
         assert body["text_language"] == 'finnish'

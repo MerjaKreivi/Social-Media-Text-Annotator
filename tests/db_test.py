@@ -133,7 +133,7 @@ def _get_image_annotation():
         text_class=True,
         polarity_classA=1, 
         polarity_classB=2,
-        HS_strength=-1,
+        HSstrength=-1,
         HS_category="some category",
         text_text="text here",
         text_language="Finnish"

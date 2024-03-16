@@ -46,7 +46,7 @@ Install project with pip in editable (-e) mode with dot (.)
 In order run Meria's Annotator flask API set up virtual environment, 
 activate virtual environment, set flask, init database and populate database.
 
-Set cofiguration setting class as 'development' or 'production' or 'default' or 'testing'
+Set configuration setting class as 'development' or 'production' or 'default' or 'testing'
 
     (.venv) C:\GIT\Repositories\Social-Media-Text-Annotator>set FLASK_ENV=development
 
@@ -76,6 +76,9 @@ Run flask local host at http://localhost:5000/admin/ with command:
 Open Social-Media-Text-Annotator API at local host window by command:
 
     http://localhost:5000/admin/
+
+    Press CTRL+C to quit
+
 
 ## Login at home page
 

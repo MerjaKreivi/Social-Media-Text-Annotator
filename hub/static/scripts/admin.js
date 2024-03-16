@@ -233,8 +233,8 @@ function renderHomePage(body) {
     $("#textListBtnId").hide();    
     $("#userAccountBtnId").hide();
     $("#textUploadFormId").hide();
-    $("#user_nick").hide();
-    $("#user_nick_label").hide();
+    $("#userNick").hide();
+    $("#userNickLabel").hide();
  
     let form = $("#homeFormId");
     
@@ -287,8 +287,8 @@ function renderAddUserResponse(data, status, xhr) {
         let href = xhr.getResponseHeader("Location");
         if (href) {
             console.log(href);
-            $("#user_nick").hide();
-            $("#user_nick_label").hide();
+            $("#userNick").hide();
+            $("#userNickLabel").hide();
             $("#userFormId").hide();            
             getResource(href, renderSelection);            
         }
@@ -318,8 +318,8 @@ function renderUserPage(body) {
     $("#textListBtnId").hide();    
     $("#userAccountBtnId").hide();
     $("#textUploadFormId").hide();
-    $("#user_nick").hide();
-    $("#user_nick_label").hide();
+    $("#userNick").hide();
+    $("#userNickLabel").hide();
 
     $("#user_name").attr('disabled', false);    
 
@@ -405,8 +405,8 @@ function renderNeWUserPage(body) {
     $("#textListBtnId").hide();    
     $("#userAccountBtnId").hide();
     $("#textUploadFormId").hide();
-    $("#user_nick").show();    
-    $("#user_nick_label").show();
+    $("#userNick").show();    
+    $("#userNickLabel").show();
 
     $("#new_user_name").attr('disabled', false);    
 
@@ -419,8 +419,8 @@ function renderNeWUserPage(body) {
     // define add POST for new user
     $("#addUserBtnId").on("click", function(event) {        
         event.preventDefault();
-        $("#user_nick_label").show();
-        $("#user_nick").show();
+        $("#userNickLabel").show();
+        $("#userNick").show();
         //console.log("Add user with post not implemented yet");
         if ($("#new_user_name").val() !== '') {
             data.user_name = $("#new_user_name").val();
@@ -428,8 +428,8 @@ function renderNeWUserPage(body) {
         else {
             alert("Please enter user name")
         }
-        if ($("#new_user_nick").val() !== '') {
-            data.user_nick = $("#new_user_nick").val();
+        if ($("#newUserNick").val() !== '') {
+            data.userNick = $("#newUserNick").val();
         }
         else {
             alert("Please enter a nick name")
@@ -467,8 +467,8 @@ function renderUserData(body) {
 
     $("#new_user_name").attr("value", body.user_name);
     $("#new_user_name").attr('disabled', true);
-    $("#new_user_nick").attr("value", body.user_nick);
-    $("#new_user_nick").attr('disabled', true);
+    $("#newUserNick").attr("value", body.userNick);
+    $("#newUserNick").attr('disabled', true);
     //$("#new_user_password").attr("value", body.user_password);
 
     let data = {};
@@ -989,22 +989,21 @@ function putTextAnnotationContent(event) {
     data.id = parseInt(($('input[id="annotationId"]', '#testform').val()));
     data.text_id = parseInt(($('input[id="textId"]', '#testform').val()));
     data.user_id = parseInt(($('input[id="userId"]', '#testform').val()));
-    data.HS_binary = isHateSpeech();
+    data.HSbinary = isHateSpeech();
     // sentiment subcategories
     data.sentiment = getCheckedSentimentValue("sentimentRadioOptions");
     // data.sentiment = getSelectedValues("SentimentButton");
     // data.SentencePolarity = getCheckedValue("polarityRadioOptions");
     data.polarity = getCheckedValue("polarityRadioOptions");
     //data.HS_class =  getCheckedValue("intensityRadioOptions");
-    data.HS_strength =  getCheckedValue("HSstrengthRadioOptions");
+    data.HSstrength =  getCheckedValue("HSstrengthRadioOptions");
     //data.HS_category = getSelectedValues();
-    data.HS_topic = getSelectedValues("HSTopicButton");
-    data.HS_form = getSelectedValues("HSFormButton");
-    data.HS_target = getSelectedValues("HSTargetButton");
-    data.main_emotion = getSelectedValues("MainEmotionButton");
-    //data.main_emotion = $("#main_emotion").val();
-    data.urban_finnish = $("#urban_finnish").val();
-    data.correct_finnish = $("#correct_finnish").val();    
+    data.HStopic = getSelectedValues("HSTopicButton");
+    data.HSform = getSelectedValues("HSFormButton");
+    data.HStarget = getSelectedValues("HSTargetButton");
+    data.emotion = getSelectedValues("MainEmotionButton");
+    data.urbanFinnish = $("#urbanFinnish").val();
+    data.correctFinnish = $("#correctFinnish").val();    
 
     sendData(form.attr("action"), form.attr("method"), data, getEditedAnnotation);
 }
@@ -1015,7 +1014,7 @@ function getSelectedValues(HSCategory) {
         if (this.checked)
             selectedList.push( this.labels[0].innerText);       
     });
-    return selectedList.join(",  ");        
+    return selectedList.join(", ");        
 }
 
 function editTextAnnotationContent(event) {
@@ -1048,17 +1047,16 @@ function submitTextAnnotationContent(event) {
     //data.sentiment = getSelectedValues("SentimentButton");
     //data.SentencePolarity = getCheckedValue("polarityRadioOptions");   
     data.polarity = getCheckedValue("polarityRadioOptions");
-    data.HS_binary = isHateSpeech();
+    data.HSbinary = isHateSpeech();
     //data.HS_class =  getCheckedValue("intensityRadioOptions");
-    data.HS_strength =  getCheckedValue("HSstrengthRadioOptions");
+    data.HSstrength =  getCheckedValue("HSstrengthRadioOptions");
     //data.HS_category = getSelectedValues();
-    data.HS_topic = getSelectedValues("HSTopicButton");
-    data.HS_form = getSelectedValues("HSFormButton");
-    data.HS_target = getSelectedValues("HSTargetButton");
-    data.main_emotion = getSelectedValues("MainEmotionButton");
-    //data.main_emotion = $("#main_emotion").val();
-    data.urban_finnish= $("#urban_finnish").val();
-    data.correct_finnish = $("#correct_finnish").val();
+    data.HStopic = getSelectedValues("HSTopicButton");
+    data.HSform = getSelectedValues("HSFormButton");
+    data.HStarget = getSelectedValues("HSTargetButton");
+    data.emotion = getSelectedValues("MainEmotionButton");
+    data.urbanFinnish= $("#urbanFinnish").val();
+    data.correctFinnish = $("#correctFinnish").val();
     
     sendData(form.attr("action"), form.attr("method"), data, getEditedAnnotation);
 }
@@ -1075,9 +1073,8 @@ function populateEmptyTextAnnotationForm(textItem) {
     $("#annotationId").attr("value", $("#annotationId").attr("placeholder"));
 
     // clear text fields if not already empty
-    $("#correct_finnish").val('');
-    $("#urban_finnish").val('');
-    //$("#main_emotion").val('');   
+    $("#correctFinnish").val('');
+    $("#urbanFinnish").val('');
 
     // uncheck all radio button groups
     uncheckRadioButton("sentimentRadioOptions");
@@ -1612,7 +1609,7 @@ function populateTextAnnotationForm(annotationItem, annotationExists) {
         {
             let value = annotationItem[item];
             switch (item) {
-                case "HS_binary":
+                case "HSbinary":
                     if (value === true) {
                         $("#isHateSpeechRadio").prop("checked", true);
                     }
@@ -1626,10 +1623,10 @@ function populateTextAnnotationForm(annotationItem, annotationExists) {
                 case "polarity":
                     updateRadioValue("polarityRadioOptions", value);
                     break;             
-                case "HS_strength":
+                case "HSstrength":
                     updateRadioValue("HSstrengthRadioOptions", value);
                     break;
-                case "HS_target":                                                        
+                case "HStarget":                                                        
                     clearHSTargetPlaceHolder();
                     if (value !== null) {
                         let buttonTargetElements = checkSelectedCategories(value, "HSTargetButton", HSTargetList);
@@ -1639,7 +1636,7 @@ function populateTextAnnotationForm(annotationItem, annotationExists) {
                         populateHSTargetButtonGroups(HSTargetList);
                     }
                     break;
-                case "HS_topic":                                                        
+                case "HStopic":                                                        
                     clearHSTopicPlaceHolder();                    
                     if (value !== null) {
                         let buttonTopicElements = checkSelectedCategories(value, "HSTopicButton", HSTopicList);
@@ -1649,7 +1646,7 @@ function populateTextAnnotationForm(annotationItem, annotationExists) {
                         populateHSTopicButtonGroups(HSTopicList);
                     }
                     break;
-                case "HS_form":                                                        
+                case "HSform":                                                        
                     clearHSFormPlaceHolder();
                     if (value !== null) {
                         let buttonFormElements = checkSelectedCategories(value, "HSFormButton", HSFormList);
@@ -1659,7 +1656,7 @@ function populateTextAnnotationForm(annotationItem, annotationExists) {
                         populateHSFormButtonGroups(HSFormList);
                     }
                     break;
-                case "main_emotion":                                                        
+                case "emotion":                                                        
                     clearMainEmotionPlaceHolder();
                     if (value !== null) {
                         let buttonElements = checkSelectedCategories(value, "MainEmotionButton", MainEmotionList);
@@ -1669,11 +1666,11 @@ function populateTextAnnotationForm(annotationItem, annotationExists) {
                         populateMainEmotionButtonGroups(MainEmotionList);
                     }
                     break;
-                case "urban_finnish":                    
-                    $("#urban_finnish").val(value);
+                case "urbanFinnish":                    
+                    $("#urbanFinnish").val(value);
                     break;
-                case "correct_finnish":                    
-                    $("#correct_finnish").val(value);
+                case "correctFinnish":                    
+                    $("#correctFinnish").val(value);
                     break;                
                 default:
                     break;

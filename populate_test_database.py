@@ -70,9 +70,9 @@ with app.app_context():
 # Testing User -model population
 
 # Create new row for new user to database by using User -model
-    user1 = User(user_name = "Meria Developer", user_nick = "meria", user_password="mötkäle")
-    user2 = User(user_name = "Ville Visitor", user_nick = "vierailija", user_password="kukka")
-    user3 = User(user_name = "Test Engineer", user_nick = "testaaja", user_password="1234test")
+    user1 = User(user_name = "Meria Developer", userNick = "meria", user_password="mötkäle")
+    user2 = User(user_name = "Ville Visitor", userNick = "vierailija", user_password="kukka")
+    user3 = User(user_name = "Test Engineer", userNick = "testaaja", user_password="1234test")
 
 # Add model to the session
     db.session.add_all([user1, user2, user3])
@@ -87,4 +87,4 @@ with app.app_context():
 # query.all() get all rows in the database as a list
     result_users = User.query.all()
     for item in result_users:
-        print("User object: ", item ,"   User ID: ", item.id, "   Username:  ", item.user_name, "   User nick:  ", item.user_nick, "   User password:  ", item.user_password)
+        print("User object: ", item ,"   User ID: ", item.id, "   Username:  ", item.user_name, "   User nick:  ", item.userNick, "   User password:  ", item.user_password)

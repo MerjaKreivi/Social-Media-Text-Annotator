@@ -106,7 +106,7 @@ class UserCollection(Resource):
         new_user = User(
             user_name=request.json["user_name"],
             user_password=request.json["user_password"],
-            user_nick=request.json["user_nick"]
+            userNick=request.json["userNick"]
         )
         try:
             db.session.add(new_user)
@@ -555,16 +555,16 @@ class TextAnnotationCollection(Resource):
                 id = db_text.id,
                 text_id = db_text.text_id,
                 user_id = db_text.user_id,
-                HS_binary = db_text.HS_binary,
-                HS_strength = db_text.HS_strength,
-                HS_target = db_text.HS_target,
-                HS_topic  = db_text.HS_topic,
-                HS_form = db_text.HS_form,
+                HSbinary = db_text.HSbinary,
+                HSstrength = db_text.HSstrength,
+                HStarget = db_text.HStarget,
+                HStopic  = db_text.HStopic,
+                HSform = db_text.HSform,
                 sentiment = db_text.sentiment,
                 polarity = db_text.polarity,
-                main_emotion = db_text.main_emotion,
-                urban_finnish = db_text.urban_finnish,
-                correct_finnish = db_text.correct_finnish
+                emotion = db_text.emotion,
+                urbanFinnish = db_text.urbanFinnish,
+                correctFinnish = db_text.correctFinnish
             )
             item.add_control("self", url_for("api.textannotationcollection"))
             item.add_control("profile", TEXTANNOTATION_PROFILE)
@@ -597,16 +597,16 @@ class TextAnnotationCollection(Resource):
         new_textannotation = TextAnnotation(
             text_id = request.json["text_id"],
             user_id = request.json["user_id"],
-            HS_binary = request.json["HS_binary"],
-            HS_strength = request.json["HS_strength"],
-            HS_target = request.json["HS_target"],
-            HS_topic = request.json["HS_topic"],
-            HS_form = request.json["HS_form"],
+            HSbinary = request.json["HSbinary"],
+            HSstrength = request.json["HSstrength"],
+            HStarget = request.json["HStarget"],
+            HStopic = request.json["HStopic"],
+            HSform = request.json["HSform"],
             sentiment = request.json["sentiment"],
             polarity = request.json["polarity"],
-            main_emotion = request.json["main_emotion"],
-            urban_finnish = request.json["urban_finnish"],
-            correct_finnish = request.json["correct_finnish"],            
+            emotion = request.json["emotion"],
+            urbanFinnish = request.json["urbanFinnish"],
+            correctFinnish = request.json["correctFinnish"],            
         )
 
         try:
@@ -654,15 +654,16 @@ class DataCollectionByNickname(Resource):
                     sample = sample_text.sample,
                     sentiment = db_text.sentiment,
                     polarity = db_text.polarity,
-                    HS_binary = db_text.HS_binary,
-                    HS_strength = db_text.HS_strength,
-                    HS_target = db_text.HS_target,
-                    HS_topic  = db_text.HS_topic,
-                    HS_form = db_text.HS_form,
-                    main_emotion = db_text.main_emotion,
-                    urban_finnish = db_text.urban_finnish,
-                    correct_finnish = db_text.correct_finnish,
-                    user_nick = annotator.user_nick))
+                    HSbinary = db_text.HSbinary,
+                    HSstrength = db_text.HSstrength,
+                    HStarget = db_text.HStarget,
+                    HStopic  = db_text.HStopic,
+                    HSform = db_text.HSform,
+                    emotion = db_text.emotion,
+                    urbanFinnish = db_text.urbanFinnish,
+                    correctFinnish = db_text.correctFinnish,
+                    userNick = annotator.userNick))                
+
                 # append annotation_dictionary to list_of_dictionaries one by one
                 list_of_dictionaries.append(annotation_dictionary)
 
@@ -706,16 +707,16 @@ class TextAnnotationItem(Resource):
             id = db_text.id,
             text_id = db_text.text_id,
             user_id = db_text.user_id,
-            HS_binary = db_text.HS_binary,
-            HS_strength = db_text.HS_strength,
-            HS_target = db_text.HS_target,
-            HS_topic  = db_text.HS_topic,
-            HS_form = db_text.HS_form,
+            HSbinary = db_text.HSbinary,
+            HSstrength = db_text.HSstrength,
+            HStarget = db_text.HStarget,
+            HStopic  = db_text.HStopic,
+            HSform = db_text.HSform,
             sentiment = db_text.sentiment,
             polarity = db_text.polarity,
-            main_emotion = db_text.main_emotion,
-            urban_finnish = db_text.urban_finnish,
-            correct_finnish = db_text.correct_finnish
+            emotion = db_text.emotion,
+            urbanFinnish = db_text.urbanFinnish,
+            correctFinnish = db_text.correctFinnish
         )
 
         body.add_namespace("annometa", LINK_RELATIONS_URL)
@@ -767,16 +768,16 @@ class TextAnnotationItem(Resource):
             return create_error_response(400, "Invalid JSON document", str(e))
 
         db_text_anno.user_id=request.json["user_id"]
-        db_text_anno.HS_binary = request.json["HS_binary"]
-        db_text_anno.HS_strength = request.json["HS_strength"]        
-        db_text_anno.HS_target = request.json["HS_target"]
-        db_text_anno.HS_topic  = request.json["HS_topic"]
-        db_text_anno.HS_form = request.json["HS_form"]
+        db_text_anno.HSbinary = request.json["HSbinary"]
+        db_text_anno.HSstrength = request.json["HSstrength"]        
+        db_text_anno.HStarget = request.json["HStarget"]
+        db_text_anno.HStopic  = request.json["HStopic"]
+        db_text_anno.HSform = request.json["HSform"]
         db_text_anno.sentiment = request.json["sentiment"]
         db_text_anno.polarity = request.json["polarity"]
-        db_text_anno.main_emotion = request.json["main_emotion"]
-        db_text_anno.urban_finnish = request.json["urban_finnish"]
-        db_text_anno.correct_finnish = request.json["correct_finnish"]        
+        db_text_anno.emotion = request.json["emotion"]
+        db_text_anno.urbanFinnish = request.json["urbanFinnish"]
+        db_text_anno.correctFinnish = request.json["correctFinnish"]        
 
         try:
             db.session.commit()

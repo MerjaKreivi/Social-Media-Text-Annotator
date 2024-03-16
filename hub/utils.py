@@ -239,29 +239,29 @@ class HubBuilder(MasonBuilder):
     def textannotation_schema():
         schema = {
             "type": "object",
-            "required": ["HS_binary", "HS_strength",
-            "HS_target","HS_topic","HS_form",
-            "sentiment", "polarity", "main_emotion",
-            "urban_finnish", "correct_finnish"]
+            "required": ["HSbinary", "HSstrength",
+            "HStarget","HStopic","HSform",
+            "sentiment", "polarity", "emotion",
+            "urbanFinnish", "correctFinnish"]
         }
         props = schema["properties"] = {}
-        props ["HS_binary"] = {
+        props ["HSbinary"] = {
             "description": "Category to define if text is hate speech",
             "type": "boolean"
         }
-        props ["HS_strength"] = {
+        props ["HSstrength"] = {
             "description": "Category to define how hateful hate speech is",
             "type": "number"
         }       
-        props ["HS_target"] = {
+        props ["HStarget"] = {
             "description": "Category to define target subcategory for hate speech",
             "type": "string"
         }
-        props ["HS_topic"] = {
+        props ["HStopic"] = {
             "description": "Category to define topic subcategory for hate speech",
             "type": "string"
         }
-        props ["HS_form"] = {
+        props ["HSform"] = {
             "description": "Category to define form subcategory for hate speech",
             "type": "string"
         }
@@ -273,15 +273,15 @@ class HubBuilder(MasonBuilder):
             "description": "Category to define polarity value for text sample",
             "type": "number"
         }
-        props ["main_emotion"] = {
+        props ["emotion"] = {
             "description": "Category to define main emotion subcategory for text sample",
             "type": "string"
         }
-        props ["urban_finnish"] = {
+        props ["urbanFinnish"] = {
             "description": "Text sample in urban Finnish - separated words",
             "type": "string"
         }
-        props ["correct_finnish"] = {
+        props ["correctFinnish"] = {
             "description": "Text sample in literal and correct Finnish",
             "type": "string"
         }
