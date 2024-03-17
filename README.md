@@ -55,14 +55,14 @@ Registered users can log in at login page with user's name and password.
 
 At toolbox page user can choose to proceed to dataset page.
 
-![Alt text](Merias_annotator_toolbox_page.png)
+![Alt text](hub/static/images/Merias_annotator_toolbox_page.png)
 
 
 ### Dataset page
 
 Check, add data, and get output of data on dataset page.
 
-![Alt text](Merias_annotator_dataset_page.png)
+![Alt text](hub/static/images/Merias_annotator_dataset_page.png)
 
 
 ### Landing on carousel page
