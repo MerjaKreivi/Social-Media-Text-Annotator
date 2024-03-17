@@ -1,7 +1,5 @@
 # Meria's Social Media Text Annotator Web API
 
-### Annotator is built up with text labeling carousel
-
 ![Annotator_carousel](https://user-images.githubusercontent.com/55892486/203416140-e4ed4080-fbb5-4d51-9cf8-189e73fffa98.png)
 
 
