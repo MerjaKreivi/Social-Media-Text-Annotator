@@ -55,7 +55,13 @@ Table. Subcategories and typical representations of HSstrength category.
 
 
 ### HStarget 
-Hate speech target category ‘HStarget’ is used to label the target, object, or victim of the HS into one of five subcategories, where subcategories are 'person', (small) 'group', (large) 'community', 'self-hate', 'self-harm', and 'none'. 
+Hate speech target category ‘HStarget’ is used to label the target, object, or victim of the HS into one of five subcategories, where subcategories are: 
+<li>   person
+<li>   (small) 'group'
+<li>   (large) 'community'
+<li>   'self-hate'
+<li>   'self-harm'
+<li>   'none'
 
 In ‘none’-subcategory the target of HS is not mentioned, or HS is presented as trolling, where clear target does not exist. 
 
