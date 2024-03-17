@@ -62,7 +62,7 @@ Populate flask database:
 
     (.venv) C:\Social-Media-Text-Annotator\HateSpeechAnnotator>flask populate-db
 
-API downloads excel file defined at "test_read_csv_to_dict.py" -file.
+API downloads excel file defined at "models.py" -file from "data" -folder.
 
 
 ## Run flask API
@@ -81,3 +81,15 @@ Open Social-Media-Text-Annotator API at local host window by command:
 Quit the use of API with following command in cmd:
 
     CTRL+C
+
+
+## Deactivate venv
+
+Deactivate virtual environment with following command in cmd:
+
+    deactivate
+
+
+## Relocate and delete database
+
+Relocate and delete created database (for example 'developmentHateSpeech.db') before initiation of new database file.

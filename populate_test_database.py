@@ -37,6 +37,7 @@ In order to start the server set the package name 'hub' and run Flask in the hub
 
 Run test file by command:
     (.venv) C:\Social-Media-Text-Annotator\HateSpeechAnnotator>python populate_test_database.py
+    # EI TOIMI !!!!!
 
 TESTING
 * This code creates database models, 
