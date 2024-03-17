@@ -1,6 +1,6 @@
 # Meria's Social Media Text Annotator Web API
 
-![Annotator_carousel](https://user-images.githubusercontent.com/55892486/203416140-e4ed4080-fbb5-4d51-9cf8-189e73fffa98.png)
+![Alt text](hub/static/images/manual_labeling_carousel_pic1.png)
 
 
 ## INTRODUCTION
@@ -35,45 +35,72 @@ The instructions how to install, set up virtual environment, run, and quit API i
 The code of this project is released under the GNU General Public Licence.
 
 
-## DATA
-
-Data of research work is not published....
-
-
 ## HOW TO USE Social-Media-Text-Annotator API
 
 ### Home page
 
 API lands on home page.
 
-(Picture) (picture_annotator_home) 'Picture. Home page of Meria's HS Annotator.'
+![Alt text](hub/static/images/Merias_annotator_home_page.png)
+
 
 ### Login page
 
 Login at login page with .....
 
-(Picture) (picture_annotator_login) 'Picture. Login page of Meria's HS Annotator.'
+![Alt text](hub/static/images/user_login_page.png)
 
-![Annotator_login](https://user-images.githubusercontent.com/55892486/203415953-4dd66915-f4cf-4b1a-bdb5-8cf6de04f3c1.png)
+
+### Toolbox page
+
+At toolbox page user can choose to proceed to dataset page.
+
+![Alt text](Merias_annotator_toolbox_page.png)
+
 
 ### Dataset page
 
 Check, add data, and get output of data on dataset page.
 
-(Picture) (picture_annotator_data) 'Picture. Data page of Meria's HS Annotator.'
+![Alt text](Merias_annotator_dataset_page.png)
 
 
-### Annotator carousel page
+### Landing on carousel page
 
-(Picture) (picture_annotator_carousel) 'Picture. Labeling carousel page of Meria's HS Annotator.'
+From dataset page user lands on the starting page of carousel pages.
 
-![Annotator_carousel](https://user-images.githubusercontent.com/55892486/203416140-e4ed4080-fbb5-4d51-9cf8-189e73fffa98.png)
+![Alt text](hub/static/images/manual_labeling_carousel_pic2.png)
+
+
+### Manual labeling on carousel page
+
+Manual labeling of samples is carried on carousel pages.
+
+![Alt text](hub/static/images/manual_labeling_carousel_pic3.png)
+
+
+## DATA
+
+Data of the research work was not published.
 
 
 ### Input data
 
-xxxxxxxxxxxxxxx xxxxxxxxxx
+Input data (as social media text samples) is read from excel -file.
+Excel -file must be located at data -folder, and it must be defined at models.py -file.
+In addition, it should be defined how many rows (as samples) is read to database.
+
+Data table must include following columns (in the same exact order):
+
+![Alt text](hub/static/images/input_table_example_pic.png)
+
 
 ### Output of labeling results
 
-xxxxxx xxxxxxxxxxxx xxxxxxxx
+The results of manual labeling process can be print out at dataset -page 
+by clicking 'EXPORT ALL TEXT TO EXCEL' -tab.
+
+The ouput of database is print out in excel -format.
+
+![Alt text](hub/static/images/output_table_example_pic.png)
+
