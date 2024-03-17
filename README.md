@@ -104,7 +104,7 @@ by clicking 'EXPORT ALL TEXT TO EXCEL' -tab.
 
 The ouput of database is print out in excel -format.
 
-<li>   sample, HSbinary, HSstrength, HStopic, HSform, sentiment, polarity, emotion, urbanFinnish, correctFinnish
+<li>   sample, sentiment, polarity, HS_binary, HS_strength, HS_target, HS_topic, HS_form, main_emotion, urban_Finnish, correct_Finnish, user_nick
 
 ![Alt text](hub/static/images/output_table_example_pic1.png)
 
