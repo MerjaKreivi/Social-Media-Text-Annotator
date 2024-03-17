@@ -20,6 +20,9 @@ The figure below presents an iterative data design and generation process perfor
 
 (Picture) (figure_data_generation_process) 'Figure. Iterative data generation process with HS Annotation Framework.'
 
+![figure_data_generation_process](https://vscode.dev/github/MerjaKreivi/Social-Media-Text-Annotator/blob/main/hub/static/images/figure_data_generation_process.png)
+
+
 
 ## HATE SPEECH (HS) ANNOTATION FRAMEWORK 
 
@@ -55,6 +58,8 @@ The undefined (or something else) subcategory is available for complex cases to 
 ### HSstrength 
 Hate speech strength category ‘HSstrength’ labels dimension of HS according to rising hate levels – 0, 1, 2, 3, 4, or 5, where 
 subcategories provide an estimate of how hateful, hostile, violent, aggressive, harassing, harmful, abusive, and/or intentional a sample content is. 
+
+![Annotator_login](https://user-images.githubusercontent.com/55892486/203415953-4dd66915-f4cf-4b1a-bdb5-8cf6de04f3c1.png)
 
 (Picture) (figure_table_subcategories_of_HSstrength_level) 'Table. Subcategories of hate speech strength level in ‘HSstrength’ category.'
 
