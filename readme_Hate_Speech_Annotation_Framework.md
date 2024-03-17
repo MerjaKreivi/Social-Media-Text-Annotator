@@ -36,9 +36,9 @@ Annotation framework and Web API is designed for Finnish samples only. Text samp
 On ‘sentiment’ category every (social media (SM) text) sample in data is labeled into ‘negative’, ‘positive’, or‘neutral’ subcategory . 
 
 ### Polarity 
-On sentiment polarization category ‘polarity’ is used for manual labeling of an estimate of overall polarity level into one of eleven (11) polarity subcategory between -5 and 5.
+On sentiment polarization category ‘polarity’ is used for manual labeling of an estimate of overall polarity level into one of eleven (11) polarity subcategory between -5 and 5. The ‘polarity’ subcategories are: 
 
-The ‘polarity’ subcategories are: '-5', '-4', '-3', '-2', '-1', '0', '1', '2', '3', '4', and '5'.
+<li>   '-5', '-4', '-3', '-2', '-1', '0', '1', '2', '3', '4', and '5'
 
 ### HSbinary 
 On binary hate speech category ‘HSbinary’ sample in data is labeled into one of two HS subcategories: 
@@ -47,8 +47,10 @@ On binary hate speech category ‘HSbinary’ sample in data is labeled into one
 
 
 ### HSstrength 
-Hate speech strength category ‘HSstrength’ labels dimension of HS according to rising hate levels – 0, 1, 2, 3, 4, or 5, where 
-subcategories provide an estimate of how hateful, hostile, violent, aggressive, harassing, harmful, abusive, and/or intentional a sample content is. 
+Hate speech strength category ‘HSstrength’ labels dimension of HS according to rising hate levels: 
+<li>    0, 1, 2, 3, 4, and 5, 
+
+where subcategories provide an estimate of how hateful, hostile, violent, aggressive, harassing, harmful, abusive, and/or intentional a sample content is. 
 
 Table. Subcategories of hate speech strength level in ‘HSstrength’ category.
 
