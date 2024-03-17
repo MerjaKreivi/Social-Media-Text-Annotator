@@ -8,16 +8,16 @@ is based on the research work reported on (Master’s Thesis) research paper -
 Merja Kreivi-Kauppinen (2024) Signs of Paradigm Shift in Hate Speech Detection Methodology: Hate Speech Detection of Dialectal, Granular and Urban Finnish. University of Oulu, Degree Programme in Computer Science and Engineering. Master’s Thesis, 111 p.
 
 
+
 ## DESIGN AND DEVELOPMENT of 'HS Annotation Framework' 
 
 The design of ‘HS Annotation Framework’ collected theoretical knowledge and empirical findings 
-on structural system aimed to facilitate and speed up manual labeling tasks of data collection process. 
-
-The categories and subcategories of ‘HS Annotation Framework’ are based on research and literature findings. The figure below presents an iterative data design and generation process performed with 'HS Annotation Framework'.
+on structural system aimed to facilitate and speed up manual labeling tasks of data collection process. The categories and subcategories of ‘HS Annotation Framework’ are based on research and literature findings. The figure below presents an iterative data design and generation process performed with 'HS Annotation Framework'.
 
 ![Alt text](hub/static/images/figure_data_generation_process.png)
 
 Figure. Iterative data generation process with HS Annotation Framework.
+
 
 
 ## HATE SPEECH (HS) ANNOTATION FRAMEWORK 
@@ -55,11 +55,11 @@ The undefined (or something else) subcategory is available for complex cases to 
 Hate speech strength category ‘HSstrength’ labels dimension of HS according to rising hate levels – 0, 1, 2, 3, 4, or 5, where 
 subcategories provide an estimate of how hateful, hostile, violent, aggressive, harassing, harmful, abusive, and/or intentional a sample content is. 
 
-(Picture) (figure_table_subcategories_of_HSstrength_level) 'Table. Subcategories of hate speech strength level in ‘HSstrength’ category.'
+Table. Subcategories of hate speech strength level in ‘HSstrength’ category.
 
 ![Alt text](hub/static/images/figure_table_subcategories_of_HSstrength_level.png)
 
-(Picture) (figure_table_subcategories_of_HSstrength_category) 'Table. Subcategories and typical representations of HSstrength category.'
+Table. Subcategories and typical representations of HSstrength category.
 
 ![Alt text](hub/static/images/figure_table_subcategories_of_HSstrength_category.png)
 
@@ -69,4 +69,3 @@ subcategories provide an estimate of how hateful, hostile, violent, aggressive, 
 
 Web App of HS Annotation Framework is under construction and development work, 
 and therefore the published application includes unfinished and undefined categories and subcategories. 
-
