@@ -26,6 +26,11 @@ The ‘HS Annotation Framework’ includes seven (7) main categories for the con
 
 Figure. Manual labeling page provides access to all labels of HS Annotation Framework.
 
+### Text carousel
+
+Text carousel provides the original 'raw' social media text sample. Sample is presented as given (or savad) without any cleaning or modification.
+
+Annotation framework and Web API is designed for Finnish samples only. Text samples and content containing other languages than Finnish can be discarded from the data during the annotation process. 
 
 ### Sentiment (trinary) 
 On ‘sentiment’ category every (social media (SM) text) sample in data is labeled into ‘negative’, ‘positive’, or‘neutral’ subcategory . 
@@ -60,29 +65,29 @@ Hate speech target category ‘HStarget’ is used to label the target, object, 
 
 In ‘none’-subcategory the target of HS is not mentioned, or HS is presented as trolling, where clear target does not exist. 
 
-
 ### HStopic 
 Hate speech topic category ‘HStopic’ is used to label sample content into one or several topic subcategories (18 different topic subcategories), where subcategories are: 
 
 <li>   national, ethnic, foreign, immigration, religion, politics, opinion, work, sexual, gender, women, appearance, health, status, social media, family (school, friends), trolling, and other
 
-The other subcategory is available for complex cases to smooth manual labeling process.
-
+The 'other' subcategory is available for complex cases to smooth manual labeling process.
 
 ### HSform 
 Hate speech form category ‘HSform’ is used to label sample content into one or several form, type, or style describing subcategories. HS form category identifies 14 different subcategories including 
 
 <li>   threat, insult, discrimination, harassment, incitement, disinformation, targeting, sarcasm, idiom, swearing, violence, bully, granulated, and undefined
 
-The undefined (or something else) subcategory is available for complex cases to smooth manual labeling process.
+The 'undefined' (or something else) subcategory is available for complex cases to smooth manual labeling process.
+
 
 ### Sample in urban Finnish
 
-xxxx
+Words and symbols written together (as granulated or coded text) on an original unprocessed ‘raw’ text sample were separated by a space.
+
 
 ### Sample in correct Finnish
 
-xxxx
+Words and text including typos, or intentionally incorrectely written text (as granulated or coded text) on an original unprocessed ‘raw’ text sample were manually processed into more ‘correct’ text format. Therefore on manually processed ‘correct’ text samples typos and granulated samples were changed into more correct form grammatically.
 
 
 ### Undefined and unfinished categories and subcategories (like 'Main Emotion' category)
