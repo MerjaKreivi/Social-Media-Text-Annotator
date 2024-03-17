@@ -20,9 +20,9 @@ The figure below presents an iterative data design and generation process perfor
 
 (Picture) (figure_data_generation_process) 'Figure. Iterative data generation process with HS Annotation Framework.'
 
-![figure_data_generation_process](https://vscode.dev/github/MerjaKreivi/Social-Media-Text-Annotator/blob/main/hub/static/images/figure_data_generation_process.png)
+![figure_data_generation_process](![Alt text](hub/static/images/figure_data_generation_process.png))
 
-
+### C:\GIT\Repositories\Social-Media-Text-Annotator\hub\static\images\figure_data_generation_process.png
 
 ## HATE SPEECH (HS) ANNOTATION FRAMEWORK 
 
