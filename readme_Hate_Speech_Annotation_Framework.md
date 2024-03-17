@@ -24,6 +24,9 @@ Figure. Iterative data generation process with HS Annotation Framework.
 
 The ‘HS Annotation Framework’ includes seven (7) main categories for the content of sample, and 28 separate conceptual subcategories. Subcategories are used as the basis for the label entries, and their explanations define label boundaries. The classification categories, subcategories, and their justifications follow the requirements of Finnish legislation as well as the norms and behavior generally accepted in Finnish culture and social media. 
 
+![Alt text](hub/static/images/Merias_annotator_labeling_carousel_pic1.png)
+
+Figure. Manual labeling page provides access to all labels of HS Annotation Framework.
 
 
 ### Sentiment (trinary) 
