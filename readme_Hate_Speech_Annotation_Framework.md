@@ -1,16 +1,11 @@
 # Hate Speech Annotation Framework
 
-<li>   Read me - HS Annotation Framework 
-<li>   ReadMe_HS_Anno_Framework.txt 
-<li>   GitHub URL - xxxxx 
-
 ## INTRODUCTION 
 
 The design and development of 'Hate Speech Annotation Framework' (HS Anno Framework) 
-was based on the research work reported on (my Master’s Thesis) research paper - 
-Merja Kreivi-Kauppinen (2024) Signs of Paradigm Shift in Hate Speech Detection Methodology: Hate Speech Detection of Dialectal, Granular and Urban Finnish. 
-University of Oulu, Degree Programme in Computer Science and Engineering. Master’s Thesis, 111 p.
+was based on the research work reported on (Master’s Thesis) research paper - 
 
+Merja Kreivi-Kauppinen (2024) Signs of Paradigm Shift in Hate Speech Detection Methodology: Hate Speech Detection of Dialectal, Granular and Urban Finnish. University of Oulu, Degree Programme in Computer Science and Engineering. Master’s Thesis, 111 p.
 
 
 ## DESIGN AND DEVELOPMENT 
@@ -24,7 +19,6 @@ The categories and subcategories of ‘HS Annotation Framework’ are based on r
 The figure below presents an iterative data design and generation process performed with 'HS Annotation Framework'.
 
 (Picture) (figure_data_generation_process) 'Figure. Iterative data generation process with HS Annotation Framework.'
-
 
 
 ## HATE SPEECH (HS) ANNOTATION FRAMEWORK 

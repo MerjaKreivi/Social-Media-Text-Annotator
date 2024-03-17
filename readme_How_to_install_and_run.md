@@ -1,14 +1,15 @@
 ## INSTALL, SET UP VENV, and RUN
 
-The instructions how to install, set up virtual environment, run, and quit API is presented shortly in 'readme_How_to_install_and_run' -file.
-
-
 ## Getting started
 
-It is recommended to use virtual environment for using and testing the code. Usage of Python 3.7 or newer version is required. 
-Use "pip install" to install virtual environment packages. The code package of Social Media Text Annotator API needs for example following python library packages:
+It is recommended to use virtual environment for using and testing the code. 
 
-    Flask, pysqlite3, Flask-sqlalchemy, flask-restful, pytest, pytest-cov, Flask-Script, Flask-Migrate, Pillow, jsonschema, requests, pandas
+The use of Python 3.7 or newer version is required. Use "pip install" to install virtual environment packages. 
+
+The code package of Social Media Text Annotator API needs for example following python library packages:
+
+Flask, pysqlite3, Flask-sqlalchemy, flask-restful, pytest, pytest-cov, Flask-Script, Flask-Migrate, Pillow, jsonschema, requests, pandas
+
 
 ## Set up python virtual environment for flask project
 
@@ -24,6 +25,7 @@ Next activate created python virtual environment (on cmd):
 
     C:\Social-Media-Text-Annotator\.venv\Scripts>activate.bat
 
+
 ## Install required python libraries
 
 Install packages defined at "requirements.txt" -file with following command in cmd:
@@ -33,6 +35,7 @@ Install packages defined at "requirements.txt" -file with following command in c
 Install project with pip in editable (-e) mode with dot (.)
 
     (.venv) C:\Social-Media-Text-Annotator>pip install -e .
+
 
 ## Set up configuration for flask
 
@@ -47,6 +50,7 @@ To start the server set the package name 'hub' and run Flask in the hub folder:
 
     (.venv) C:\GIT\Repositories\Social-Media-Text-Annotator>set FLASK_APP=hub
 
+
 ## Initialize and populate database
 
 Flask populate-db command creates database models, and populates User, TextContent, and TextAnnotation models.
@@ -59,6 +63,7 @@ Populate flask database:
     (.venv) C:\Social-Media-Text-Annotator\HateSpeechAnnotator>flask populate-db
 
 API downloads excel file defined at "test_read_csv_to_dict.py" -file.
+
 
 ## Run flask API
 
