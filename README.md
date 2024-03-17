@@ -46,7 +46,7 @@ API lands on home page.
 
 ### Login page
 
-Login at login page with .....
+Registered users can log in at login page with user's name and password.
 
 ![Alt text](hub/static/images/user_login_page.png)
 
@@ -92,6 +92,8 @@ In addition, it should be defined how many rows (as samples) is read to database
 
 Data table must include following columns (in the same exact order):
 
+<li>   sample, HSbinary, HSstrength, HStopic, HSform, sentiment, polarity, emotion, urbanFinnish, correctFinnish
+
 ![Alt text](hub/static/images/input_table_example_pic.png)
 
 
@@ -102,5 +104,7 @@ by clicking 'EXPORT ALL TEXT TO EXCEL' -tab.
 
 The ouput of database is print out in excel -format.
 
-![Alt text](hub/static/images/output_table_example_pic.png)
+<li>   sample, HSbinary, HSstrength, HStopic, HSform, sentiment, polarity, emotion, urbanFinnish, correctFinnish
+
+![Alt text](hub/static/images/output_table_example_pic1.png)
 
