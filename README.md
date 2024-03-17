@@ -1,89 +1,45 @@
-# Meria's Social Media Text Annotator
+# Meria's Social Media Text Annotator Web API
 
-Meria's Annotator for social media text samples was created as a part of scientific work of thesis. 
-It was created by Merja Kreivi-Kauppinen (2021-2022) at University of Oulu.
-Meria's Annotator facilitates manual hate speech labeling process.
+### Annotator is built up with text labeling carousel
 
-Meria's Annotator includes small GUI for the Social-Media-Text-Annotator API. 
-This web API is programmed with Python, Flask RESTful, Flask SQLAlchemy, SQLite, jQuery, Vanilla JavaScript, HTML and CSS Bootstrap. 
+![Annotator_carousel](https://user-images.githubusercontent.com/55892486/203416140-e4ed4080-fbb5-4d51-9cf8-189e73fffa98.png)
 
-With help of the Social-Media-Text-Annotator API client you can import social media text samples into database, manually label saved text samples, and keep all samples and annotations available in the database. 
+
+## INTRODUCTION
+
+Meria's 'Social Media Text Annotator' for social media text samples was created by Merja Kreivi-Kauppinen (2021-2022) at University of Oulu as a part of scientific work of my Master’s thesis. 
+
+The design of 'Social Media Text Annotator' was implemented on basis of 'HS Annotation Framework' to smooth and facilitate manual labeling process of sentiment and hate speech (HS) annotation of Finnish social media text samples.
+
+The technical design and development of 'Social Media Text Annotator' was implemented on the basis of 'HS Annotation Framework' reported on Master’s Thesis research paper - 
+Merja Kreivi-Kauppinen (2024) Signs of Paradigm Shift in Hate Speech Detection Methodology: Hate Speech Detection of Dialectal, Granular and Urban Finnish. University of Oulu, Degree Programme in Computer Science and Engineering. Master’s Thesis, 111 p.
+
+Meria's Annotator includes small GUI for the Social-Media-Text-Annotator API. The 'Social Media Text Annotator' was conducted mainly on python coding language with Restful Web SPA, Flask RESTful, Flask SQLAlchemy, SQLite, jQuery, Vanilla JavaScript, CSS Bootstrap and HTML methodologies. Working process included designing, coding, debugging, and testing phases of the Web API. 
+
+The designed 'Social Media Text Annotator' presents schematic structure of hate speech (HS) categories and subcategories for manual labeling process of Finnish social media data. With help of the Social-Media-Text-Annotator API client you can import social media text samples into database, manually label saved text samples, and keep all samples and annotations available in the database. 
 API and database create an environment for multiple users.
 
-## Getting started
 
-It is recommended to use virtual environment for using and testing the code. Usage of Python 3.7 or newer version is required. 
-Use "pip install" to install virtual environment packages. The code package of Social Media Text Annotator API needs for example following python library packages:
+## HATE SPEECH (HS) ANNOTATION FRAMEWORK 
 
-    Flask, pysqlite3, Flask-sqlalchemy, flask-restful, pytest, pytest-cov, Flask-Script, Flask-Migrate, Pillow, jsonschema, requests, pandas
+The 'HS Annotation Framework' is presented shortly in 'readme_Hate_Speech_Annotation_Framework' -file.
 
-## Set up python virtual environment for flask project
-
-Open command prompt (cmd) and proceed to C root folder. Clone Social-Media-Text-Annotator project using following command. The command will create folder C:\Social-Media-Text-Annotator.
-
-    C:\>git clone https://github.com/MerjaKreivi/Social-Media-Text-Annotator.git
-
-Create virtual environment on Social-Media-Text-Annotator folder.
-
-    C:\Social-Media-Text-Annotator\python -m venv .venv
-
-Next activate created python virtual environment (on cmd):
-
-    C:\Social-Media-Text-Annotator\.venv\Scripts>activate.bat
-
-## Install required python libraries
-
-Install packages defined at "requirements.txt" -file with  following command in cmd:
-
-    (.venv) C:\Social-Media-Text-Annotator>pip install -r requirements.txt
-
-Install project with pip in editable (-e) mode with dot (.)
-
-    (.venv) C:\Social-Media-Text-Annotator>pip install -e .
-
-## Set up configuration for flask
-
-In order run Meria's Annotator flask API set up virtual environment, 
-activate virtual environment, set flask, init database and populate database.
-
-Set configuration setting class as 'development' or 'production' or 'default' or 'testing'
-
-    (.venv) C:\GIT\Repositories\Social-Media-Text-Annotator>set FLASK_ENV=development
-
-To start the server set the package name 'hub' and run Flask in the hub folder:
-
-    (.venv) C:\GIT\Repositories\Social-Media-Text-Annotator>set FLASK_APP=hub
-
-## Initialize and populate database
-
-Flask populate-db command creates database models, and populates User, TextContent, and TextAnnotation models.
-Init flask database basedir hub:
-
-    (.venv) C:\Social-Media-Text-Annotator>flask init-db
-
-Populate flask database:
-
-    (.venv) C:\Social-Media-Text-Annotator\HateSpeechAnnotator>flask populate-db
-
-API downloads excel file defined at "test_read_csv_to_dict.py" -file.
-
-## Run flask API
-
-Run flask local host at http://localhost:5000/admin/ with command:
-
-    (.venv) C:\Social-Media-Text-Annotator\HateSpeechAnnotator>flask run
-
-Open Social-Media-Text-Annotator API at local host window by command:
-
-    http://localhost:5000/admin/
-
-    Press CTRL+C to quit
+Hate Speech Annotation Framework and Web API are under construction and development work, 
+and therefore published application includes unfinished and undefined categories and subcategories. 
 
 
-## Login at home page
+## INSTALL, SET UP VENV, and RUN
+
+The instructions how to install, set up virtual environment, run, and quit API is presented shortly in 'readme_How_to_install_and_run' -file.
+
+
+## HOW TO USE Social-Media-Text-Annotator API
+
+
+### Login at home page
 
 ![Annotator_login](https://user-images.githubusercontent.com/55892486/203415953-4dd66915-f4cf-4b1a-bdb5-8cf6de04f3c1.png)
 
-## Annotator is built up with carousel
+### Annotator is built up with carousel
 
 ![Annotator_carousel](https://user-images.githubusercontent.com/55892486/203416140-e4ed4080-fbb5-4d51-9cf8-189e73fffa98.png)
