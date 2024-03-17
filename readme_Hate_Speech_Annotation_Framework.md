@@ -56,12 +56,7 @@ Table. Subcategories and typical representations of HSstrength category.
 
 ### HStarget 
 Hate speech target category ‘HStarget’ is used to label the target, object, or victim of the HS into one of five subcategories, where subcategories are: 
-<li>   person
-<li>   (small) 'group'
-<li>   (large) 'community'
-<li>   'self-hate'
-<li>   'self-harm'
-<li>   'none'
+<li>   person, (small) 'group', (large) 'community', 'self-hate', 'self-harm', and 'none'
 
 In ‘none’-subcategory the target of HS is not mentioned, or HS is presented as trolling, where clear target does not exist. 
 
@@ -69,7 +64,7 @@ In ‘none’-subcategory the target of HS is not mentioned, or HS is presented 
 ### HStopic 
 Hate speech topic category ‘HStopic’ is used to label sample content into one or several topic subcategories (18 different topic subcategories), where subcategories are: 
 
-national, ethnic, foreign, immigration, religion, politics, opinion, work, sexual, gender, women, appearance, health, status, social media, family (school, friends), trolling, and other
+<li>   national, ethnic, foreign, immigration, religion, politics, opinion, work, sexual, gender, women, appearance, health, status, social media, family (school, friends), trolling, and other
 
 The other subcategory is available for complex cases to smooth manual labeling process.
 
@@ -77,7 +72,7 @@ The other subcategory is available for complex cases to smooth manual labeling p
 ### HSform 
 Hate speech form category ‘HSform’ is used to label sample content into one or several form, type, or style describing subcategories. HS form category identifies 14 different subcategories including 
 
-threat, insult, discrimination, harassment, incitement, disinformation, targeting, sarcasm, idiom, swearing, violence, bully, granulated, and undefined
+<li>   threat, insult, discrimination, harassment, incitement, disinformation, targeting, sarcasm, idiom, swearing, violence, bully, granulated, and undefined
 
 The undefined (or something else) subcategory is available for complex cases to smooth manual labeling process.
 
