@@ -22,8 +22,7 @@ API and database create an environment for multiple users.
 
 The 'HS Annotation Framework' is presented shortly in 'readme_Hate_Speech_Annotation_Framework' -file.
 
-Hate Speech Annotation Framework and Web API are under construction and development work, 
-and therefore published application includes unfinished and undefined categories and subcategories. 
+Hate Speech Annotation Framework and Social-Media-Text-Annotator Web API are under construction and development work, and therefore published application includes unfinished and undefined categories and subcategories. 
 
 
 ## INSTALL, SET UP VENV, and RUN
@@ -31,13 +30,50 @@ and therefore published application includes unfinished and undefined categories
 The instructions how to install, set up virtual environment, run, and quit API is presented shortly in 'readme_How_to_install_and_run' -file.
 
 
+## LICENSE
+
+The code of this project is released under the GNU General Public Licence.
+
+
+## DATA
+
+Data of research work is not published....
+
+
 ## HOW TO USE Social-Media-Text-Annotator API
 
+### Home page
 
-### Login at home page
+API lands on home page.
+
+(Picture) (picture_annotator_home) 'Picture. Home page of Meria's HS Annotator.'
+
+### Login page
+
+Login at login page with .....
+
+(Picture) (picture_annotator_login) 'Picture. Login page of Meria's HS Annotator.'
 
 ![Annotator_login](https://user-images.githubusercontent.com/55892486/203415953-4dd66915-f4cf-4b1a-bdb5-8cf6de04f3c1.png)
 
-### Annotator is built up with carousel
+### Dataset page
+
+Check, add data, and get output of data on dataset page.
+
+(Picture) (picture_annotator_data) 'Picture. Data page of Meria's HS Annotator.'
+
+
+### Annotator carousel page
+
+(Picture) (picture_annotator_carousel) 'Picture. Labeling carousel page of Meria's HS Annotator.'
 
 ![Annotator_carousel](https://user-images.githubusercontent.com/55892486/203416140-e4ed4080-fbb5-4d51-9cf8-189e73fffa98.png)
+
+
+### Input data
+
+xxxxxxxxxxxxxxx xxxxxxxxxx
+
+### Output of labeling results
+
+xxxxxx xxxxxxxxxxxx xxxxxxxx
