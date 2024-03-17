@@ -22,9 +22,9 @@ Figure. Iterative data generation process with HS Annotation Framework.
 
 ## HATE SPEECH (HS) ANNOTATION FRAMEWORK 
 
-The ‘HS Annotation Framework’ includes seven (7) main categories for the content of sample, and 28 separate conceptual subcategories. 
-Subcategories are used as the basis for the label entries, and their explanations define label boundaries. 
-The classification categories, subcategories, and their justifications follow the requirements of Finnish legislation as well as the norms and behavior generally accepted in Finnish culture and social media. 
+The ‘HS Annotation Framework’ includes seven (7) main categories for the content of sample, and 28 separate conceptual subcategories. Subcategories are used as the basis for the label entries, and their explanations define label boundaries. The classification categories, subcategories, and their justifications follow the requirements of Finnish legislation as well as the norms and behavior generally accepted in Finnish culture and social media. 
+
+
 
 ### Sentiment (trinary) 
 On ‘sentiment’ category every (social media (SM) text) sample in data is labeled into ‘positive’, ‘neutral’, or ‘negative’ subcategory . 
