@@ -8,7 +8,7 @@ The use of Python 3.7 or newer version is required. Use "pip install" to install
 
 The code package of Social Media Text Annotator API needs for example following python library packages:
 
-Flask, pysqlite3, Flask-sqlalchemy, flask-restful, pytest, pytest-cov, Flask-Script, Flask-Migrate, Pillow, jsonschema, requests, pandas
+<li>   Flask, pysqlite3, Flask-sqlalchemy, flask-restful, pytest, pytest-cov, Flask-Script, Flask-Migrate, Pillow, jsonschema, requests, pandas
 
 
 ## Set up python virtual environment for flask project
