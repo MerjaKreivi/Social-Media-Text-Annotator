@@ -14,15 +14,12 @@ Merja Kreivi-Kauppinen (2024) Signs of Paradigm Shift in Hate Speech Detection M
 The design of ‘HS Annotation Framework’ collected theoretical knowledge and empirical findings 
 on structural system aimed to facilitate and speed up manual labeling tasks of data collection process. 
 
-The categories and subcategories of ‘HS Annotation Framework’ are based on research and literature findings. 
-
-The figure below presents an iterative data design and generation process performed with 'HS Annotation Framework'.
-
-(Picture) (figure_data_generation_process) 'Figure. Iterative data generation process with HS Annotation Framework.'
+The categories and subcategories of ‘HS Annotation Framework’ are based on research and literature findings. The figure below presents an iterative data design and generation process performed with 'HS Annotation Framework'.
 
 ![Alt text](hub/static/images/figure_data_generation_process.png)
+Figure. Iterative data generation process with HS Annotation Framework.
 
-### C:\GIT\Repositories\Social-Media-Text-Annotator\hub\static\images\figure_data_generation_process.png
+
 
 ## HATE SPEECH (HS) ANNOTATION FRAMEWORK 
 
